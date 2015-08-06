@@ -9,28 +9,9 @@
     
     <meta name="author" content="Justin Yang">
     
-    <meta name="description" content="索引
-1.加密工具
-密碼棒
-卡爾達諾漏格板
-旋轉機
-一次性密碼本
+    <meta name="description" content="古典密碼學已經被電腦打爆了，但這跟它重不重要一點關係都沒有。
 
-2.加密算法
-凱撒密碼
-希爾密碼
-路由加密
-單字母替換密碼
-維吉尼雅密碼
-
-3.攻擊類型
-僅知密文攻擊
-已知明文攻擊
-選擇明文攻擊
-
-加密工具
-1.密碼棒 (Scytale)
-取布條將其纏繞於木棒上，橫向寫下明文後取下布條。解密時，">
+我的資安講師總是這樣嘮叨著……">
     
     
     
@@ -92,15 +73,25 @@
     </p>
   <p class="article-time">
     <time datetime="2015-08-05T12:03:07.000Z" itemprop="datePublished">2015-08-05</time>
-    更新日期:<time datetime="2015-08-05T13:14:57.000Z" itemprop="dateModified">2015-08-05</time>
+    更新日期:<time datetime="2015-08-06T12:50:26.000Z" itemprop="dateModified">2015-08-06</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		
-		<h2 id="索引">索引</h2><hr>
-<h5 id="1-加密工具">1.加密工具</h5><ul>
+		<blockquote>
+<p>古典密碼學已經被電腦打爆了，但這跟它重不重要一點關係都沒有。</p>
+</blockquote>
+<p>我的資安講師總是這樣嘮叨著……</p>
+<a id="more"></a>
+<p>最近重新改寫以前的<a href="http://sogacsie.blogspot.tw/" target="_blank" rel="external">Blog</a>，終於理解這句話的意涵。舉凡近代加密演算法，多為古典密碼學<strong>手段</strong>的組合，只不過以前人力與能力都不及。</p>
+<p>比方說你不會想把16個字母放進一個矩陣中，每個查表代換10次，再每行平移幾個單位，然後各別乘上一個矩陣，最後再和別的矩陣做XOR邏輯判斷。</p>
+<p><em>Welcome to modern cryptography</em> </p>
+<p>這也太累了！你不會想用紙筆來圈圈畫畫這些詭異的流程。但是單獨來看就不會那麼困難。諸如代換啦、矩陣運算、平移等等，這些都是古典密碼學個別的概念，透過熟悉這些概念，或許對當代算法的理解，像是強勢處與弱勢處也有所助益，甚至能激起新算法的開發靈感唷。</p>
+<p>相較古文，追加了攻擊類型的紀錄，或許他不該包含於古典密碼學，但是對於初入資訊領域的生手而言，這應該會是相當重要的概念。</p>
+<hr>
+<h2 id="索引">索引</h2><h5 id="1-加密工具">1.加密工具</h5><ul>
 <li>密碼棒</li>
 <li>卡爾達諾漏格板</li>
 <li>旋轉機</li>
@@ -118,6 +109,7 @@
 <li>已知明文攻擊</li>
 <li>選擇明文攻擊</li>
 </ul>
+<hr>
 <h2 id="加密工具">加密工具</h2><hr>
 <h5 id="1-密碼棒_(Scytale)">1.密碼棒 (Scytale)</h5><p><img src="https://3.bp.blogspot.com/-cIUNh6ALKzs/VGV1ikUgOKI/AAAAAAAAAL0/t2mG1J9F1qA/s320/scytale.gif" alt="skytale"></p>
 <p>取布條將其纏繞於木棒上，橫向寫下明文後取下布條。解密時，必須取得相同直徑的木棒。</p>
@@ -131,7 +123,11 @@
 </ul>
 <h2 id="加密算法">加密算法</h2><hr>
 <h5 id="1-凱撒密碼">1.凱撒密碼</h5><p>凱撒密碼出自羅馬軍事家<a href="https://zh.wikipedia.org/wiki/%E5%B0%A4%E5%88%A9%E7%83%8F%E6%96%AF%C2%B7%E5%87%B1%E6%92%92" target="_blank" rel="external">尤利烏斯·凱撒</a>，用在對戰爭與軍事信息的加密。</p>
-<p>已知明文字母P，引入一個參數K，得出密文 C = (P + K)mod 26<br>例如 ABCDEFGHIJK，在K=3時，得出密文DEFGHIJKLMN。(K=3是最初的凱撒密碼)<br>解密時 P = (C - K)mod 26。</p>
+<p>凱撒密碼的流程並不難，因為當時的敵人多是目不識丁的。</p>
+<blockquote>
+<p>已知明文字母P，引入一個參數K，得出密文 C = (P + K)mod 26</p>
+</blockquote>
+<p>例如 ABCDEFGHIJK，在K=3時，得出密文DEFGHIJKLMN。(K=3是最初的凱撒密碼)<br>解密時 P = (C - K)mod 26。</p>
 <p>由於凱撒密碼只是對英文字母進行簡單的代換，我們可以透過分析各個字母出現的頻率推斷明文，比方說英文書寫上最常出現的字為 E ，我們便可以猜測密文中出現最多次數的英文字母是 E 的代換，藉此得出 P 與 C 的關係。</p>
 <p>由於這個方法主要是觀察英文字母使用的頻率，故又稱為頻率分析法，對於簡單的字母代換，頻率分析往往是有效的手段。</p>
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/English-slf.png" alt="FrequencyofAlphabet"></p>
@@ -140,18 +136,34 @@
 <h5 id="2-希爾密碼">2.希爾密碼</h5><p>使用矩陣進行加密，由密文構成的密文矩陣C = KP，其中P為明文構成的明文矩陣，K為密鑰矩陣，密鑰矩陣須為可逆才可供解密</p>
 <p><img src="http://1.bp.blogspot.com/-CLC48A92h_w/VJFiTQvAhCI/AAAAAAAAAQk/XOSwXGlgeho/s1600/hILL%2BCIPHER.png" alt="HillCipher"></p>
 <p>希爾加密避開了頻率分析攻擊，然而在已知明文的情況下，可透過逆運算求得金鑰，無法保證安全性。</p>
-<h5 id="3-路由加密">3.路由加密</h5><p>近似於密碼棒，採用直書橫寫進行加密。</p>
-<h5 id="4-單字母替換密碼">4.單字母替換密碼</h5><p>與凱撒密碼同為單字母取代的概念。將26個英文字母分別做對應，比如A對應C，B對應F，替換不受限於特定規則，也不要求有跡可循，純粹是做出26個字母的明文密文對應表，以供加密與解密時使用。儘管其複雜度遠遠高於凱撒密碼，但明文字母與密文字母仍屬一對一對應，同樣易受頻率分析攻擊破解。</p>
-<h5 id="5-維吉尼雅密碼">5.維吉尼雅密碼</h5><p><img src="https://3.bp.blogspot.com/-DwYbQG7U6u0/VGWGDLIZM-I/AAAAAAAAAMM/tXsTlLvCw14/s400/300px-Vigene%CC%80re_square.svg.png" alt="維吉尼亞加密"></p>
-<p>上圖其實是由26個凱薩密碼構成的。<br>維吉尼雅密碼引入了金鑰的概念，假設要加密ABCDEFG，使用密鑰CIP。首先，先將密鑰長度補至和明文一樣長，例如：</p>
+<h5 id="3-路由加密">3.路由加密</h5><p>近似於密碼棒，採用直書橫寫的方式進行加密。</p>
+<h5 id="4-單字母替換密碼">4.單字母替換密碼</h5><p>與凱撒密碼同為單字母取代的概念。將26個英文字母分別做對應，比如A對應C，B對應F，替換不受限於特定規則，也不要求有跡可循，純粹是做出26個字母的明文密文對應表，以供加密與解密時使用。</p>
+<p>儘管其複雜度遠遠高於凱撒密碼，但明文字母與密文字母仍屬一對一對應，同樣易受頻率分析攻擊破解。</p>
+<h5 id="5-維吉尼雅密碼">5.維吉尼雅密碼</h5><p>維吉尼亞密碼主要是透過查表進行字母的轉換</p>
+<p><img src="https://3.bp.blogspot.com/-DwYbQG7U6u0/VGWGDLIZM-I/AAAAAAAAAMM/tXsTlLvCw14/s400/300px-Vigene%CC%80re_square.svg.png" alt="維吉尼亞加密"></p>
+<p>上圖其實是由26個凱撒密碼構成的。</p>
+<ul>
+<li>第一行為字母位移 0 位的凱撒密碼 (即原順序)</li>
+<li>第二行為字母位移 1 位的凱撒密碼</li>
+<li>第一行為字母位移 2 位的凱撒密碼</li>
+<li>以此類推</li>
+</ul>
+<p>維吉尼雅密碼首先引入了<strong>金鑰</strong>的概念，假設要加密ABCDEFG，使用密鑰CIP。首先，先將密鑰長度補至和明文一樣長，例如：</p>
 <center>ＡＢＣＤＥＦＧ<br>ＣＩＰＣＩＰＣ</center>
 
-<p>接下來，取第Ａ行第Ｃ列得Ａ，取第Ｂ行第Ｉ列得Ｊ…取第Ｇ行第Ｃ列得I，如此完成加密。在配合一次性密碼本的情況下，維吉尼亞密碼是足夠安全的。</p>
+<p>接下來，取第Ａ行第Ｃ列得Ａ(實際上就是雙重的凱撒密碼)，取第Ｂ行第Ｉ列得Ｊ…取第Ｇ行第Ｃ列得I，如此完成加密。</p>
+<p>由於引入了金鑰這個變換要素，我們在明文上做了兩次變換，普通的頻率分析不適用在維吉尼亞密碼，只要確保金鑰不過度重複(如配合一次性密碼本)，維吉尼亞密碼是足夠安全的。</p>
+<hr>
 <h2 id="攻擊類型">攻擊類型</h2><hr>
 <h5 id="1-僅知密文攻擊">1.僅知密文攻擊</h5><p>攻擊者在只知道密文的情況下試圖求得明文或金鑰。</p>
 <h5 id="2-已知明文攻擊">2.已知明文攻擊</h5><p>攻擊者在知道部分明文與密文配對的情況下試圖破解。</p>
 <h5 id="3-選擇明文攻擊">3.選擇明文攻擊</h5><p>公開加密器，攻擊者可以自由輸入明文及得到該明文的密文，藉此試圖破解算法。</p>
-<p>儘管選擇明文攻擊於設計角度上看似不合理，<strong>但在近代密碼學中，十分強調在公開演算法的情況下，還能保證安全的才是優秀的演算法</strong>，這是為了避免開發者本身預先對算法預先留下了暗門，卻因為算法黑箱而無法得知，使得維護者或開發者成為最危險的攻擊者，因此必須公開算法接受檢視。</p>
+<p>儘管選擇明文攻擊攻防上看似不合理，<span color="#a9e74b"><strong>但在近代密碼學中，十分強調在公開演算法的情況下，還能保證安全的才是優秀的演算法。</strong></span></p>
+<p>直觀來看，要做一個加密流程很容易，我們可以有很多把金鑰，再搭配各式各樣的函式打造自己的流程，反覆做個幾十次，甚至幾百次，這麼一來，除非流程與金鑰外洩，否則這個演算法理論上牢不可破。</p>
+<p>但是換個立場，如果我們是使用者，今天開發者送來了一個加密器，他聲稱這個加密器速度不僅很快，還會透過好幾把金鑰，經歷幾十次字元變換後得出一份完美的密文。</p>
+<p>這個加密器感覺上確實相當了不起，明文與密文也找不著對應。但是，如果它擁有一把萬用鑰匙呢？或是說這幾百道的換算能被規約成兩三條式子。對這些疑問，身為使用者的我們無法斷言，不過，開發者知道。</p>
+<p>對於一個未公開加密法，算法的開發者或維護者可能就是最危險的攻擊者。</p>
+<p>此外，不論有意無意，算法可能有開發上未發現的漏洞或暗門，透過公開演算內容，大眾能共同尋找設計上是否存在瑕疵，像是近代算法中的AES、A5/1，便透過各方人才的審核，不但確保了使用上了安全性，也建立出自己的好口碑。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -173,6 +185,19 @@
 </footer>   	       
 	</article>
 	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/08/06/訊息鑑別技術/" title="訊息鑑別技術">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  訊息鑑別技術</span>
+</a>
+</div>
+
+
+</nav>
+
 	
 </div>  
       <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
@@ -190,7 +215,9 @@
 		
 			<li><a href="/tags/密碼學/" title="密碼學">密碼學<sup>1</sup></a></li>
 		
-			<li><a href="/tags/資訊安全/" title="資訊安全">資訊安全<sup>1</sup></a></li>
+			<li><a href="/tags/訊息鑑別/" title="訊息鑑別">訊息鑑別<sup>1</sup></a></li>
+		
+			<li><a href="/tags/資訊安全/" title="資訊安全">資訊安全<sup>2</sup></a></li>
 		
 		</ul>
 </div>
@@ -200,7 +227,7 @@
   <div class="tagcloudlist">
     <p class="asidetitle">標簽雲</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/密碼學/" style="font-size: 10px;">密碼學</a> <a href="/tags/資訊安全/" style="font-size: 10px;">資訊安全</a>
+       <a href="/tags/密碼學/" style="font-size: 10px;">密碼學</a> <a href="/tags/訊息鑑別/" style="font-size: 10px;">訊息鑑別</a> <a href="/tags/資訊安全/" style="font-size: 20px;">資訊安全</a>
     </div>
   </div>
 
@@ -208,7 +235,7 @@
   
   <div class="archiveslist">
     <p class="asidetitle"><a href="/archives">歸檔</a></p>
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">2</span></li></ul>
   </div>
 
 
@@ -224,8 +251,8 @@
 	
 	
 	<section class="info">
-		<p> 毫無反應，就只是個Madao <br/>
-			熱衷於遊戲設計與人工智慧新手程序員</p>
+		<p> 熱衷於遊戲設計與人工智慧的歡樂程序猿 <br/>
+			正在尋找一個大秘寶的旅途上</p>
 	</section>
 	 
 	<div class="social-font clearfix">
@@ -238,7 +265,7 @@
 		
         <a title="google_plus" href="https://plus.google.com/110210184472476277760/posts"></a>
 	</div>
-		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and this theme is modified from <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
 		
 		<a href="http://zake7749.github.io" target="_blank" title="Justin Yang">Justin Yang</a>
 		
