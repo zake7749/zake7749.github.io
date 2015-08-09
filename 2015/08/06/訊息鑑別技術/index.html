@@ -9,7 +9,7 @@
     
     <meta name="author" content="Justin Yang">
     
-    <meta name="description" content="文件識別技術是什麼？顧名思義，我們是在識別文件，不過比起去深究文章內涵與背景故事，我們通常會更關心這三件事">
+    <meta name="description" content="什麼是訊息鑑別技術？顧名思義，我們是在識別文件，不過比起去深究文章內涵與背景故事，我們通常會更關心這三件事">
     
     
     
@@ -71,14 +71,14 @@
     </p>
   <p class="article-time">
     <time datetime="2015-08-06T03:18:44.000Z" itemprop="datePublished">2015-08-06</time>
-    更新日期:<time datetime="2015-08-06T13:06:40.000Z" itemprop="dateModified">2015-08-06</time>
+    更新日期:<time datetime="2015-08-09T04:33:38.000Z" itemprop="dateModified">2015-08-09</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		
-		<h2 id="文件識別技術是什麼？">文件識別技術是什麼？</h2><p>顧名思義，我們是在<span style="color:#99dd00">識別</span>文件，不過比起去深究文章內涵與背景故事，我們通常會更關心這三件事<a id="more"></a>：</p>
+		<h2 id="什麼是訊息鑑別技術？">什麼是訊息鑑別技術？</h2><p>顧名思義，我們是在<span style="color:#99dd00">識別</span>文件，不過比起去深究文章內涵與背景故事，我們通常會更關心這三件事<a id="more"></a>：</p>
 <ul>
 <li>送出的訊息是否完整且正確 (protect integrity)<ul>
 <li>你不會希望在匯款時多送了幾個 0 </li>
@@ -106,9 +106,54 @@
 <h5 id="CBC_-_Residue">CBC - Residue</h5><p>CBC-Residue使用了2把Key，一把用於進行CBC模式，一把用於產生MAC(Residue)。CBC - Residue在加密過程幾乎沒有改變，唯一的不同是在最後的明文Pn的加密，他分成兩個部份，我們把Pn和密文Cn-1做XOR產生的東東叫做Xn好了，一是Xn用Key1加密產生最後一份密文Cn，二是Xn用Key2加密產生一個渣渣，這個渣渣跟密文一點關係都沒有，我們把他當做一個校正碼。因為CBC特有的雪崩效應，使得先前的加密有ㄧ些小改變就會造成後續一連串的錯誤，所以我們才能把這個渣渣用做比對。</p>
 <hr>
 <h5 id="HMAC_(Hash_MAC)">HMAC (Hash MAC)</h5><p>1.什麼是 Hash ?</p>
-<p>Hash是一個單向函式，假設有一個Hash函式H，H(X) = A， 你無法透過A得到X，從加解密而言，Hash做到的只有加密，而沒辦法解密，因此Hash只會用來做驗證及比較。</p>
+<p>簡單來說，Hash是一個函式，即是數學上我們常常用F(X)表示的玩意兒，不過Hash函式有一個特性，<strong>Hash是單向的，我們無法透過結果去反推斷讀入的參數</strong>，即是說 H(A) = B，如果我們只給你B，是無法透過運算反推代入參數為A的。</p>
+<p>若加解密的觀點來看，Hash做到的只有加密(從A變成B)，而沒辦法解密(B無法逆運算至A)，因此Hash只會用來做驗證。</p>
+<p>此外，除了難以逆運算外，一個好的Hash我們還會希望它</p>
+<ul>
+<li>電腦計算上高效</li>
+<li><strong>鍵的碰撞率低，也就是說，H(A)!=H(B)。</strong></li>
+</ul>
+<p>我們之前提到過，MAC產生出的可以說是一份文件的指紋，讓我們透過它來辨識文件的完整性，如果說兩份不同的文件，會產生出同一份MAC，那這個MAC的可信度便有待加強。</p>
 <p>2.HMAC</p>
-<p>HMAC的原理很簡單，我們有相同鑰匙，相同算法，那麼對相同明文，Hash出來的東西就該相同。</p>
+<p>HashMAC就是用Hash來進行驗證，市面上常見的MD5即是如此。</p>
+<p>HMAC的原理很簡單，我們有相同訊息，相同Hash算法，那麼對一份相同的明文，Hash出來的東西就該相同。</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">傳送方</span><br><span class="line">假設我們要輸送一份訊息 <span class="keyword">M</span> = ＂HelloWorld＂給接收方</span><br><span class="line">	- 1. 在傳送端進行Hash : <span class="literal">H</span>(<span class="keyword">M</span>)</span><br><span class="line">    - 2. 將Hash的結果儲存為認證戳記 T = <span class="literal">H</span>(<span class="keyword">M</span>)</span><br><span class="line">    - 3. 將T與<span class="keyword">M</span>一起送至接收方</span><br></pre></td></tr></table></figure>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">接收方</span><br><span class="line">我們現在收到了 M' 與 T'，因為不曉得改過沒有所以加了'</span><br><span class="line">	-<span class="ruby"> <span class="number">1</span>. 對 <span class="constant">M</span><span class="string">' 進行 Hash : H(M'</span>)</span><br><span class="line"></span>	-<span class="ruby"> <span class="number">2</span>. 將<span class="constant">Hash</span>的結果儲存為 <span class="constant">T</span><span class="string">''</span></span><br><span class="line"></span>	-<span class="ruby"> <span class="number">3</span>. 驗證 <span class="constant">T</span><span class="string">' 是否等於 T'</span><span class="string">'</span><br><span class="line"></span></span>	-<span class="ruby"><span class="string"> 4. if(T'</span>==<span class="constant">T</span><span class="string">''</span>) -&gt; <span class="constant">M</span> == <span class="constant">M</span><span class="string">'</span></span></span><br></pre></td></tr></table></figure>
+<p>或許你會有個小疑問，如果說我有能力更改 M’，那我應該也能更動 T’，然而這麼做的前提是必須持有 H(X) 與原訊息才行。</p>
+<hr>
+<h2 id="數位簽章">數位簽章</h2><p>雖然叫做簽章，不過這跟紙筆一點關係也沒有，它是一種用來<em>辨別身分的加密型式</em>，嚴格來說，數位簽章是以數學演算法或其他運算方式，對要簽署的文件進行加密，所產生的結果。</p>
+<p>先看看怎麼產生一份簽章吧：</p>
+<ul>
+<li>有一份文件M</li>
+<li>計算文件的摘要 h = Hash(M)</li>
+<li>加密這份摘要：Ek1(h)</li>
+<li>加密的結果便是簽章 S = Ek(h)</li>
+</ul>
+<p>之後通過同時送出M與S給接收方，簽章的傳送就完成了。</p>
+<p>在接收方</p>
+<ul>
+<li>收到了文件M’與簽章S’</li>
+<li>計算出文件M’的摘要 h’ = Hash(M’)</li>
+<li>解密收到的簽章S’: h’’ = Dk2(S’)</li>
+<li>比對 h’ 與 h’’ 的關聯性</li>
+<li>傳送者的<strong>身分</strong>獲得認證</li>
+</ul>
+<p>之前MAC辨識的是文件，簽章雖然也會辨識文件(透過比對Hash摘要)，不過最主要的是<strong>辨識傳送者的身分</strong>，這也是為何在過程中還多加上了加密與解密，好比說收到了一份報告書，就算內容看了幾千遍、幾萬遍，你還是不知道這份報告是打哪來的，要看就得看寄件人是誰。而在數位簽章，我們用寄件人的鑰匙把它跟寄件人扯上關係。</p>
+<p>這邊有一個重點，<strong>加密與解密用的金鑰是不同的，加密用的是私鑰，解密用的是公鑰</strong>，即是非對稱式金鑰系統。</p>
+<p>讓我們先回歸簽章的目的，它要能：</p>
+<ul>
+<li>驗證<ul>
+<li>簽章者身份 （不可偽冒）</li>
+<li>簽章日期、時間</li>
+<li>訊息完整性 （不可偽造）</li>
+</ul>
+</li>
+<li><span style="color:#99dd00">透過簽章，能讓第三方來解決紛爭 （不可否認性）</span></li>
+</ul>
+<p>首先，雙方鑰匙一定要不同，不然接收者就能用你的鑰匙來仿冒你。</p>
+<p>不過重點還是在這個第三方。數位簽章既為數位，我們能把它當成網路上的身分證，當社會大眾想驗明你的正身時，就把簽章蓋在他臉上，不過隨隨便便這麼做，也沒人知道你這簽章是真是假，你總不會打了好幾把鑰匙給別人，當然也不會傻到公開自己的私人鑰匙。</p>
+<p>那麼你也許會說：我們需要一把公開的鑰匙，問題就來了，我們該把鑰匙放在哪裡？會不會有人的鑰匙打得跟我一模一樣？或者很多人都有我的公開鑰匙，搞得大家不知道該跟誰拿，誰才是真的？</p>
+<p>一個可能的答案是：我們需要在你我之外，具備公信力的組織，在確認了我們的身份後，把私鑰留給你，在用你的姓名啦、申請日期啦、使用期限等等訊息混在一起作出你的公鑰，對外公開為<em>數位憑證</em>。以後大家想知道你之為你，算算你的數位憑證就成啦 ~</p>
 <hr>
 <h2 id="Authenticated_Encryption">Authenticated Encryption</h2><p>對於加密與驗證，剛接觸時往往會存在一個迷思。無論是加密或驗證 ：</p>
 <ul>
@@ -120,13 +165,21 @@
 <blockquote>
 <p>加密做的是：保證資料的安全性<br>驗證做的是：保證資料的完整性</p>
 </blockquote>
-<p>而雙管齊下的方法就是Authenticated encryption，直觀來看有這幾種型式：<br><img src="https://lh3.googleusercontent.com/uGotHGCNaNSnknU-0ecQ2XXm7Em8y8iGOA9tce2xNbY=w1143-h577-no" alt="3 ways of authenticated encryption"><br>但是他們都有一個缺點，就是對於<em>N</em>個區塊而言，他們往往要進行<em>2N</em>次的處理。為了解決這個問題，出現了IAPM與OCB這兩種新模式。</p>
+<p>而雙管齊下的方法就是Authenticated encryption，直觀來看有這幾種型式：<br><img src="https://lh3.googleusercontent.com/uGotHGCNaNSnknU-0ecQ2XXm7Em8y8iGOA9tce2xNbY=w1143-h577-no" alt="3 ways of authenticated encryption"></p>
+<ul>
+<li>對 M 進行加密處理及用 M 產生信息戳記 T</li>
+<li>先用 M 產生信息戳記，再用信息戳記 T 及 M 放入加密器產生 C</li>
+<li>先對 M 進行加密處理，再用密文 C 產生信息戳記 T</li>
+</ul>
+<p>M(Message)是我們欲處理的信息，C(Ciphertext)得出的是密文，來保證M的安全性，T是鑑別戳記(Tag)，用來確認M的完整性。</p>
+<p>然而，這三種方法都存在一個缺點，即是對於<em>N</em>個區塊而言，他們往往要進行<em>2N</em>次的處理，因為加密跟認證分開來了。為了解決這個問題，出現了IAPM與OCB這兩種新模式。</p>
 <hr>
 <h5 id="IAPM">IAPM</h5><p><img src="https://lh3.googleusercontent.com/ROJ40m32HUa83UekOJzeOKM9Y6PiyXtD9bUGV-OxjRA=w1143-h572-no" alt="IAPM"></p>
-<p>S0~SM是用做擾亂資料，因為這是個近似ECB的模式。Sigma P 是由P1XorP2…XorPm-1得出的，Cm即為產生的校正碼。</p>
+<p>S0~SM是用做擾亂資料，因為這是個近似ECB的模式。Sigma P 是由P1 Xor P2… Xor Pm-1得出的，Cm即為產生的校正碼。</p>
 <hr>
 <h5 id="OCB_(Offset_codebook_Mode)">OCB (Offset codebook Mode)</h5><p>Checksum = M1 ⊕…⊕ Mn，對於流程的更細部內容，<a href="http://web.cs.ucdavis.edu/~rogaway/ocb/ocb-faq.htm" target="_blank" rel="external">參見這邊</a></p>
 <p><img src="https://lh3.googleusercontent.com/192-qOycchKGnjmb31-BGDuO2ayVYE9oER0uynFqXzU=w954-h509-no" alt="OCB"></p>
+<hr>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -214,8 +267,8 @@
 	
 	
 	<section class="info">
-		<p> 熱衷於遊戲設計與人工智慧的歡樂程序猿 <br/>
-			正在尋找一個大秘寶的旅途上</p>
+		<p> 熱衷於人工智慧與遊戲設計的新手程序猿 <br/>
+			目前在尋找一個大秘寶的旅途上</p>
 	</section>
 	 
 	<div class="social-font clearfix">
