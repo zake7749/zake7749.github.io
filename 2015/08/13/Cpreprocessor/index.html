@@ -29,7 +29,7 @@
 進行文字的取代
 巨集、常數的定義……
 條件式編譯">
-<meta property="og:updated_time" content="2015-08-15T06:43:15.000Z">
+<meta property="og:updated_time" content="2015-08-15T12:45:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前置處理器 - C&C++">
 <meta name="twitter:description" content="前置處理器是什麼來著？前置處理器 = 進行「前置處理」的文字編輯器。
@@ -142,7 +142,7 @@
 <p>file_name自定義的標頭檔，引用方式可採相對目錄或絕對目錄，我們也可以在編譯時使用 <a href="https://gcc.gnu.org/onlinedocs/cpp/Invocation.html#Invocation" target="_blank" rel="external">gcc -i</a> 來告知標頭檔的位置，編譯時 gcc 會先查找系統目錄，再從 -i 的引數中由左至右尋找檔案。</p>
 <h3 id="define">define</h3><p><code>define</code>的功能是進行文字上的取代：</p>
 <p><code>define NAME Substitute-text</code></p>
-<p>便會將NAME替代為Substitute-text，我們稱NAME為巨集(marco)，常會全以字母大寫呈現巨集，當作和普通變數的辨別標準：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> TEN <span class="number">10</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d"</span>,TEN);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>便會將NAME替代為Substitute-text，我們稱NAME為巨集，常會全以字母大寫呈現巨集，當作和普通變數的辨別標準：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> TEN <span class="number">10</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d"</span>,TEN);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>我們可以用gcc -E 來觀察前置處理器的輸出。完成前置處理後，<code>ten</code>便被定義(define)為<code>“10”</code>：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> TEN <span class="number">10</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d"</span>,<span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><code>define</code>也能夠引入參數：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> swap(x,y) &#123;int t; t=x; x=y; y=t; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">7</span>;</span><br><span class="line">	swap(a,b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>其中swap後請記得緊接<code>(</code>，否則會跳脫出取代範圍。完成前置處理後：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> swap(x,y) int tmp = x; x = y; y = tmp;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">7</span>;</span><br><span class="line">	<span class="keyword">int</span> tmp = x; x = y; y = tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -213,21 +213,7 @@
 		<ul>
 		
 		  
-		
-		  
-		
-		  
-		
-		  
 			<li><a href="/categories/程式語言/" title="程式語言">程式語言<sup>1</sup></a></li>
-		  
-		
-		  
-		
-		  
-		
-		  
-		
 		  
 		
 		  
