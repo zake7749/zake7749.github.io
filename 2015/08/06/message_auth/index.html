@@ -43,7 +43,7 @@
 <meta property="og:image" content="https://lh3.googleusercontent.com/uGotHGCNaNSnknU-0ecQ2XXm7Em8y8iGOA9tce2xNbY=w1143-h577-no">
 <meta property="og:image" content="https://lh3.googleusercontent.com/ROJ40m32HUa83UekOJzeOKM9Y6PiyXtD9bUGV-OxjRA=w1143-h572-no">
 <meta property="og:image" content="https://lh3.googleusercontent.com/192-qOycchKGnjmb31-BGDuO2ayVYE9oER0uynFqXzU=w954-h509-no">
-<meta property="og:updated_time" content="2015-08-11T15:01:22.000Z">
+<meta property="og:updated_time" content="2015-08-15T07:00:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="訊息鑑別技術">
 <meta name="twitter:description" content="什麼是訊息鑑別技術？顧名思義，我們是在識別文件，不過比起去深究文章內涵與背景故事，我們通常會更關心這三件事：
@@ -153,7 +153,7 @@
 <p><img src="https://lh3.googleusercontent.com/1sj77qCly4DcogfQTiFeLzeQtsuQsTzxxn9Lj32Qy4g=w977-h618-no" alt="MAC示例"></p>
 <p>要使用MAC，傳送方跟接受方需要共享一把鑰匙，這可以視為MAC演算法的一個參數。每當傳送方發送文件時，會經由演算法送出MAC，並附在文件中，接收方在收到文件後，會對收到的文件再做一次演算，如果兩方得出的MAC是相同的，可以假定這份文件沒被修改過。</p>
 <hr>
-<h5 id="CBC_-_Residue">CBC - Residue</h5><p>CBC-Residue使用了2把Key，一把用於進行CBC模式，一把用於產生MAC(Residue)。CBC - Residue在加密過程幾乎沒有改變，唯一的不同是在最後的明文Pn的加密，他分成兩個部份，我們把Pn和密文Cn-1做XOR產生的東東叫做Xn好了，一是Xn用Key1加密產生最後一份密文Cn，二是Xn用Key2加密產生一個渣渣，這個渣渣跟密文一點關係都沒有，我們把他當做一個校正碼。因為CBC特有的雪崩效應，使得先前的加密有ㄧ些小改變就會造成後續一連串的錯誤，所以我們才能把這個渣渣用做比對。</p>
+<h5 id="CBC_-_Residue">CBC - Residue</h5><p>CBC-Residue使用了2把Key，一把用於進行CBC模式，一把用於產生MAC(Residue)。CBC - Residue在加密過程幾乎沒有改變，唯一的不同是在最後ㄛ份明文Pn的加密，他分成兩個部份，我們把Pn和密文Cn-1做XOR產生的東東叫做Xn好了，一是Xn用Key1加密產生最後一份密文Cn，二是Xn用Key2加密產生一個渣渣，這個渣渣跟密文一點關係都沒有，我們把他當做一個校正碼。因為CBC特有的雪崩效應，使得先前的加密有ㄧ些小改變就會造成後續一連串的錯誤，所以我們才能把這個渣渣用做比對。</p>
 <hr>
 <h5 id="HMAC_(Hash_MAC)">HMAC (Hash MAC)</h5><p>1.什麼是 Hash ?</p>
 <p>簡單來說，Hash是一個函式，即是數學上我們常常用F(X)表示的玩意兒，不過Hash函式有一個特性，<strong>Hash是單向的，我們無法透過結果去反推斷讀入的參數</strong>，即是說 H(A) = B，如果我們只給你B，是無法透過運算反推代入參數為A的。</p>
@@ -167,8 +167,22 @@
 <p>2.HMAC</p>
 <p>HashMAC就是用Hash來進行驗證，市面上常見的MD5即是如此。</p>
 <p>HMAC的原理很簡單，我們有相同訊息，相同Hash算法，那麼對一份相同的明文，Hash出來的東西就該相同。</p>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">傳送方</span><br><span class="line">假設我們要輸送一份訊息 <span class="keyword">M</span> = ＂HelloWorld＂給接收方</span><br><span class="line">	- 1. 在傳送端進行Hash : <span class="literal">H</span>(<span class="keyword">M</span>)</span><br><span class="line">    - 2. 將Hash的結果儲存為認證戳記 T = <span class="literal">H</span>(<span class="keyword">M</span>)</span><br><span class="line">    - 3. 將T與<span class="keyword">M</span>一起送至接收方</span><br></pre></td></tr></table></figure>
-<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">接收方</span><br><span class="line">我們現在收到了 M' 與 T'，因為不曉得改過沒有所以加了'</span><br><span class="line">	-<span class="ruby"> <span class="number">1</span>. 對 <span class="constant">M</span><span class="string">' 進行 Hash : H(M'</span>)</span><br><span class="line"></span>	-<span class="ruby"> <span class="number">2</span>. 將<span class="constant">Hash</span>的結果儲存為 <span class="constant">T</span><span class="string">''</span></span><br><span class="line"></span>	-<span class="ruby"> <span class="number">3</span>. 驗證 <span class="constant">T</span><span class="string">' 是否等於 T'</span><span class="string">'</span><br><span class="line"></span></span>	-<span class="ruby"><span class="string"> 4. if(T'</span>==<span class="constant">T</span><span class="string">''</span>) -&gt; <span class="constant">M</span> == <span class="constant">M</span><span class="string">'</span></span></span><br></pre></td></tr></table></figure>
+<pre>傳送方
+假設我們要輸送一份訊息 M = ＂HelloWorld＂給接收方
+
+1. 在傳送端進行Hash : H(M)
+2. 將Hash的結果儲存為認證戳記 T = H(M)
+3. 將T與M一起送至接收方</pre>
+
+<pre>接收方
+我們現在收到了 M' 與 T'，因為不曉得改過沒有所以加了'
+
+1. 對 M' 進行 Hash : H(M')
+2. 將Hash的結果儲存為 T''
+3. 驗證 T' 是否等於 T''
+4. if(T'==T'') -> M == M'</pre>
+
+
 <p>或許你會有個小疑問，如果說我有能力更改 M’，那我應該也能更動 T’，然而這麼做的前提是必須持有 H(X) 與原訊息才行。</p>
 <hr>
 <h2 id="數位簽章">數位簽章</h2><p>雖然叫做簽章，不過這跟紙筆一點關係也沒有，它是一種用來<em>辨別身分的加密型式</em>，嚴格來說，數位簽章是以數學演算法或其他運算方式，對要簽署的文件進行加密，所產生的結果。</p>
@@ -188,8 +202,8 @@
 <li>比對 h’ 與 h’’ 的關聯性</li>
 <li>傳送者的<strong>身分</strong>獲得認證</li>
 </ul>
-<p>之前MAC辨識的是文件，簽章雖然也會辨識文件(透過比對Hash摘要)，不過最主要的是<strong>辨識傳送者的身分</strong>，這也是為何在過程中還多加上了加密與解密，好比說收到了一份報告書，就算內容看了幾千遍、幾萬遍，你還是不知道這份報告是打哪來的，要看就得看寄件人是誰。而在數位簽章，我們用寄件人的鑰匙把它跟寄件人扯上關係。</p>
-<p>這邊有一個重點，<strong>加密與解密用的金鑰是不同的，加密用的是私鑰，解密用的是公鑰</strong>，即是非對稱式金鑰系統。</p>
+<p>目前看來，這些流程與MAC相當近似，但細節上略有不同。比如在資料處理上，MAC考慮的是這份文件到底有沒有被動過，而不在乎文件本身，所以MAC會破壞資料儲存結構，產出一個固定長度的驗證碼，比如MD5就是吃進一個不定長度的文件，把文件擠壓抽取成128位元（16位元組）的散列值，而數位簽章則會保存文件與憑證，你該知道這是我簽的，也該知道我簽了些什麼。</p>
+<p>此外，數位簽章與MAC最大的差異在於<strong>金鑰系統</strong>，MAC採用對稱式，而簽章是非對稱式，也就是說，<strong>數位簽章加密與解密用的金鑰是不同的，加密用的是私鑰，解密用的是公鑰</strong>，即是非對稱式金鑰系統。</p>
 <p>讓我們先回歸簽章的目的，它要能：</p>
 <ul>
 <li>驗證<ul>
@@ -299,7 +313,21 @@
 		<ul>
 		
 		  
+		
+		  
+		
+		  
+		
+		  
 			<li><a href="/categories/程式語言/" title="程式語言">程式語言<sup>1</sup></a></li>
+		  
+		
+		  
+		
+		  
+		
+		  
+		
 		  
 		
 		  
