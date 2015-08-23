@@ -43,7 +43,7 @@
 <meta property="og:image" content="https://lh3.googleusercontent.com/uGotHGCNaNSnknU-0ecQ2XXm7Em8y8iGOA9tce2xNbY=w1143-h577-no">
 <meta property="og:image" content="https://lh3.googleusercontent.com/ROJ40m32HUa83UekOJzeOKM9Y6PiyXtD9bUGV-OxjRA=w1143-h572-no">
 <meta property="og:image" content="https://lh3.googleusercontent.com/192-qOycchKGnjmb31-BGDuO2ayVYE9oER0uynFqXzU=w954-h509-no">
-<meta property="og:updated_time" content="2015-08-15T07:00:12.000Z">
+<meta property="og:updated_time" content="2015-08-18T02:02:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="訊息鑑別技術">
 <meta name="twitter:description" content="什麼是訊息鑑別技術？顧名思義，我們是在識別文件，不過比起去深究文章內涵與背景故事，我們通常會更關心這三件事：
@@ -80,7 +80,7 @@
 				<h1 class="site-name"><a href="/" title="雷德麥的藏書閣">雷德麥的藏書閣</a></h1>
 				<h2 class="blog-motto"></h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -98,7 +98,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:zake7749.github.io">
 					</form>
 					
@@ -121,7 +121,7 @@
 		<a href="https://plus.google.com/110210184472476277760?rel=author" title="Justin Yang" target="_blank" itemprop="author">Justin Yang</a>
 		
   <p class="article-time">
-    <time datetime="2015-08-06T03:18:44.000Z" itemprop="datePublished"> 發表於 2015-08-06</time>
+    <time datetime="2015-08-06T03:18:44.000Z" itemprop="datePublished"> Published 2015-08-06</time>
     
   </p>
 </header>
@@ -203,6 +203,7 @@
 <li>傳送者的<strong>身分</strong>獲得認證</li>
 </ul>
 <p>目前看來，這些流程與MAC相當近似，但細節上略有不同。比如在資料處理上，MAC考慮的是這份文件到底有沒有被動過，而不在乎文件本身，所以MAC會破壞資料儲存結構，產出一個固定長度的驗證碼，比如MD5就是吃進一個不定長度的文件，把文件擠壓抽取成128位元（16位元組）的散列值，而數位簽章則會保存文件與憑證，你該知道這是我簽的，也該知道我簽了些什麼。</p>
+<p>不同之處還有MAC與簽章的協定方式：MAC是由傳送方跟接收方約定而成，建立一個除錯碼以及演算出除錯碼的方式，接收方在獲得密文後再行驗證。不過數位簽章無法這麼做，因為它是對外公開的，我們無法去約束對方怎麼簽，但能肯定的是，這份簽章只有他簽它的出來。</p>
 <p>此外，數位簽章與MAC最大的差異在於<strong>金鑰系統</strong>，MAC採用對稱式，而簽章是非對稱式，也就是說，<strong>數位簽章加密與解密用的金鑰是不同的，加密用的是私鑰，解密用的是公鑰</strong>，即是非對稱式金鑰系統。</p>
 <p>讓我們先回歸簽章的目的，它要能：</p>
 <ul>
@@ -301,15 +302,15 @@
 	
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
 <aside class="clearfix">
 
   
 <div class="categorieslist">
-	<p class="asidetitle">分類</p>
+	<p class="asidetitle">Categories</p>
 		<ul>
 		
 		  
@@ -326,7 +327,7 @@
 
   
 <div class="tagslist">
-	<p class="asidetitle">標簽</p>
+	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
@@ -355,7 +356,7 @@
 
   
   <div class="tagcloudlist">
-    <p class="asidetitle">標簽雲</p>
+    <p class="asidetitle">Tag Cloud</p>
     <div class="tagcloudlist clearfix">
        <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/密碼學/" style="font-size: 10px;">密碼學</a> <a href="/tags/訊息鑑別/" style="font-size: 10px;">訊息鑑別</a> <a href="/tags/資訊安全/" style="font-size: 20px;">資訊安全</a>
     </div>
@@ -364,7 +365,7 @@
 
   
   <div class="archiveslist">
-    <p class="asidetitle"><a href="/archives">歸檔</a></p>
+    <p class="asidetitle"><a href="/archives">Archives</a></p>
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li></ul>
   </div>
 
@@ -405,7 +406,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and <a href="https://pages.github.com/">GitPage</a>. This theme is modified from <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and <a href="https://pages.github.com/">GitPage</a>. Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
 		
 		<a href="/about" target="_blank" title="Justin Yang">Justin Yang</a>
 		
@@ -581,7 +582,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
