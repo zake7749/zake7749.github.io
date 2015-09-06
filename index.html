@@ -32,6 +32,7 @@
     
     
     <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <script type="text/javascript">var _jf = _jf || [];_jf.push(['p','35141']);_jf.push(['_setFont','ipamjm','css','.ipamjm']);_jf.push(['_setFont','ipamjm','alias','ipamjm']);_jf.push(['_setFont','ipamjm','weight',400]);_jf.push(['_setFont','sourcehansans-tc-normal','css','.sourcehansans-tc-normal']);_jf.push(['_setFont','sourcehansans-tc-normal','alias','sourcehansans-tc']);_jf.push(['_setFont','sourcehansans-tc-normal','weight',300]);(function(f,q,c,h,e,i,r,d){var k=f._jf;if(k.constructor===Object){return}var l,t=q.getElementsByTagName("html")[0],a=function(u){for(var v in k){if(k[v][0]==u){if(false===k[v][1].call(k)){break}}}},j=/\S+/g,o=/[\t\r\n\f]/g,b=/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,g="".trim,s=g&&!g.call("\uFEFF\xA0")?function(u){return u==null?"":g.call(u)}:function(u){return u==null?"":(u+"").replace(b,"")},m=function(y){var w,z,v,u,x=typeof y==="string"&&y;if(x){w=(y||"").match(j)||[];z=t[c]?(" "+t[c]+" ").replace(o," "):" ";if(z){u=0;while((v=w[u++])){if(z.indexOf(" "+v+" ")<0){z+=v+" "}}t[c]=s(z)}}},p=function(y){var w,z,v,u,x=arguments.length===0||typeof y==="string"&&y;if(x){w=(y||"").match(j)||[];z=t[c]?(" "+t[c]+" ").replace(o," "):"";if(z){u=0;while((v=w[u++])){while(z.indexOf(" "+v+" ")>=0){z=z.replace(" "+v+" "," ")}}t[c]=y?s(z):""}}},n;k.push(["_eventActived",function(){p(h);m(e)}]);k.push(["_eventInactived",function(){p(h);m(i)}]);k.addScript=n=function(u,A,w,C,E,B){E=E||function(){};B=B||function(){};var x=q.createElement("script"),z=q.getElementsByTagName("script")[0],v,y=false,D=function(){x.src="";x.onerror=x.onload=x.onreadystatechange=null;x.parentNode.removeChild(x);x=null;a("_eventInactived");B()};if(C){v=setTimeout(function(){D()},C)}x.type=A||"text/javascript";x.async=w;x.onload=x.onreadystatechange=function(G,F){if(!y&&(!x.readyState||/loaded|complete/.test(x.readyState))){y=true;if(C){clearTimeout(v)}x.src="";x.onerror=x.onload=x.onreadystatechange=null;x.parentNode.removeChild(x);x=null;if(!F){setTimeout(function(){E()},200)}}};x.onerror=function(H,G,F){if(C){clearTimeout(v)}D();return true};x.src=u;z.parentNode.insertBefore(x,z)};a("_eventPreload");m(h);n(r,"text/javascript",false,3000)})(this,this.document,"className","jf-loading","jf-active","jf-inactive","//ds.justfont.com/js/stable/v/4.9.4/id/136909586106");</script>
 </head>
 
   <body>
@@ -74,7 +75,69 @@
       <div id="main">
 
 	<div class = "headmeta">
-	<time class="datetime" datetime="2015-08-13T08:44:09.000Z" itemprop="datePublished">2015-08-13</time><a class="cat-link" href="/categories/程式語言/">程式語言</a>
+	<time class="datetime" datetime="2015-08-15T12:03:07.000Z" itemprop="datePublished">2015-08-15</time><a class="cat-link" href="/categories/資訊安全/">資訊安全</a>
+  	</div>
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/08/15/classical_cipher/" title="古典密碼學" itemprop="url">古典密碼學</a>
+  </h1>
+</header>
+    <div class="article-content">
+        
+        <blockquote>
+<p>古典密碼學已經被電腦打爆了，但這跟它重不重要一點關係都沒有。<br>── 我的資安導師總是這樣嘮叨著……</p>
+</blockquote>
+<p>最近重新改寫以前的<a href="http://sogacsie.blogspot.tw/">Blog</a>，終於理解這句話的意涵。舉凡近代加密演算法，多為古典密碼學<strong>手段</strong>的組合，只不過以前人力與能力都不及。</p>
+<p>比方說你不會想把16個字母放進一個矩陣中，每個查表代換10次，再每行平移幾個單位，然後各別乘上一個矩陣，最後再和別的矩陣做XOR邏輯判斷。</p>
+<p><em>Welcome to modern cryptography</em></p>
+<p>一個正常人不會想用紙筆來圈圈畫畫這些詭異的流程。不過若將這些細項拆開來看，就不會覺得那麼艱澀。平移對應到移項式密碼，代換跟替換式密碼有關，矩陣運算則是來自希爾密碼，XOR就比較特別了些，但兩無關序列間的運算，可讓人追溯至維吉尼亞密碼的金鑰概念，這些都屬於古典加密的範疇。所以若想踏入近代密碼的殿堂，古典密碼當為一個必經的前哨站。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2015/08/15/classical_cipher/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/資訊安全/">資訊安全</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/密碼學/">密碼學</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+	<div class = "headmeta">
+	<time class="datetime" datetime="2015-08-13T08:44:09.000Z" itemprop="datePublished">2015-08-13</time><a class="cat-link" href="/categories/程式語言/">程式語言</a><a class="cat-link" href="/categories/程式語言/C/">C</a>
   	</div>
    
     
@@ -87,7 +150,7 @@
 </header>
     <div class="article-content">
         
-        <h2 id="前置處理器是什麼來著？">前置處理器是什麼來著？</h2><p>前置處理器 = 進行「前置處理」的文字編輯器。</p>
+        <p>前置處理器 = 進行「前置處理」的文字編輯器。</p>
 <p>或許我們得先解決什麼是「前置處理」。<br>若從說文解字的角度出發，它做的是某件工作的事前處理，好比揮毫前準備紙墨，考試前翻完(?)參考書，準備與熟讀分別是這兩件任務的前置處理。在C和C++中，我們指的是進行<strong>編譯前</strong>的處理工作，大致上可分為：</p>
 <ul>
 <li>引入標頭檔(Header file)</li>
@@ -97,7 +160,7 @@
 </ul>
 </li>
 </ul>
-<p>具體來說，在程式中前有 <code>#</code> 的部分就涉及了前置處理，比如<code>#define</code>、<code>#Pragma</code>與<code>#include</code>等等。</p>
+<p>具體而言，在程式中前有 <code>#</code> 的部分就涉及了前置處理，比如<code>#define</code>、<code>#Pragma</code>與<code>#include</code>等等。</p>
 <p>要注意，前置處理器並不屬於C編譯器的一部分，它也不了解C家族的語法，如果你用C的觀點來審視它可能會碰上大麻煩。<br>
         
         
@@ -112,7 +175,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/程式語言/">程式語言</a>
+  <a class="article-category-link" href="/categories/程式語言/">程式語言</a>►<a class="article-category-link" href="/categories/程式語言/C/">C</a>
 </div>
 
 
@@ -193,69 +256,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/訊息鑑別/">訊息鑑別</a><a href="/tags/資訊安全/">資訊安全</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-	<div class = "headmeta">
-	<time class="datetime" datetime="2015-08-05T12:03:07.000Z" itemprop="datePublished">2015-08-05</time><a class="cat-link" href="/categories/資訊安全/">資訊安全</a>
-  	</div>
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/08/05/classical_cipher/" title="古典密碼學" itemprop="url">古典密碼學</a>
-  </h1>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<p>古典密碼學已經被電腦打爆了，但這跟它重不重要一點關係都沒有。<br>── 我的資安導師總是這樣嘮叨著……</p>
-</blockquote>
-<p>最近重新改寫以前的<a href="http://sogacsie.blogspot.tw/">Blog</a>，終於理解這句話的意涵。舉凡近代加密演算法，多為古典密碼學<strong>手段</strong>的組合，只不過以前人力與能力都不及。</p>
-<p>比方說你不會想把16個字母放進一個矩陣中，每個查表代換10次，再每行平移幾個單位，然後各別乘上一個矩陣，最後再和別的矩陣做XOR邏輯判斷。</p>
-<p><em>Welcome to modern cryptography</em></p>
-<p>這也太累了！你不會想用紙筆來圈圈畫畫這些詭異的流程。不過若將這些細項拆開來看，就不會覺得那麼艱澀。諸如代換啦、矩陣運算、平移等等，其實都是古典密碼學各別的手段，透過熟悉它們，或許對當代密碼學的理解也有所助益，甚至能激起新算法的開發靈感唷。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/08/05/classical_cipher/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/資訊安全/">資訊安全</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/密碼學/">密碼學</a><a href="/tags/資訊安全/">資訊安全</a>
+  <span></span> <a href="/tags/訊息鑑別/">訊息鑑別</a>
   </div>
 
 </div>
@@ -396,41 +397,26 @@
 
 
 </div>
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊攔"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊攔"></a></div>
 <aside class="clearfix">
 
   
-<div class="categorieslist">
-	<p class="asidetitle">Categories</p>
-		<ul>
-		
-		  
-			<li><a href="/categories/程式語言/" title="程式語言">程式語言<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/資訊安全/" title="資訊安全">資訊安全<sup>2</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/遊戲設計/" title="遊戲設計">遊戲設計<sup>2</sup></a></li>
-		  
-		
-		</ul>
-</div>
+  <div class="categorieslist">
+    <p class="asidetitle">Categories</p>
+    <div class="widget">
+    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/">程式語言</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/C/">C</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/資訊安全/">資訊安全</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/遊戲設計/">遊戲設計</a><span class="category-list-count">2</span></li></ul>
+    </div>
+  </div>
+
 
 
   
 <div class="tagslist">
 	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
-		
-			
-				<li><a href="/tags/資訊安全/" title="資訊安全">資訊安全<sup>2</sup></a></li>
-			
 		
 			
 				<li><a href="/tags/遊戲設計/" title="遊戲設計">遊戲設計<sup>2</sup></a></li>
@@ -464,7 +450,7 @@
   <div class="tagcloudlist">
     <p class="asidetitle">Tag Cloud</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/密碼學/" style="font-size: 10px;">密碼學</a> <a href="/tags/演講摘記/" style="font-size: 20px;">演講摘記</a> <a href="/tags/訊息鑑別/" style="font-size: 10px;">訊息鑑別</a> <a href="/tags/資訊安全/" style="font-size: 20px;">資訊安全</a> <a href="/tags/遊戲設計/" style="font-size: 20px;">遊戲設計</a>
+       <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/密碼學/" style="font-size: 10px;">密碼學</a> <a href="/tags/演講摘記/" style="font-size: 20px;">演講摘記</a> <a href="/tags/訊息鑑別/" style="font-size: 10px;">訊息鑑別</a> <a href="/tags/遊戲設計/" style="font-size: 20px;">遊戲設計</a>
     </div>
   </div>
 

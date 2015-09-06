@@ -11,34 +11,46 @@
     
 
     
-    <meta name="description" content="前置處理器是什麼來著？前置處理器 = 進行「前置處理」的文字編輯器。
+    <meta name="description" content="前置處理器 = 進行「前置處理」的文字編輯器。
 或許我們得先解決什麼是「前置處理」。若從說文解字的角度出發，它做的是某件工作的事前處理，好比揮毫前準備紙墨，考試前翻完(?)參考書，準備與熟讀分別是這兩件任務的前置處理。在C和C++中，我們指的是進行編譯前的處理工作，大致上可分為：
 
 引入標頭檔(Header file)
 進行文字的取代
 巨集、常數的定義……
-條件式編譯">
+條件式編譯
+
+
+
+具體而言，在程式中前有">
 <meta property="og:type" content="article">
 <meta property="og:title" content="前置處理器 - C&C++">
 <meta property="og:url" content="http://zake7749.github.io/2015/08/13/Cpreprocessor/index.html">
 <meta property="og:site_name" content="雷德麥的藏書閣">
-<meta property="og:description" content="前置處理器是什麼來著？前置處理器 = 進行「前置處理」的文字編輯器。
+<meta property="og:description" content="前置處理器 = 進行「前置處理」的文字編輯器。
 或許我們得先解決什麼是「前置處理」。若從說文解字的角度出發，它做的是某件工作的事前處理，好比揮毫前準備紙墨，考試前翻完(?)參考書，準備與熟讀分別是這兩件任務的前置處理。在C和C++中，我們指的是進行編譯前的處理工作，大致上可分為：
 
 引入標頭檔(Header file)
 進行文字的取代
 巨集、常數的定義……
-條件式編譯">
-<meta property="og:updated_time" content="2015-08-26T08:11:02.000Z">
+條件式編譯
+
+
+
+具體而言，在程式中前有">
+<meta property="og:updated_time" content="2015-09-06T15:01:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前置處理器 - C&C++">
-<meta name="twitter:description" content="前置處理器是什麼來著？前置處理器 = 進行「前置處理」的文字編輯器。
+<meta name="twitter:description" content="前置處理器 = 進行「前置處理」的文字編輯器。
 或許我們得先解決什麼是「前置處理」。若從說文解字的角度出發，它做的是某件工作的事前處理，好比揮毫前準備紙墨，考試前翻完(?)參考書，準備與熟讀分別是這兩件任務的前置處理。在C和C++中，我們指的是進行編譯前的處理工作，大致上可分為：
 
 引入標頭檔(Header file)
 進行文字的取代
 巨集、常數的定義……
-條件式編譯">
+條件式編譯
+
+
+
+具體而言，在程式中前有">
 <link rel="publisher" href="110210184472476277760">
 
     
@@ -51,6 +63,7 @@
     
     
     <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <script type="text/javascript">var _jf = _jf || [];_jf.push(['p','35141']);_jf.push(['_setFont','ipamjm','css','.ipamjm']);_jf.push(['_setFont','ipamjm','alias','ipamjm']);_jf.push(['_setFont','ipamjm','weight',400]);_jf.push(['_setFont','sourcehansans-tc-normal','css','.sourcehansans-tc-normal']);_jf.push(['_setFont','sourcehansans-tc-normal','alias','sourcehansans-tc']);_jf.push(['_setFont','sourcehansans-tc-normal','weight',300]);(function(f,q,c,h,e,i,r,d){var k=f._jf;if(k.constructor===Object){return}var l,t=q.getElementsByTagName("html")[0],a=function(u){for(var v in k){if(k[v][0]==u){if(false===k[v][1].call(k)){break}}}},j=/\S+/g,o=/[\t\r\n\f]/g,b=/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,g="".trim,s=g&&!g.call("\uFEFF\xA0")?function(u){return u==null?"":g.call(u)}:function(u){return u==null?"":(u+"").replace(b,"")},m=function(y){var w,z,v,u,x=typeof y==="string"&&y;if(x){w=(y||"").match(j)||[];z=t[c]?(" "+t[c]+" ").replace(o," "):" ";if(z){u=0;while((v=w[u++])){if(z.indexOf(" "+v+" ")<0){z+=v+" "}}t[c]=s(z)}}},p=function(y){var w,z,v,u,x=arguments.length===0||typeof y==="string"&&y;if(x){w=(y||"").match(j)||[];z=t[c]?(" "+t[c]+" ").replace(o," "):"";if(z){u=0;while((v=w[u++])){while(z.indexOf(" "+v+" ")>=0){z=z.replace(" "+v+" "," ")}}t[c]=y?s(z):""}}},n;k.push(["_eventActived",function(){p(h);m(e)}]);k.push(["_eventInactived",function(){p(h);m(i)}]);k.addScript=n=function(u,A,w,C,E,B){E=E||function(){};B=B||function(){};var x=q.createElement("script"),z=q.getElementsByTagName("script")[0],v,y=false,D=function(){x.src="";x.onerror=x.onload=x.onreadystatechange=null;x.parentNode.removeChild(x);x=null;a("_eventInactived");B()};if(C){v=setTimeout(function(){D()},C)}x.type=A||"text/javascript";x.async=w;x.onload=x.onreadystatechange=function(G,F){if(!y&&(!x.readyState||/loaded|complete/.test(x.readyState))){y=true;if(C){clearTimeout(v)}x.src="";x.onerror=x.onload=x.onreadystatechange=null;x.parentNode.removeChild(x);x=null;if(!F){setTimeout(function(){E()},200)}}};x.onerror=function(H,G,F){if(C){clearTimeout(v)}D();return true};x.src=u;z.parentNode.insertBefore(x,z)};a("_eventPreload");m(h);n(r,"text/javascript",false,3000)})(this,this.document,"className","jf-loading","jf-active","jf-inactive","//ds.justfont.com/js/stable/v/4.9.4/id/136909586106");</script>
 </head>
 
   <body>
@@ -101,7 +114,7 @@
 </header>
 	<div class="article-content">
 		
-		<h2 id="前置處理器是什麼來著？">前置處理器是什麼來著？</h2><p>前置處理器 = 進行「前置處理」的文字編輯器。</p>
+		<p>前置處理器 = 進行「前置處理」的文字編輯器。</p>
 <p>或許我們得先解決什麼是「前置處理」。<br>若從說文解字的角度出發，它做的是某件工作的事前處理，好比揮毫前準備紙墨，考試前翻完(?)參考書，準備與熟讀分別是這兩件任務的前置處理。在C和C++中，我們指的是進行<strong>編譯前</strong>的處理工作，大致上可分為：</p>
 <ul>
 <li>引入標頭檔(Header file)</li>
@@ -111,11 +124,11 @@
 </ul>
 </li>
 </ul>
-<p>具體來說，在程式中前有 <code>#</code> 的部分就涉及了前置處理，比如<code>#define</code>、<code>#Pragma</code>與<code>#include</code>等等。</p>
+<p>具體而言，在程式中前有 <code>#</code> 的部分就涉及了前置處理，比如<code>#define</code>、<code>#Pragma</code>與<code>#include</code>等等。</p>
 <p>要注意，前置處理器並不屬於C編譯器的一部分，它也不了解C家族的語法，如果你用C的觀點來審視它可能會碰上大麻煩。<br><a id="more"></a></p>
 <h2 id="一些常見的用法">一些常見的用法</h2><h3 id="include">include</h3><p><code>#include</code>用於引入外部的標頭檔：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Hello World!"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>便引入stdio.h，並明確的宣告(explicit declaration)了printf，並放入目前的程式中，所以我們能使用標準輸出的printf函式，而不必自己實作它的細節。</p>
-<p>順代一提，若你用的不是C++的編譯器而是C的編譯器，即使沒有引入對應的標頭檔，編譯器仍會建立一個隱性宣告(implicit declaration)，在聯結至標準函式庫時，若湊巧在庫中發現了一個同名的函式，便會把它們聯結在一塊兒，編譯時便不會跳出Error而是報Warning，比如：</p>
+<p>順代一提，若你用是C的編譯器而非C++的編譯器，即使沒有引入對應的標頭檔，編譯器仍會為函式建立一個隱性宣告(implicit declaration)，聯結至標準函式庫時，若湊巧在庫中發現了一個同名的函式，便會把它們聯結在一塊兒，編譯時便不會跳出Error而是報Warning，比如：</p>
 <blockquote>
 <p>waring: incompatible implicit declaration of built-in function ‘printf’</p>
 </blockquote>
@@ -152,7 +165,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/程式語言/">程式語言</a>
+  <a class="article-category-link" href="/categories/程式語言/">程式語言</a>►<a class="article-category-link" href="/categories/程式語言/C/">C</a>
 </div>
 
 
@@ -180,6 +193,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2015/08/15/classical_cipher/" title="古典密碼學">
+  <strong>上一篇：</strong><br/>
+  <span>
+  古典密碼學</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2015/08/06/message_auth/"  title="訊息鑑別技術">
@@ -194,41 +215,26 @@
 	
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊攔"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊攔"></a></div>
 <aside class="clearfix">
 
   
-<div class="categorieslist">
-	<p class="asidetitle">Categories</p>
-		<ul>
-		
-		  
-			<li><a href="/categories/程式語言/" title="程式語言">程式語言<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/資訊安全/" title="資訊安全">資訊安全<sup>2</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/遊戲設計/" title="遊戲設計">遊戲設計<sup>2</sup></a></li>
-		  
-		
-		</ul>
-</div>
+  <div class="categorieslist">
+    <p class="asidetitle">Categories</p>
+    <div class="widget">
+    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/">程式語言</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/C/">C</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/資訊安全/">資訊安全</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/遊戲設計/">遊戲設計</a><span class="category-list-count">2</span></li></ul>
+    </div>
+  </div>
+
 
 
   
 <div class="tagslist">
 	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
-		
-			
-				<li><a href="/tags/資訊安全/" title="資訊安全">資訊安全<sup>2</sup></a></li>
-			
 		
 			
 				<li><a href="/tags/遊戲設計/" title="遊戲設計">遊戲設計<sup>2</sup></a></li>
@@ -262,7 +268,7 @@
   <div class="tagcloudlist">
     <p class="asidetitle">Tag Cloud</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/密碼學/" style="font-size: 10px;">密碼學</a> <a href="/tags/演講摘記/" style="font-size: 20px;">演講摘記</a> <a href="/tags/訊息鑑別/" style="font-size: 10px;">訊息鑑別</a> <a href="/tags/資訊安全/" style="font-size: 20px;">資訊安全</a> <a href="/tags/遊戲設計/" style="font-size: 20px;">遊戲設計</a>
+       <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/密碼學/" style="font-size: 10px;">密碼學</a> <a href="/tags/演講摘記/" style="font-size: 20px;">演講摘記</a> <a href="/tags/訊息鑑別/" style="font-size: 10px;">訊息鑑別</a> <a href="/tags/遊戲設計/" style="font-size: 20px;">遊戲設計</a>
     </div>
   </div>
 

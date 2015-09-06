@@ -18,7 +18,7 @@
 Welcome to modern">
 <meta property="og:type" content="article">
 <meta property="og:title" content="古典密碼學">
-<meta property="og:url" content="http://zake7749.github.io/2015/08/05/classical_cipher/index.html">
+<meta property="og:url" content="http://zake7749.github.io/2015/08/15/classical_cipher/index.html">
 <meta property="og:site_name" content="雷德麥的藏書閣">
 <meta property="og:description" content="古典密碼學已經被電腦打爆了，但這跟它重不重要一點關係都沒有。── 我的資安導師總是這樣嘮叨著……
 
@@ -30,7 +30,7 @@ Welcome to modern">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/4/41/English-slf.png">
 <meta property="og:image" content="http://1.bp.blogspot.com/-CLC48A92h_w/VJFiTQvAhCI/AAAAAAAAAQk/XOSwXGlgeho/s1600/hILL%2BCIPHER.png">
 <meta property="og:image" content="https://3.bp.blogspot.com/-DwYbQG7U6u0/VGWGDLIZM-I/AAAAAAAAAMM/tXsTlLvCw14/s400/300px-Vigene%CC%80re_square.svg.png">
-<meta property="og:updated_time" content="2015-08-17T15:20:49.000Z">
+<meta property="og:updated_time" content="2015-09-06T15:48:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="古典密碼學">
 <meta name="twitter:description" content="古典密碼學已經被電腦打爆了，但這跟它重不重要一點關係都沒有。── 我的資安導師總是這樣嘮叨著……
@@ -50,6 +50,7 @@ Welcome to modern">
     
     
     <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <script type="text/javascript">var _jf = _jf || [];_jf.push(['p','35141']);_jf.push(['_setFont','ipamjm','css','.ipamjm']);_jf.push(['_setFont','ipamjm','alias','ipamjm']);_jf.push(['_setFont','ipamjm','weight',400]);_jf.push(['_setFont','sourcehansans-tc-normal','css','.sourcehansans-tc-normal']);_jf.push(['_setFont','sourcehansans-tc-normal','alias','sourcehansans-tc']);_jf.push(['_setFont','sourcehansans-tc-normal','weight',300]);(function(f,q,c,h,e,i,r,d){var k=f._jf;if(k.constructor===Object){return}var l,t=q.getElementsByTagName("html")[0],a=function(u){for(var v in k){if(k[v][0]==u){if(false===k[v][1].call(k)){break}}}},j=/\S+/g,o=/[\t\r\n\f]/g,b=/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,g="".trim,s=g&&!g.call("\uFEFF\xA0")?function(u){return u==null?"":g.call(u)}:function(u){return u==null?"":(u+"").replace(b,"")},m=function(y){var w,z,v,u,x=typeof y==="string"&&y;if(x){w=(y||"").match(j)||[];z=t[c]?(" "+t[c]+" ").replace(o," "):" ";if(z){u=0;while((v=w[u++])){if(z.indexOf(" "+v+" ")<0){z+=v+" "}}t[c]=s(z)}}},p=function(y){var w,z,v,u,x=arguments.length===0||typeof y==="string"&&y;if(x){w=(y||"").match(j)||[];z=t[c]?(" "+t[c]+" ").replace(o," "):"";if(z){u=0;while((v=w[u++])){while(z.indexOf(" "+v+" ")>=0){z=z.replace(" "+v+" "," ")}}t[c]=y?s(z):""}}},n;k.push(["_eventActived",function(){p(h);m(e)}]);k.push(["_eventInactived",function(){p(h);m(i)}]);k.addScript=n=function(u,A,w,C,E,B){E=E||function(){};B=B||function(){};var x=q.createElement("script"),z=q.getElementsByTagName("script")[0],v,y=false,D=function(){x.src="";x.onerror=x.onload=x.onreadystatechange=null;x.parentNode.removeChild(x);x=null;a("_eventInactived");B()};if(C){v=setTimeout(function(){D()},C)}x.type=A||"text/javascript";x.async=w;x.onload=x.onreadystatechange=function(G,F){if(!y&&(!x.readyState||/loaded|complete/.test(x.readyState))){y=true;if(C){clearTimeout(v)}x.src="";x.onerror=x.onload=x.onreadystatechange=null;x.parentNode.removeChild(x);x=null;if(!F){setTimeout(function(){E()},200)}}};x.onerror=function(H,G,F){if(C){clearTimeout(v)}D();return true};x.src=u;z.parentNode.insertBefore(x,z)};a("_eventPreload");m(h);n(r,"text/javascript",false,3000)})(this,this.document,"className","jf-loading","jf-active","jf-inactive","//ds.justfont.com/js/stable/v/4.9.4/id/136909586106");</script>
 </head>
 
   <body>
@@ -95,7 +96,7 @@ Welcome to modern">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/08/05/classical_cipher/" title="古典密碼學" itemprop="url">古典密碼學</a>
+      <a href="/2015/08/15/classical_cipher/" title="古典密碼學" itemprop="url">古典密碼學</a>
   </h1>
 </header>
 	<div class="article-content">
@@ -106,14 +107,25 @@ Welcome to modern">
 <p>最近重新改寫以前的<a href="http://sogacsie.blogspot.tw/" target="_blank" rel="external">Blog</a>，終於理解這句話的意涵。舉凡近代加密演算法，多為古典密碼學<strong>手段</strong>的組合，只不過以前人力與能力都不及。</p>
 <p>比方說你不會想把16個字母放進一個矩陣中，每個查表代換10次，再每行平移幾個單位，然後各別乘上一個矩陣，最後再和別的矩陣做XOR邏輯判斷。</p>
 <p><em>Welcome to modern cryptography</em></p>
-<p>這也太累了！你不會想用紙筆來圈圈畫畫這些詭異的流程。不過若將這些細項拆開來看，就不會覺得那麼艱澀。諸如代換啦、矩陣運算、平移等等，其實都是古典密碼學各別的手段，透過熟悉它們，或許對當代密碼學的理解也有所助益，甚至能激起新算法的開發靈感唷。</p>
+<p>一個正常人不會想用紙筆來圈圈畫畫這些詭異的流程。不過若將這些細項拆開來看，就不會覺得那麼艱澀。平移對應到移項式密碼，代換跟替換式密碼有關，矩陣運算則是來自希爾密碼，XOR就比較特別了些，但兩無關序列間的運算，可讓人追溯至維吉尼亞密碼的金鑰概念，這些都屬於古典加密的範疇。所以若想踏入近代密碼的殿堂，古典密碼當為一個必經的前哨站。</p>
 <a id="more"></a>
-<p>相較古文，追加了攻擊類型的紀錄，或許他不該包含於古典密碼學，但是對於初入資訊領域的生手而言，這應該會是相當重要的概念。</p>
+<p>相較古文，追加了攻擊類型的紀錄，或許其不該包含於古典密碼學，但是對於初入資訊領域的生手而言，這應該會是相當重要的概念。</p>
 <hr>
 <h2 id="基本概念">基本概念</h2><h4 id="明文_(Plain_text)">明文 (Plain text)</h4><p>即是要加密的內容，不過，文不一定單指文字，也包含了圖片、音樂、各式各樣的檔案都可以當作明文。又因為明文的單字為Plain text，在密碼學上，我們常常用大寫字母<code>P</code>來表示它。</p>
 <h4 id="密文_(Cipher_text)">密文 (Cipher text)</h4><p>呃…顧名思義，加密後的結果，跟明文一樣能有很多種型式，<a href="https://code.google.com/p/corkami/source/detail?r=1906" target="_blank" rel="external">比方可以把圖片加密成另一張圖片</a>。因為單字是Cipher text，所以用<code>C</code>來表示它。</p>
-<h4 id="加密算法">加密算法</h4><p>它會吃進明文吐出密文，接下來的重頭戲。</p>
 <h4 id="金鑰">金鑰</h4><p>有些加密算法會有的另一個參數，當然它也不是真的鑰匙，可能為一組文字序列，演算法把它和明文做處理後產出密文。</p>
+<h4 id="絕對安全">絕對安全</h4><p>若我們說一個演算法是絕對安全的，代表即便有無限的時間、無限的資源，也沒辦法靠蠻力破解該算法。</p>
+<h4 id="計算安全">計算安全</h4><p>若我們說一個演算法是計算安全的，則是說靠蠻力攻擊，我們確實能破解這個算法，不過得付出極為大量的時間。</p>
+<h4 id="加密算法">加密算法</h4><p>它會吃進明文吐出密文，接下來的重頭戲。</p>
+<p>一個好的加密算法應至少具備這兩項條件：</p>
+<ul>
+<li>混淆(confusion)</li>
+</ul>
+<p>讓密文與金鑰的關係盡可能複雜，排除掉一些不該存在的弱金鑰，以防攻擊者透過觀察密文就能破解算法。</p>
+<ul>
+<li>擴散(diffusion)</li>
+</ul>
+<p>擴散是指即便明文間只有一丁點的不同，產生出的密文也要大不相同。</p>
 <h2 id="加密工具">加密工具</h2><hr>
 <h5 id="1-密碼棒_(Scytale)">1.密碼棒 (Scytale)</h5><p><img src="https://3.bp.blogspot.com/-cIUNh6ALKzs/VGV1ikUgOKI/AAAAAAAAAL0/t2mG1J9F1qA/s320/scytale.gif" alt="skytale"></p>
 <p>取布條將其纏繞於木棒上，橫向寫下明文後取下布條。解密時，必須取得相同直徑的木棒。</p>
@@ -126,7 +138,7 @@ Welcome to modern">
 <li>因為要與明文相加，密碼本至少要與明文一樣長</li>
 </ul>
 <h2 id="加密算法-1">加密算法</h2><hr>
-<h5 id="1-凱撒密碼">1.凱撒密碼</h5><p>凱撒密碼出自羅馬軍事家<a href="https://zh.wikipedia.org/wiki/%E5%B0%A4%E5%88%A9%E7%83%8F%E6%96%AF%C2%B7%E5%87%B1%E6%92%92" target="_blank" rel="external">尤利烏斯·凱撒</a>，用在對戰爭與軍事信息的加密。</p>
+<h5 id="1-凱撒密碼">1.凱撒密碼</h5><p>凱撒密碼出自羅馬軍事家<a href="https://zh.wikipedia.org/wiki/%E5%B0%A4%E5%88%A9%E7%83%8F%E6%96%AF%C2%B7%E5%87%B1%E6%92%92" target="_blank" rel="external">尤利烏斯·凱撒</a>，遽聞其當年曾用此與將領們進行秘密通訊。</p>
 <p>凱撒密碼的流程並不難，因為當時的敵人多是目不識丁的。</p>
 <blockquote>
 <p>已知明文字母P，引入一個參數K，得出密文 C = (P + K)mod 26</p>
@@ -143,7 +155,7 @@ Welcome to modern">
 <h5 id="3-路由加密">3.路由加密</h5><p>近似於密碼棒，採用直書橫寫的方式進行加密。</p>
 <h5 id="4-單字母替換密碼">4.單字母替換密碼</h5><p>與凱撒密碼同為單字母取代的概念。將26個英文字母分別做對應，比如A對應C，B對應F，替換不受限於特定規則，也不要求有跡可循，純粹是做出26個字母的明文密文對應表，以供加密與解密時使用。</p>
 <p>我們能運用洗牌演算法很輕易的產生出單字母密碼替換表。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> alp[<span class="number">26</span>];<span class="comment">//儲存26個英文字母</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> t=<span class="number">0</span>;t&lt;<span class="number">26</span>;t++)&#123;</span><br><span class="line">	<span class="keyword">int</span> random = rand()%<span class="number">26</span>;</span><br><span class="line">    <span class="keyword">int</span> temp = alp[random];</span><br><span class="line">    alp[random] = alp[t];</span><br><span class="line">    alp[t] = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> alp[<span class="number">26</span>];<span class="comment">//儲存26個英文字母</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> t=<span class="number">0</span>;t&lt;<span class="number">26</span>;t++)&#123;</span><br><span class="line">	<span class="keyword">int</span> random = rand()%<span class="number">26</span>;</span><br><span class="line">	<span class="keyword">int</span> temp = alp[random];</span><br><span class="line">	alp[random] = alp[t];</span><br><span class="line">	alp[t] = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>儘管其複雜度(26!)遠遠高於凱撒密碼，但明文字母與密文字母仍屬一對一對應，同樣易受頻率分析攻擊破解，當然也擋不住電腦暴力搜尋。一個可行的解決方案是：在明文中添加一些無關緊要的擾亂字母，或是一份明文使用多個表進行對應。</p>
 <h5 id="5-維吉尼雅密碼">5.維吉尼雅密碼</h5><p>維吉尼亞密碼主要是透過查表進行字母的轉換</p>
 <p><img src="https://3.bp.blogspot.com/-DwYbQG7U6u0/VGWGDLIZM-I/AAAAAAAAAMM/tXsTlLvCw14/s400/300px-Vigene%CC%80re_square.svg.png" alt="維吉尼亞加密"></p>
@@ -164,11 +176,10 @@ Welcome to modern">
 <h5 id="2-已知明文攻擊">2.已知明文攻擊</h5><p>攻擊者在知道部分明文與密文配對的情況下試圖破解。</p>
 <h5 id="3-選擇明文攻擊">3.選擇明文攻擊</h5><p>公開加密器，攻擊者可以自由輸入明文及得到該明文的密文，藉此試圖破解算法。</p>
 <p>儘管選擇明文攻擊攻防上看似不合理，<span style="color:#a9e74b"><strong>但在近代密碼學中，十分強調在公開演算法的情況下，還能保證安全的才是優秀的演算法。</strong></span></p>
-<p>直觀來看，要做一個加密流程很容易，我們可以有很多把金鑰，再搭配各式各樣的函式打造自己的流程，反覆做個幾十次，甚至幾百次，這麼一來，除非流程與金鑰外洩，否則這個演算法理論上牢不可破。</p>
-<p>但是換個立場，如果我們是使用者，今天開發者送來了一個加密器，他聲稱這個加密器速度不僅很快，還會透過好幾把金鑰，經歷幾十次字元變換後得出一份完美的密文。</p>
-<p>這個加密器感覺上確實相當了不起，明文與密文也找不著對應。但是，如果它擁有一把萬用鑰匙呢？或是說這幾百道的換算能被規約成兩三條式子。對這些疑問，身為使用者的我們無法斷言，不過，開發者知道。</p>
-<p>對於一個未公開加密法，算法的開發者或維護者可能就是最危險的攻擊者。</p>
-<p>此外，不論有意無意，算法可能有開發上未發現的漏洞或暗門，透過公開演算內容，大眾能共同尋找設計上是否存在瑕疵，像是近代算法中的AES、A5/1，便透過各方人才的審核，不但確保了使用上了安全性，也建立出自己的好口碑。</p>
+<p>用最最直觀的角度來看，要做一個加密流程很容易，我們可以有很多把金鑰，再搭配各式各樣的函式打造自己的流程，反覆做個幾十次，甚至幾百次，雖然它的效率不怎麼樣<span style="color:#666">(其實這是個大問題)</span>，但只要流程與金鑰不外洩，這個演算法理論上牢不可破。</p>
+<p>但是換個立場，如果我們是使用者，今天開發者送來了一個自行開發的加密算法，就像上述的流程一樣繁瑣，明文與密文間根本找不著對應。乍看之下，這個加密器可說是有效的，但是，如果它擁有一把尚未發現的萬用鑰匙呢？或是說這幾百道的換算其實能被規約成兩三條式子，是不是藏著一些未發現的漏洞或暗門？。</p>
+<p>對這些疑問，身為使用者的我們無法斷言，至於開發者？如果知道，那他便是最危險的攻擊者。若連開發者也不能肯定，這個算法隨時都有可能會爆炸，更糟糕的是，爆炸按鈕還是我們自己觸發的。</p>
+<p>確實，加密流程較少人知道會較安全，但暗門也較難找出。對加密這種保護機密資料的演算法，應該公開給全世界敲敲打打，讓公眾好好審視一番，把流程都公開，如果還是牢不可破，這個算法的安全性便有全球資安好手掛保證，像是近代算法中的AES、A5/1，便透過各方人才的審核，不但確保了使用上了安全性，也建立出自己的好口碑。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -182,7 +193,7 @@ Welcome to modern">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/密碼學/">密碼學</a><a href="/tags/資訊安全/">資訊安全</a>
+  <span></span> <a href="/tags/密碼學/">密碼學</a>
   </div>
 
 </div>
@@ -191,7 +202,7 @@ Welcome to modern">
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://zake7749.github.io/2015/08/05/classical_cipher/" data-title="古典密碼學 | 雷德麥的藏書閣" data-tsina="" class="share clearfix">
+	  <div data-url="http://zake7749.github.io/2015/08/15/classical_cipher/" data-title="古典密碼學 | 雷德麥的藏書閣" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -204,19 +215,11 @@ Welcome to modern">
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/08/06/message_auth/" title="訊息鑑別技術">
-  <strong>上一篇：</strong><br/>
-  <span>
-  訊息鑑別技術</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/10/13/gamedesignConferenceB/"  title="雨港基隆的製作與誕生">
+<a href="/2015/08/13/Cpreprocessor/"  title="前置處理器 - C&amp;C++">
  <strong>下一篇：</strong><br/> 
- <span>雨港基隆的製作與誕生
+ <span>前置處理器 - C&amp;C++
 </span>
 </a>
 </div>
@@ -226,41 +229,26 @@ Welcome to modern">
 	
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊攔"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊攔"></a></div>
 <aside class="clearfix">
 
   
-<div class="categorieslist">
-	<p class="asidetitle">Categories</p>
-		<ul>
-		
-		  
-			<li><a href="/categories/程式語言/" title="程式語言">程式語言<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/資訊安全/" title="資訊安全">資訊安全<sup>2</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/遊戲設計/" title="遊戲設計">遊戲設計<sup>2</sup></a></li>
-		  
-		
-		</ul>
-</div>
+  <div class="categorieslist">
+    <p class="asidetitle">Categories</p>
+    <div class="widget">
+    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/">程式語言</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/C/">C</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/資訊安全/">資訊安全</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/遊戲設計/">遊戲設計</a><span class="category-list-count">2</span></li></ul>
+    </div>
+  </div>
+
 
 
   
 <div class="tagslist">
 	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
-		
-			
-				<li><a href="/tags/資訊安全/" title="資訊安全">資訊安全<sup>2</sup></a></li>
-			
 		
 			
 				<li><a href="/tags/遊戲設計/" title="遊戲設計">遊戲設計<sup>2</sup></a></li>
@@ -294,7 +282,7 @@ Welcome to modern">
   <div class="tagcloudlist">
     <p class="asidetitle">Tag Cloud</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/密碼學/" style="font-size: 10px;">密碼學</a> <a href="/tags/演講摘記/" style="font-size: 20px;">演講摘記</a> <a href="/tags/訊息鑑別/" style="font-size: 10px;">訊息鑑別</a> <a href="/tags/資訊安全/" style="font-size: 20px;">資訊安全</a> <a href="/tags/遊戲設計/" style="font-size: 20px;">遊戲設計</a>
+       <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/密碼學/" style="font-size: 10px;">密碼學</a> <a href="/tags/演講摘記/" style="font-size: 20px;">演講摘記</a> <a href="/tags/訊息鑑別/" style="font-size: 10px;">訊息鑑別</a> <a href="/tags/遊戲設計/" style="font-size: 20px;">遊戲設計</a>
     </div>
   </div>
 
