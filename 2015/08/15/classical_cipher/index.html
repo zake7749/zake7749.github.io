@@ -30,7 +30,7 @@ Welcome to modern">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/4/41/English-slf.png">
 <meta property="og:image" content="http://1.bp.blogspot.com/-CLC48A92h_w/VJFiTQvAhCI/AAAAAAAAAQk/XOSwXGlgeho/s1600/hILL%2BCIPHER.png">
 <meta property="og:image" content="https://3.bp.blogspot.com/-DwYbQG7U6u0/VGWGDLIZM-I/AAAAAAAAAMM/tXsTlLvCw14/s400/300px-Vigene%CC%80re_square.svg.png">
-<meta property="og:updated_time" content="2015-09-06T15:48:10.000Z">
+<meta property="og:updated_time" content="2015-09-07T13:21:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="古典密碼學">
 <meta name="twitter:description" content="古典密碼學已經被電腦打爆了，但這跟它重不重要一點關係都沒有。── 我的資安導師總是這樣嘮叨著……
@@ -155,7 +155,7 @@ Welcome to modern">
 <h5 id="3-路由加密">3.路由加密</h5><p>近似於密碼棒，採用直書橫寫的方式進行加密。</p>
 <h5 id="4-單字母替換密碼">4.單字母替換密碼</h5><p>與凱撒密碼同為單字母取代的概念。將26個英文字母分別做對應，比如A對應C，B對應F，替換不受限於特定規則，也不要求有跡可循，純粹是做出26個字母的明文密文對應表，以供加密與解密時使用。</p>
 <p>我們能運用洗牌演算法很輕易的產生出單字母密碼替換表。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> alp[<span class="number">26</span>];<span class="comment">//儲存26個英文字母</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> t=<span class="number">0</span>;t&lt;<span class="number">26</span>;t++)&#123;</span><br><span class="line">	<span class="keyword">int</span> random = rand()%<span class="number">26</span>;</span><br><span class="line">	<span class="keyword">int</span> temp = alp[random];</span><br><span class="line">	alp[random] = alp[t];</span><br><span class="line">	alp[t] = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> alp[<span class="number">26</span>];<span class="comment">//儲存26個英文字母</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> t=<span class="number">0</span>;t&lt;<span class="number">26</span>;t++)&#123;</span><br><span class="line">    <span class="keyword">int</span> random = rand()%<span class="number">26</span>;</span><br><span class="line">    <span class="keyword">int</span> temp = alp[random];</span><br><span class="line">    alp[random] = alp[t];</span><br><span class="line">    alp[t] = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>儘管其複雜度(26!)遠遠高於凱撒密碼，但明文字母與密文字母仍屬一對一對應，同樣易受頻率分析攻擊破解，當然也擋不住電腦暴力搜尋。一個可行的解決方案是：在明文中添加一些無關緊要的擾亂字母，或是一份明文使用多個表進行對應。</p>
 <h5 id="5-維吉尼雅密碼">5.維吉尼雅密碼</h5><p>維吉尼亞密碼主要是透過查表進行字母的轉換</p>
 <p><img src="https://3.bp.blogspot.com/-DwYbQG7U6u0/VGWGDLIZM-I/AAAAAAAAAMM/tXsTlLvCw14/s400/300px-Vigene%CC%80re_square.svg.png" alt="維吉尼亞加密"></p>
@@ -215,11 +215,19 @@ Welcome to modern">
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2015/09/07/minimalEvaluation/" title="短路求值">
+  <strong>上一篇：</strong><br/>
+  <span>
+  短路求值</span>
+</a>
+</div>
+
 
 <div class="next">
-<a href="/2015/08/13/Cpreprocessor/"  title="前置處理器 - C&amp;C++">
+<a href="/2015/08/13/Cpreprocessor/"  title="前置處理器">
  <strong>下一篇：</strong><br/> 
- <span>前置處理器 - C&amp;C++
+ <span>前置處理器
 </span>
 </a>
 </div>
@@ -239,7 +247,7 @@ Welcome to modern">
   <div class="categorieslist">
     <p class="asidetitle">Categories</p>
     <div class="widget">
-    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/">程式語言</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/C/">C</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/資訊安全/">資訊安全</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/遊戲設計/">遊戲設計</a><span class="category-list-count">2</span></li></ul>
+    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/">程式語言</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/語言原理/">語言原理</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/資訊安全/">資訊安全</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/遊戲設計/">遊戲設計</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -267,6 +275,10 @@ Welcome to modern">
 			
 		
 			
+				<li><a href="/tags/Java/" title="Java">Java<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/訊息鑑別/" title="訊息鑑別">訊息鑑別<sup>1</sup></a></li>
 			
 		
@@ -282,7 +294,7 @@ Welcome to modern">
   <div class="tagcloudlist">
     <p class="asidetitle">Tag Cloud</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/密碼學/" style="font-size: 10px;">密碼學</a> <a href="/tags/演講摘記/" style="font-size: 20px;">演講摘記</a> <a href="/tags/訊息鑑別/" style="font-size: 10px;">訊息鑑別</a> <a href="/tags/遊戲設計/" style="font-size: 20px;">遊戲設計</a>
+       <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/密碼學/" style="font-size: 10px;">密碼學</a> <a href="/tags/演講摘記/" style="font-size: 20px;">演講摘記</a> <a href="/tags/訊息鑑別/" style="font-size: 10px;">訊息鑑別</a> <a href="/tags/遊戲設計/" style="font-size: 20px;">遊戲設計</a>
     </div>
   </div>
 
@@ -290,7 +302,7 @@ Welcome to modern">
   
   <div class="archiveslist">
     <p class="asidetitle"><a href="/archives">Archives</a></p>
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">2</span></li></ul>
   </div>
 
 

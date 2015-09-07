@@ -2,18 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://zake7749.github.io/2015/09/07/minimalEvaluation/</loc>
+    <lastmod>2015-09-07T15:03:36.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://zake7749.github.io/2015/08/15/classical_cipher/</loc>
-    <lastmod>2015-09-06T15:48:10.000Z</lastmod>
+    <lastmod>2015-09-07T13:21:37.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://zake7749.github.io/2015/08/13/Cpreprocessor/</loc>
+    <lastmod>2015-09-07T12:54:18.000Z</lastmod>
   </url>
   
   <url>
     <loc>http://zake7749.github.io/2015/08/06/message_auth/</loc>
     <lastmod>2015-09-06T15:02:04.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://zake7749.github.io/2015/08/13/Cpreprocessor/</loc>
-    <lastmod>2015-09-06T15:01:38.000Z</lastmod>
   </url>
   
   <url>
