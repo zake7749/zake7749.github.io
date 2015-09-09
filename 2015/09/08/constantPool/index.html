@@ -4,60 +4,23 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>訊息鑑別技術 | 雷德麥的藏書閣</title>
+    <title>淺談Java的常數池 | 雷德麥的藏書閣</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Justin Yang">
     
 
     
-    <meta name="description" content="什麼是訊息鑑別技術？顧名思義，我們是在識別文件，不過比起去深究文章內涵與背景故事，我們通常會更關心這三件事：
-
-送出的訊息是否完整且正確 (protect integrity)
-你不會希望在匯款時多送了幾個 0 
-
-
-發訊人的身分是不是正確的 (validate identity)
-防止有人假冒你幹些雞鳴狗盜的勾當
-
-
-發訊人不可否認曾做過的事 (Non-repudiation)
-沒辦法切割曾經幹">
+    <meta name="description">
 <meta property="og:type" content="article">
-<meta property="og:title" content="訊息鑑別技術">
-<meta property="og:url" content="http://zake7749.github.io/2015/08/06/message_auth/index.html">
+<meta property="og:title" content="淺談Java的常數池">
+<meta property="og:url" content="http://zake7749.github.io/2015/09/08/constantPool/index.html">
 <meta property="og:site_name" content="雷德麥的藏書閣">
-<meta property="og:description" content="什麼是訊息鑑別技術？顧名思義，我們是在識別文件，不過比起去深究文章內涵與背景故事，我們通常會更關心這三件事：
-
-送出的訊息是否完整且正確 (protect integrity)
-你不會希望在匯款時多送了幾個 0 
-
-
-發訊人的身分是不是正確的 (validate identity)
-防止有人假冒你幹些雞鳴狗盜的勾當
-
-
-發訊人不可否認曾做過的事 (Non-repudiation)
-沒辦法切割曾經幹">
-<meta property="og:image" content="https://lh3.googleusercontent.com/1sj77qCly4DcogfQTiFeLzeQtsuQsTzxxn9Lj32Qy4g=w977-h618-no">
-<meta property="og:image" content="https://lh3.googleusercontent.com/uGotHGCNaNSnknU-0ecQ2XXm7Em8y8iGOA9tce2xNbY=w1143-h577-no">
-<meta property="og:image" content="https://lh3.googleusercontent.com/ROJ40m32HUa83UekOJzeOKM9Y6PiyXtD9bUGV-OxjRA=w1143-h572-no">
-<meta property="og:image" content="https://lh3.googleusercontent.com/192-qOycchKGnjmb31-BGDuO2ayVYE9oER0uynFqXzU=w954-h509-no">
-<meta property="og:updated_time" content="2015-09-06T15:02:04.000Z">
+<meta property="og:description">
+<meta property="og:updated_time" content="2015-09-09T12:50:31.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="訊息鑑別技術">
-<meta name="twitter:description" content="什麼是訊息鑑別技術？顧名思義，我們是在識別文件，不過比起去深究文章內涵與背景故事，我們通常會更關心這三件事：
-
-送出的訊息是否完整且正確 (protect integrity)
-你不會希望在匯款時多送了幾個 0 
-
-
-發訊人的身分是不是正確的 (validate identity)
-防止有人假冒你幹些雞鳴狗盜的勾當
-
-
-發訊人不可否認曾做過的事 (Non-repudiation)
-沒辦法切割曾經幹">
+<meta name="twitter:title" content="淺談Java的常數池">
+<meta name="twitter:description">
 <link rel="publisher" href="110210184472476277760">
 
     
@@ -116,129 +79,86 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/08/06/message_auth/" title="訊息鑑別技術" itemprop="url">訊息鑑別技術</a>
+      <a href="/2015/09/08/constantPool/" title="淺談Java的常數池" itemprop="url">淺談Java的常數池</a>
   </h1>
 </header>
 	<div class="article-content">
 		
-		<h2 id="什麼是訊息鑑別技術？">什麼是訊息鑑別技術？</h2><p>顧名思義，我們是在<span style="color:#99dd00">識別</span>文件，不過比起去深究文章內涵與背景故事，我們通常會更關心這三件事：</p>
-<ul>
-<li>送出的訊息是否完整且正確 (protect integrity)<ul>
-<li>你不會希望在匯款時多送了幾個 0 </li>
-</ul>
-</li>
-<li>發訊人的身分是不是正確的 (validate identity)<ul>
-<li>防止有人假冒你幹些雞鳴狗盜的勾當</li>
-</ul>
-</li>
-<li>發訊人不可否認曾做過的事 (Non-repudiation)<ul>
-<li>沒辦法切割曾經幹過的壞事</li>
-</ul>
-</li>
-</ul>
-<p>要實踐訊息鑑別，有兩個簡單的方法：</p>
-<ul>
-<li>CBC - residue , CMAC(Cipher-based MAC)：在區塊加密時進行鑑別</li>
-<li>HMAC ：另外用個雜湊函式(Hash) 進行鑑別</li>
-</ul>
+		<script src="https://gist.github.com/zake7749/e38dea3e476ea907d5c0.js"></script>
+
 <a id="more"></a>
-<hr>
-<h5 id="什麼是MAC">什麼是<span style="color:#99DD00">MAC</span></h5><p>MAC是Message Authentication code的縮寫，由文件經過某些演算法(MAC algorith)產生的。MAC能夠擷取出文件訊息，這些訊息往往能代表該份文件的特徵，就像是指紋、DNA訊息一般，透過比對得出MAC，我們通常能得知文件的一致性。<br>如果從加解密的角度出發，我們可以把它當成一個Checksum，用其進行完整性或身分檢查。</p>
-<p><img src="https://lh3.googleusercontent.com/1sj77qCly4DcogfQTiFeLzeQtsuQsTzxxn9Lj32Qy4g=w977-h618-no" alt="MAC示例"></p>
-<p>要使用MAC，傳送方跟接受方需要共享一把鑰匙，這可以視為MAC演算法的一個參數。每當傳送方發送文件時，會經由演算法送出MAC，並附在文件中，接收方在收到文件後，會對收到的文件再做一次演算，如果兩方得出的MAC是相同的，可以假定這份文件沒被修改過。</p>
-<hr>
-<h5 id="CBC_-_Residue">CBC - Residue</h5><p>CBC-Residue使用了2把Key，一把用於進行CBC模式，一把用於產生MAC(Residue)。CBC - Residue在加密過程幾乎沒有改變，唯一的不同是在最後ㄛ份明文Pn的加密，他分成兩個部份，我們把Pn和密文Cn-1做XOR產生的東東叫做Xn好了，一是Xn用Key1加密產生最後一份密文Cn，二是Xn用Key2加密產生一個渣渣，這個渣渣跟密文一點關係都沒有，我們把他當做一個校正碼。因為CBC特有的雪崩效應，使得先前的加密有ㄧ些小改變就會造成後續一連串的錯誤，所以我們才能把這個渣渣用做比對。</p>
-<hr>
-<h5 id="HMAC_(Hash_MAC)">HMAC (Hash MAC)</h5><p>1.什麼是 Hash ?</p>
-<p>簡單來說，Hash是一個函式，即是數學上我們常常用F(X)表示的玩意兒，不過Hash函式有一個特性，<strong>Hash是單向的，我們無法透過結果去反推斷讀入的參數</strong>，即是說 H(A) = B，如果我們只給你B，是無法透過運算反推代入參數為A的。</p>
-<p>若加解密的觀點來看，Hash做到的只有加密(從A變成B)，而沒辦法解密(B無法逆運算至A)，因此Hash只會用來做驗證。</p>
-<p>此外，除了難以逆運算外，一個好的Hash我們還會希望它</p>
-<ul>
-<li>電腦計算上高效</li>
-<li><strong>鍵的碰撞率低，也就是說，H(A)!=H(B)。</strong></li>
-</ul>
-<p>我們之前提到過，MAC產生出的可以說是一份文件的指紋，讓我們透過它來辨識文件的完整性，如果說兩份不同的文件，會產生出同一份MAC，那這個MAC的可信度便有待加強。</p>
-<p>2.HMAC</p>
-<p>HashMAC就是用Hash來進行驗證，市面上常見的MD5即是如此。</p>
-<p>HMAC的原理很簡單，我們有相同訊息，相同Hash算法，那麼對一份相同的明文，Hash出來的東西就該相同。</p>
-<pre>傳送方
-假設我們要輸送一份訊息 M = ＂HelloWorld＂給接收方
-
-1. 在傳送端進行Hash : H(M)
-2. 將Hash的結果儲存為認證戳記 T = H(M)
-3. 將T與M一起送至接收方</pre>
-
-<pre>接收方
-我們現在收到了 M' 與 T'，因為不曉得改過沒有所以加了'
-
-1. 對 M' 進行 Hash : H(M')
-2. 將Hash的結果儲存為 T''
-3. 驗證 T' 是否等於 T''
-4. if(T'==T'') -> M == M'</pre>
-
-
-<p>或許你會有個小疑問，如果說我有能力更改 M’，那我應該也能更動 T’，然而這麼做的前提是必須持有 H(X) 與原訊息才行。</p>
-<hr>
-<h2 id="數位簽章">數位簽章</h2><p>雖然叫做簽章，不過這跟紙筆一點關係也沒有，它是一種用來<em>辨別身分的加密型式</em>，嚴格來說，數位簽章是以數學演算法或其他運算方式，對要簽署的文件進行加密，所產生的結果。</p>
-<p>先看看怎麼產生一份簽章吧：</p>
-<ul>
-<li>有一份文件M</li>
-<li>計算文件的摘要 h = Hash(M)</li>
-<li>加密這份摘要：Ek1(h)</li>
-<li>加密的結果便是簽章 S = Ek(h)</li>
-</ul>
-<p>之後通過同時送出M與S給接收方，簽章的傳送就完成了。</p>
-<p>在接收方</p>
-<ul>
-<li>收到了文件M’與簽章S’</li>
-<li>計算出文件M’的摘要 h’ = Hash(M’)</li>
-<li>解密收到的簽章S’: h’’ = Dk2(S’)</li>
-<li>比對 h’ 與 h’’ 的關聯性</li>
-<li>傳送者的<strong>身分</strong>獲得認證</li>
-</ul>
-<p>目前看來，這些流程與MAC相當近似，但細節上略有不同。比如在資料處理上，MAC考慮的是這份文件到底有沒有被動過，而不在乎文件本身，所以MAC會破壞資料儲存結構，產出一個固定長度的驗證碼，比如MD5就是吃進一個不定長度的文件，把文件擠壓抽取成128位元（16位元組）的散列值，而數位簽章則會保存文件與憑證，你該知道這是我簽的，也該知道我簽了些什麼。</p>
-<p>不同之處還有MAC與簽章的協定方式：MAC是由傳送方跟接收方約定而成，建立一個除錯碼以及演算出除錯碼的方式，接收方在獲得密文後再行驗證。不過數位簽章無法這麼做，因為它是對外公開的，我們無法去約束對方怎麼簽，但能肯定的是，這份簽章只有他簽它的出來。</p>
-<p>此外，數位簽章與MAC最大的差異在於<strong>金鑰系統</strong>，MAC採用對稱式，而簽章是非對稱式，也就是說，<strong>數位簽章加密與解密用的金鑰是不同的，加密用的是私鑰，解密用的是公鑰</strong>，即是非對稱式金鑰系統。</p>
-<p>讓我們先回歸簽章的目的，它要能：</p>
-<ul>
-<li>驗證<ul>
-<li>簽章者身份 （不可偽冒）</li>
-<li>簽章日期、時間</li>
-<li>訊息完整性 （不可偽造）</li>
-</ul>
-</li>
-<li><span style="color:#99dd00">透過簽章，能讓第三方來解決紛爭 （不可否認性）</span></li>
-</ul>
-<p>首先，雙方鑰匙一定要不同，不然接收者就能用你的鑰匙來仿冒你。</p>
-<p>不過重點還是在這個第三方。數位簽章既為數位，我們能把它當成網路上的身分證，當社會大眾想驗明你的正身時，就把簽章蓋在他臉上，不過隨隨便便這麼做，也沒人知道你這簽章是真是假，你總不會打了好幾把鑰匙給別人，當然也不會傻到公開自己的私人鑰匙。</p>
-<p>那麼你也許會說：我們需要一把公開的鑰匙，問題就來了，我們該把鑰匙放在哪裡？會不會有人的鑰匙打得跟我一模一樣？或者很多人都有我的公開鑰匙，搞得大家不知道該跟誰拿，誰才是真的？</p>
-<p>一個可能的答案是：我們需要在你我之外，具備公信力的組織，在確認了我們的身份後，把私鑰留給你，在用你的姓名啦、申請日期啦、使用期限等等訊息混在一起作出你的公鑰，對外公開為<em>數位憑證</em>。以後大家想知道你之為你，算算你的數位憑證就成啦 ~</p>
-<hr>
-<h2 id="Authenticated_Encryption">Authenticated Encryption</h2><p>對於加密與驗證，剛接觸時往往會存在一個迷思。無論是加密或驗證 ：</p>
-<ul>
-<li>我們都有一個演算法，一份明文。</li>
-<li>我們都會把明文給塞到算法裡</li>
-<li>結果都會跑出一個看似亂碼的東東</li>
-</ul>
-<p>這個東東在加密上稱為密文，在鑑別上則叫做驗證。儘管跑出來的結果都不是給人看的(通常如此)，不過行為的目的卻大不相同。</p>
+<h3 id="Answer">Answer</h3><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">true</span></span><br><span class="line"><span class="literal">false</span></span><br><span class="line"><span class="literal">true</span></span><br><span class="line"><span class="literal">false</span></span><br><span class="line"><span class="literal">false</span></span><br><span class="line"><span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<h4 id="這是什麼巫術_?">這是什麼巫術 ?</h4><p>首先，在Java中的<code>==</code>有兩種意涵：</p>
 <blockquote>
-<p>加密做的是：保證資料的安全性<br>驗證做的是：保證資料的完整性</p>
+<p>對於基本資料型態，比對兩者的數值<br>對於物件，則是比對兩者存放的位置</p>
 </blockquote>
-<p>而雙管齊下的方法就是Authenticated encryption，直觀來看有這幾種型式：<br><img src="https://lh3.googleusercontent.com/uGotHGCNaNSnknU-0ecQ2XXm7Em8y8iGOA9tce2xNbY=w1143-h577-no" alt="3 ways of authenticated encryption"></p>
+<p>String是個物件，所以對String使用==，我們其實是在比較物件的記憶體位置，這就解決了最後一個問題，s3與s10都是經過<code>new</code>配置而成，<br>實際上new傳回了兩個String，只不過他們的字串值都叫做Hello而已，比對兩者的位置當然會得出false。</p>
+<p>如果明白了最後一題在搞什麼花樣，問題來了，為什麼第一題是true？</p>
+<h4 id="常數池">常數池</h4><p>讓我們從答案往回推，既然第一題是true，也就代表s1與s2所指向的是<strong>同一個物件</strong>，而為何會指向同一個物件呢？會不會是Java存在一個特殊空間，把<strong>編譯時期</strong>就已經確定的<strong>常數(constant)</strong>包進.class，執行時再從這個空間統一拿出？</p>
+<p>正確答案，這個特殊空間稱為常數池(constant pool)，這玩意兒在JVM中相當重要，它存放兩種東西：</p>
 <ul>
-<li>對 M 進行加密處理及用 M 產生信息戳記 T</li>
-<li>先用 M 產生信息戳記，再用信息戳記 T 及 M 放入加密器產生 C</li>
-<li>先對 M 進行加密處理，再用密文 C 產生信息戳記 T</li>
+<li><p>字面量(Literal)<br>包含了常數以及既定字串。</p>
+</li>
+<li><p>Symbolic References<br>呃…我不知道他中文叫什麼，姑且稱為符號參考吧，主要是類別和介面的<a href="https://en.wikipedia.org/wiki/Fully_qualified_name" target="_blank" rel="external">Fully qualified name</a>，欄位和方法的名稱及修飾字。</p>
+</li>
 </ul>
-<p>M(Message)是我們欲處理的信息，C(Ciphertext)得出的是密文，來保證M的安全性，T是鑑別戳記(Tag)，用來確認M的完整性。</p>
-<p>然而，這三種方法都存在一個缺點，即是對於<em>N</em>個區塊而言，他們往往要進行<em>2N</em>次的處理，因為加密跟認證分開來了。為了解決這個問題，出現了IAPM與OCB這兩種新模式。</p>
-<hr>
-<h5 id="IAPM">IAPM</h5><p><img src="https://lh3.googleusercontent.com/ROJ40m32HUa83UekOJzeOKM9Y6PiyXtD9bUGV-OxjRA=w1143-h572-no" alt="IAPM"></p>
-<p>S0~SM是用做擾亂資料，因為這是個近似ECB的模式。Sigma P 是由P1 Xor P2… Xor Pm-1得出的，Cm即為產生的校正碼。</p>
-<hr>
-<h5 id="OCB_(Offset_codebook_Mode)">OCB (Offset codebook Mode)</h5><p>Checksum = M1 ⊕…⊕ Mn，對於流程的更細部內容，<a href="http://web.cs.ucdavis.edu/~rogaway/ocb/ocb-faq.htm" target="_blank" rel="external">參見這邊</a></p>
-<p><img src="https://lh3.googleusercontent.com/192-qOycchKGnjmb31-BGDuO2ayVYE9oER0uynFqXzU=w954-h509-no" alt="OCB"></p>
-<hr>
+<p>除了String，Java對<code>double</code>及<code>float</code>以外的基本類別在區間<code>-128~127</code>都實作了常數池，也就是說</p>
+<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="constant">Integer i1</span> = <span class="number">1</span>;</span><br><span class="line"><span class="constant">Integer i2</span> = <span class="number">1</span>;</span><br><span class="line"><span class="constant">Integer i3</span> = <span class="number">128</span>;</span><br><span class="line"><span class="constant">Integer i4</span> = <span class="number">128</span>;</span><br><span class="line"><span class="constant">System.out.println(i1</span>==i2);<span class="comment">//true</span></span><br><span class="line"><span class="constant">System.out.println(i3</span>==i4);<span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+<p>關於這點，我們也可從Integer類別中valueOf的實作得到證實：</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//IntegerCache.low  預設為 -128</span></span><br><span class="line"><span class="comment">//IntegerCache.high 預設為  127</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function">Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">assert</span> IntegerCache.high &gt;= <span class="number">127</span>;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</span><br><span class="line">        <span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="psBox"><span class="ps">P.S</span><br>我會提到valueOf是因為<code>Integer i1 = 1</code>其實是個編譯器蜜糖，編譯器會將上述程式碼展開成<code>Integer i1 = valueOf(1)</code>，對於這部分更深入的細節，可以餵食Google「Java裝箱拆箱」。<br></div>
+
+<p>一般來說，常數池是這麼運作的(以string及題目為例)：</p>
+<ol>
+<li>當載入class時，JVM會尋找所有程式中的字串字面量(string literals)</li>
+<li>首先，他會找到字串<code>s1</code>的字面量<code>Hello</code>，並產生一個實例放到記憶體中，嚴格來說是放置字串常數池(string constant pool)的記憶體區。</li>
+<li>接下來，JVM會<strong>複製一份<code>Hello</code></strong>，這很重要，其避免了對s1的操作影響到常數池的維護。</li>
+<li>之後JVM找到<code>s2</code>的字面量<code>Hello</code>，不過它發現記憶體中已經有一個生成的<code>Hello</code>，所以JVM會透過常量池的指針將<code>s2</code>指向已經生成好的<code>Hello</code>(s1所持有的)，而非再產生一個<code>Hello</code>。</li>
+</ol>
+<p>由此我們也能發現常量池的優點，它達到了共享資源的效果，避免資源頻繁產生或釋放造成不必要的浪費。</p>
+<p>關於第二題 (s1==s3) 為false，雖然兩者都是存放在heap，但是因為new總是產生出新的物件，其跟s1接收到的Hello自然是不同的，我們能這麼理解。</p>
+<table>
+<thead>
+<tr>
+<th>heap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“Hello” &lt;- s1,s2</td>
+</tr>
+</tbody>
+</table>
+<p>在 <code>s3 = new String(&quot;Hello&quot;);</code></p>
+<table>
+<thead>
+<tr>
+<th>heap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“Hello” &lt;- s3</td>
+</tr>
+<tr>
+<td>“Hello” &lt;- s1,s2</td>
+</tr>
+</tbody>
+</table>
+<p>但是要注意，new 仍舊會觸發常數池存取，如果今天<code>s3 = new String(&quot;Hello&quot;);</code>是第一行，常數池的處理會變成這樣：</p>
+<ol>
+<li>JVM發現了字串常量Hello，產生一份放在字串常數池中</li>
+<li>不過 s3 使用的是 new ，所以其不引用常數池，而是在heap生成一個新的String物件</li>
+</ol>
+<p>簡單來說，= 與 new 都會在常數池產生物件，不過 = 會引用常數池在heap中生成的複製品，new則是另外生成新的物件。</p>
+<p>關於第三題 (s1==s4) 為true，是Java的優化功能之一，編譯器會將<code>&quot;Hel&quot;+&quot;lo&quot;</code>當作<code>&quot;Hello&quot;</code>，因此道理和(s1==s2)相同。</p>
+<p>關於第四題，近似於第二題的概念，具體來說<code>String s5 = &quot;Hel&quot; + new String(&quot;lo&quot;);</code>做了三件事：</p>
+<ol>
+<li>常數池存放 “Hel” 及 “lo”</li>
+<li>heap 產生 “Hel” 與 “lo”</li>
+<li>使用String方法.append()合併”Hel”與”lo”，傳回一個新字串給s5</li>
+</ol>
+<p>第五題則是和第三題的類比，會回傳false可不是因為它是拆成He與llo，而是跟先前提到的優化有關，它只會進行常數的優化，這是因為編譯器不知道我們在<code>String s9 = s7+s8;</code>這行前，會不會對<code>s7</code>與<code>s8</code>的值進行修改，若貿然的假設<code>s7</code>仍是He或<code>s8</code>仍是llo，反而可能造成預期外的錯誤，這風險可不是編譯器能承擔的，所以自然也不會處理這個部分。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -246,13 +166,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/資訊安全/">資訊安全</a>
+  <a class="article-category-link" href="/categories/程式語言/">程式語言</a>►<a class="article-category-link" href="/categories/程式語言/Java/">Java</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/訊息鑑別/">訊息鑑別</a>
+  <span></span> <a href="/tags/Java/">Java</a><a href="/tags/面試問題/">面試問題</a>
   </div>
 
 </div>
@@ -261,7 +181,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://zake7749.github.io/2015/08/06/message_auth/" data-title="訊息鑑別技術 | 雷德麥的藏書閣" data-tsina="" class="share clearfix">
+	  <div data-url="http://zake7749.github.io/2015/09/08/constantPool/" data-title="淺談Java的常數池 | 雷德麥的藏書閣" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -274,19 +194,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/08/13/Cpreprocessor/" title="前置處理器">
-  <strong>上一篇：</strong><br/>
-  <span>
-  前置處理器</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/10/13/gamedesignConferenceB/"  title="雨港基隆的製作與誕生">
+<a href="/2015/09/07/minimalEvaluation/"  title="短路求值">
  <strong>下一篇：</strong><br/> 
- <span>雨港基隆的製作與誕生
+ <span>短路求值
 </span>
 </a>
 </div>

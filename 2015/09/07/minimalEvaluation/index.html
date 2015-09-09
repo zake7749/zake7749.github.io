@@ -11,16 +11,16 @@
     
 
     
-    <meta name="description" content="Problem請問該程式的輸出為何？">
+    <meta name="description">
 <meta property="og:type" content="article">
 <meta property="og:title" content="短路求值">
 <meta property="og:url" content="http://zake7749.github.io/2015/09/07/minimalEvaluation/index.html">
 <meta property="og:site_name" content="雷德麥的藏書閣">
-<meta property="og:description" content="Problem請問該程式的輸出為何？">
-<meta property="og:updated_time" content="2015-09-07T15:03:36.000Z">
+<meta property="og:description">
+<meta property="og:updated_time" content="2015-09-08T12:13:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="短路求值">
-<meta name="twitter:description" content="Problem請問該程式的輸出為何？">
+<meta name="twitter:description">
 <link rel="publisher" href="110210184472476277760">
 
     
@@ -84,8 +84,7 @@
 </header>
 	<div class="article-content">
 		
-		<h3 id="Problem">Problem</h3><p>請問該程式的輸出為何？</p>
-<script src="https://gist.github.com/zake7749/7836279583cc27ce68de.js"></script>
+		<script src="https://gist.github.com/zake7749/7836279583cc27ce68de.js"></script>
 
 <a id="more"></a>
 <h3 id="Answer">Answer</h3><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">finish</span></span><br></pre></td></tr></table></figure>
@@ -93,9 +92,8 @@
 <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">evaluation</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span> t = <span class="keyword">true</span>;</span><br><span class="line">		</span><br><span class="line">    <span class="keyword">if</span>(t|sayHello())&#123;</span><br><span class="line">        System.out.println(<span class="string">"finish"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="Output">Output</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Hello</span></span><br><span class="line">finish</span><br></pre></td></tr></table></figure>
 <p>整份程式碼只將<code>if</code>判斷中的<code>||</code>修改成<code>|</code>，在解答理由之前，先看看第二個問題吧。</p>
-<h3 id="Problem-1">Problem</h3><script src="https://gist.github.com/zake7749/5bd738e4a05cd73e5915.js"></script>
+<script src="https://gist.github.com/zake7749/5bd738e4a05cd73e5915.js"></script>
 
-<p>這次的輸出又是什麼呢？</p>
 <h3 id="Answer-1">Answer</h3><figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">goal</span></span><br></pre></td></tr></table></figure>
 <p>有了先前的經驗，答案應該不怎麼意外吧？同樣的，只要做點小小的更改，<code>&amp;&amp;</code>-&gt;<code>&amp;</code>就會進入<code>sayHello()</code>，可以親自嘗試看看。</p>
 <h4 id="為什麼沒有執行sayHello()？">為什麼沒有執行sayHello()？</h4><p>仔細推敲上頭的兩個問題，我們可以發現第一個問題是<code>||</code>屬於OR關係，只要其中之一為真，該敘述即為真。第二個問題則是<code>&amp;&amp;</code>屬於AND關係，只要其中之一為假，該敘述便為假。</p>
@@ -103,9 +101,12 @@
 <blockquote>
 <p>只有前 i 個運算式求不出結果時，才去執行第 i+1 個運算式</p>
 </blockquote>
-<p>像這類選擇性進行的求值策略，被稱為短路求值(Short-circuit evaluation)，就好比物理中只要電路某處短路，電流就會直接繞道而行一般。</p>
-<p>在Problem 1，為<code>true||sayHello()</code>，OR中一個為真結果就為真，所以沒必要大費周章的執行sayHello()，第二個問題是同樣的道理。值得一提的是，判斷仍然是由左而右，而不是挑成本最小的運算。</p>
-<h4 id="為什麼那些改動造成結果不同？">為什麼那些改動造成結果不同？</h4><p>有短路求值，也自然有與之相對的嚴格求值(Eager evaluation)，其不論是否已知結果，都會很守本分的把運算式通通做完。在C++/Java，嚴格求值所用的運算子即為<code>|</code>與<code>&amp;</code>，若有興趣其他語言的運算子是哪些，<a href="https://en.wikipedia.org/wiki/Short-circuit_evaluation" target="_blank" rel="external">可以看看wiki的這份表格。</a></p>
+<p>像這類只進行必要運算的求值策略，被稱為短路求值(Short-circuit evaluation)，就好比物理中只要電路某處短路，電流就會直接繞道而行一般，又因為它只進行必要的運算，又被稱為最小化求值。</p>
+<p>第一個問題的運算為<code>true||sayHello()</code>，OR中一個為真結果就為真，所以沒必要大費周章的執行sayHello()，第二個問題是同樣的道理。值得一提的是，判斷仍然是由左而右，而不是挑成本最小的運算。</p>
+<p>短路求值能為我們的程式碼提升不少彈性，比如</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(obj!=<span class="literal">null</span>&amp;&amp;obj.<span class="keyword">func</span>)&#123;</span><br><span class="line">	//<span class="keyword">do</span> something...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>即便obj真的為null，求值也在<code>obj!=null</code>就結束了，不會因執行了<code>obj.func</code>而跳出Exception。然而，在使用上也當務求謹慎，比如上述的例子，若調轉了求值順序便會擲出例外。</p>
+<h4 id="為什麼那些改動會造成結果不同？">為什麼那些改動會造成結果不同？</h4><p>有短路求值，也自然有與之相對的嚴格求值(Eager evaluation)，其不論是否已知結果，都會很守本分的把運算式通通做完。在C++/Java，嚴格求值所用的運算子即為<code>|</code>與<code>&amp;</code>，所以即便早就知道結果了，程式仍舊會把<code>sayHello()</code>執行一遍。若有興趣其他語言的運算子是哪些，<a href="https://en.wikipedia.org/wiki/Short-circuit_evaluation" target="_blank" rel="external">可以看看wiki的這份表格。</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -141,6 +142,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2015/09/08/constantPool/" title="淺談Java的常數池">
+  <strong>上一篇：</strong><br/>
+  <span>
+  淺談Java的常數池</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2015/08/15/classical_cipher/"  title="古典密碼學">
@@ -165,7 +174,7 @@
   <div class="categorieslist">
     <p class="asidetitle">Categories</p>
     <div class="widget">
-    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/">程式語言</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/語言原理/">語言原理</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/資訊安全/">資訊安全</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/遊戲設計/">遊戲設計</a><span class="category-list-count">2</span></li></ul>
+    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/">程式語言</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/程式語言/語言原理/">語言原理</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/資訊安全/">資訊安全</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/遊戲設計/">遊戲設計</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -175,6 +184,10 @@
 <div class="tagslist">
 	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>2</sup></a></li>
+			
 		
 			
 				<li><a href="/tags/遊戲設計/" title="遊戲設計">遊戲設計<sup>2</sup></a></li>
@@ -193,11 +206,11 @@
 			
 		
 			
-				<li><a href="/tags/Java/" title="Java">Java<sup>1</sup></a></li>
+				<li><a href="/tags/訊息鑑別/" title="訊息鑑別">訊息鑑別<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/訊息鑑別/" title="訊息鑑別">訊息鑑別<sup>1</sup></a></li>
+				<li><a href="/tags/面試問題/" title="面試問題">面試問題<sup>1</sup></a></li>
 			
 		
 			
@@ -212,7 +225,7 @@
   <div class="tagcloudlist">
     <p class="asidetitle">Tag Cloud</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/密碼學/" style="font-size: 10px;">密碼學</a> <a href="/tags/演講摘記/" style="font-size: 20px;">演講摘記</a> <a href="/tags/訊息鑑別/" style="font-size: 10px;">訊息鑑別</a> <a href="/tags/遊戲設計/" style="font-size: 20px;">遊戲設計</a>
+       <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/密碼學/" style="font-size: 10px;">密碼學</a> <a href="/tags/演講摘記/" style="font-size: 20px;">演講摘記</a> <a href="/tags/訊息鑑別/" style="font-size: 10px;">訊息鑑別</a> <a href="/tags/遊戲設計/" style="font-size: 20px;">遊戲設計</a> <a href="/tags/面試問題/" style="font-size: 10px;">面試問題</a>
     </div>
   </div>
 
@@ -220,7 +233,7 @@
   
   <div class="archiveslist">
     <p class="asidetitle"><a href="/archives">Archives</a></p>
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">2</span></li></ul>
   </div>
 
 
@@ -236,7 +249,7 @@
 	
 	
 	<section class="info">
-		<p> A man is not old <br/>
+		<p> A man is not old, <br/>
 			as long as he is seeking something.</p>
 	</section>
 	 
