@@ -17,7 +17,7 @@
 <meta property="og:url" content="http://zake7749.github.io/2015/09/08/constantPool/index.html">
 <meta property="og:site_name" content="雷德麥的藏書閣">
 <meta property="og:description">
-<meta property="og:updated_time" content="2015-09-10T02:50:47.000Z">
+<meta property="og:updated_time" content="2015-09-10T03:34:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="淺談Java的常數池">
 <meta name="twitter:description">
@@ -99,9 +99,10 @@
 <ul>
 <li><p>字面量(Literal)<br>包含了常數以及既定字串。</p>
 </li>
-<li><p>Symbolic References<br>呃…我不知道他中文叫什麼，姑且稱為符號參考吧，主要是類別和介面的<a href="https://en.wikipedia.org/wiki/Fully_qualified_name" target="_blank" rel="external">Fully qualified name</a>，欄位和方法的名稱及修飾字。</p>
+<li><p>Symbolic References<br>主要是類別和介面的<a href="https://en.wikipedia.org/wiki/Fully_qualified_name" target="_blank" rel="external">Fully qualified name</a>，欄位和方法的名稱。</p>
 </li>
 </ul>
+<p>每當編譯完成，編譯器這些東西便會被包進.class中，Java原始碼中的每一個字面量會被構成一個常數表，我們能以索引的型式參照它。而當JVM載入這份.class檔時，會特別為常數池的在方法區建立一個資料結構，更重要的是，JVM會把常數表中所有的字面量在Heap上生成一個實例(即是String.intern()的行為)。</p>
 <p>除了String，Java對<code>double</code>及<code>float</code>以外的基本類別在區間<code>-128~127</code>都實作了常數池，也就是說</p>
 <figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="constant">Integer i1</span> = <span class="number">1</span>;</span><br><span class="line"><span class="constant">Integer i2</span> = <span class="number">1</span>;</span><br><span class="line"><span class="constant">Integer i3</span> = <span class="number">128</span>;</span><br><span class="line"><span class="constant">Integer i4</span> = <span class="number">128</span>;</span><br><span class="line"><span class="constant">System.out.println(i1</span>==i2);<span class="comment">//true</span></span><br><span class="line"><span class="constant">System.out.println(i3</span>==i4);<span class="comment">//false</span></span><br></pre></td></tr></table></figure>
 <p>關於這點，我們也可從Integer類別中valueOf的實作得到證實：</p>
@@ -110,18 +111,21 @@
 
 <p>一般來說，常數池是這麼運作的(以string及題目為例)：</p>
 <ol>
-<li>當載入class時，JVM會尋找所有程式中的字串字面量(string literals)</li>
-<li>首先，他會找到字串<code>s1</code>的字面量<code>Hello</code>，並將其放到字串常數池(string constant pool)的記憶體區。</li>
-<li>接下來，s1便引用至常數池所製作出的<code>Hello</code></li>
-<li>之後JVM找到<code>s2</code>的字面量<code>Hello</code>，不過它發現記憶體中已經有一個生成的<code>Hello</code>，所以JVM會透過常數池的指針將<code>s2</code>指向已經生成好的<code>Hello</code>(s1所持有的)，而非再產生一個<code>Hello</code>。</li>
+<li>編譯時發現字串，若常數池中已存在，則將現有的(先前找到的)位置賦予它，否則將該字串壓入常數池，並紀錄位置</li>
+<li>當載入class時，JVM會尋找.class的常數表，發現了字串常量<code>Hello</code>，在heap中生成對應的實例。</li>
+<li>首先，他會找到字串<code>s1</code>的字面量<code>Hello</code>。</li>
+<li>由於常數池中已經存在<code>Hello</code>，所以提供常數池的引用給<code>s1</code></li>
+<li>之後JVM找到<code>s2</code>的字面量<code>Hello</code>，</li>
+<li>由於常數池中已經存在<code>Hello</code>，所以仍舊將<code>s2</code>指向已經生成好的<code>Hello</code>，而非再產生一個<code>Hello</code>。</li>
 </ol>
-<p>由此我們也能發現常量池的優點，它達到了共享的效果，避免資源頻繁產生或釋放造成不必要的浪費。</p>
+<p>由此我們也能發現常數池的優點，它達到了共享的效果，避免資源頻繁產生或釋放造成不必要的浪費。</p>
 <p>關於第二題 (s1==s3) 為false，是因為new是動態產生新的物件，其跟s1接收到的Hello自然是不同的，但是要注意，new 仍舊會觸發常數池存取，如果今天<code>s3 = new String(&quot;Hello&quot;);</code>是第一行，常數池的處理會變成這樣：</p>
 <ol>
-<li>JVM發現了字串常量Hello，將其放在字串常數池中</li>
-<li>不過 s3 使用的是 new ，所以其不引用常數池，而是在heap生成一個新的String物件</li>
+<li>當載入class時，JVM會尋找.class的常數表，發現了字串常量<code>Hello</code>，在heap中生成對應的實例。</li>
+<li>因為 s3 使用的是 new ，所以其不引用常數池，而是在heap生成一個新的String物件</li>
+<li>所以此時heap中存在<strong>兩份物件</strong>，一個是讓常數池提供引用的，另一個是s3持有的，這點需要特別注意</li>
 </ol>
-<p>簡單來說，= 與 new 都會進行常數池的檢查，不過 = 會引用常數池，new則是另外生成新的物件。</p>
+<p>直觀來看，= 與 new 都會進行常數池的檢查，就像先前說的，編譯器找的是原始碼中的字面量，它才不會管你是 new 還是 = 。不過在執行時， = 會引用常數池，new則是另外生成新的物件。</p>
 <p>關於第三題 (s1==s4) 為true，是Java的優化功能之一，編譯器會將<code>&quot;Hel&quot;+&quot;lo&quot;</code>當作<code>&quot;Hello&quot;</code>，因此道理和(s1==s2)相同。</p>
 <p>關於第四題，近似於第二題的概念，具體來說<code>String s5 = &quot;Hel&quot; + new String(&quot;lo&quot;);</code>做了三件事：</p>
 <ol>
