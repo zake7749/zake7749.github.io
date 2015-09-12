@@ -11,16 +11,16 @@
     
 
     
-    <meta name="description">
+    <meta name="description" content="1234567891011121314151617181920212223242526272829303132333435363738/* * 	What is the output of this program ? *	猜猜看，這個程式的輸出是什麼？ */public class ConstanPool &amp;#123;	public static void main(String[] args)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="淺談Java的常數池">
 <meta property="og:url" content="http://zake7749.github.io/2015/09/08/constantPool/index.html">
 <meta property="og:site_name" content="雷德麥的藏書閣">
-<meta property="og:description">
-<meta property="og:updated_time" content="2015-09-10T03:34:45.000Z">
+<meta property="og:description" content="1234567891011121314151617181920212223242526272829303132333435363738/* * 	What is the output of this program ? *	猜猜看，這個程式的輸出是什麼？ */public class ConstanPool &amp;#123;	public static void main(String[] args)">
+<meta property="og:updated_time" content="2015-09-12T10:46:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="淺談Java的常數池">
-<meta name="twitter:description">
+<meta name="twitter:description" content="1234567891011121314151617181920212223242526272829303132333435363738/* * 	What is the output of this program ? *	猜猜看，這個程式的輸出是什麼？ */public class ConstanPool &amp;#123;	public static void main(String[] args)">
 <link rel="publisher" href="110210184472476277760">
 
     
@@ -39,7 +39,7 @@
   <body>
     <header>
       
-<div>
+<div class="blur">
 		
 			<div id="textlogo">
 				<h1 class="site-name"><a href="/" title="雷德麥的藏書閣">雷德麥的藏書閣</a></h1>
@@ -84,15 +84,14 @@
 </header>
 	<div class="article-content">
 		
-		<script src="https://gist.github.com/zake7749/e38dea3e476ea907d5c0.js"></script>
-
+		<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * 	What is the output of this program ?</span><br><span class="line"> *	猜猜看，這個程式的輸出是什麼？</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="label">public</span> class ConstanPool &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(<span class="keyword">String[] </span>args) &#123;</span><br><span class="line">		</span><br><span class="line">		ConstanPool <span class="preprocessor">cp</span> = new ConstanPool()<span class="comment">;</span></span><br><span class="line">		<span class="preprocessor">cp</span>.aboutString()<span class="comment">;</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void aboutString()&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">String </span><span class="literal">s1</span> = <span class="string">"Hello"</span><span class="comment">;</span></span><br><span class="line">		<span class="keyword">String </span><span class="literal">s2</span> = <span class="string">"Hello"</span><span class="comment">;</span></span><br><span class="line">		<span class="keyword">String </span><span class="literal">s3</span> = new <span class="keyword">String("Hello");</span><br><span class="line"></span>		<span class="keyword">String </span><span class="literal">s4</span> = <span class="string">"Hel"</span> + <span class="string">"lo"</span><span class="comment">;</span></span><br><span class="line">		<span class="keyword">String </span><span class="literal">s5</span> = <span class="string">"Hel"</span> + new <span class="keyword">String("lo");</span><br><span class="line"></span>		<span class="keyword">String </span><span class="literal">s7</span> = <span class="string">"He"</span><span class="comment">;</span></span><br><span class="line">		<span class="keyword">String </span><span class="literal">s8</span> = <span class="string">"llo"</span><span class="comment">;</span></span><br><span class="line">		<span class="keyword">String </span><span class="literal">s9</span> = <span class="literal">s7</span>+<span class="literal">s8</span><span class="comment">;</span></span><br><span class="line">		<span class="keyword">String </span><span class="literal">s10</span> = new <span class="keyword">String("Hello");</span><br><span class="line"></span>		</span><br><span class="line">		<span class="comment">/*</span><br><span class="line">		 * Try this :)</span><br><span class="line">		 */</span></span><br><span class="line">		 </span><br><span class="line">		System.out.println(<span class="literal">s1</span>=<span class="label">=s2</span>)<span class="comment">;</span></span><br><span class="line">		System.out.println(<span class="literal">s1</span>=<span class="label">=s3</span>)<span class="comment">;</span></span><br><span class="line">		System.out.println(<span class="literal">s1</span>=<span class="label">=s4</span>)<span class="comment">;</span></span><br><span class="line">		System.out.println(<span class="literal">s1</span>=<span class="label">=s5</span>)<span class="comment">;</span></span><br><span class="line">		System.out.println(<span class="literal">s1</span>=<span class="label">=s9</span>)<span class="comment">;</span></span><br><span class="line">		System.out.println(<span class="literal">s3</span>=<span class="label">=s10</span>)<span class="comment">;</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <h3 id="Answer">Answer</h3><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">true</span></span><br><span class="line"><span class="literal">false</span></span><br><span class="line"><span class="literal">true</span></span><br><span class="line"><span class="literal">false</span></span><br><span class="line"><span class="literal">false</span></span><br><span class="line"><span class="literal">false</span></span><br></pre></td></tr></table></figure>
 <h4 id="這是什麼巫術_?">這是什麼巫術 ?</h4><p>首先，在Java中的<code>==</code>有兩種意涵：</p>
 <blockquote>
 <p>對於基本資料型態，比對兩者的數值<br>對於物件，則是比對兩者存放的位置</p>
 </blockquote>
-<p>String是個物件，所以對String使用==，我們其實是在比較物件的記憶體位置，這就解決了最後一個問題，s3與s10都是經過<code>new</code>配置而成，<br>實際上new傳回了兩個String，只不過他們的字串值都叫做Hello而已，比對兩者的位置當然會得出false。</p>
+<p>String是個物件，所以對String使用==，我們其實是在比較物件的記憶體位置，這就解決了最後一個問題，s3與s10都是經過<code>new</code>配置而成，實際上new傳回了兩個String，只不過他們的字串值都叫做Hello而已，比對兩者的位置當然會得出false。</p>
 <p>如果明白了最後一題在搞什麼花樣，問題來了，為什麼第一題是true？</p>
 <h4 id="常數池">常數池</h4><p>讓我們從答案往回推，既然第一題是true，也就代表s1與s2所指向的是<strong>同一個物件</strong>，而為何會指向同一個物件呢？會不會是Java存在一個特殊空間，把<strong>編譯時期</strong>就已經確定的<strong>常數(constant)</strong>包進.class，執行時再從這個空間統一拿出？</p>
 <p>正確答案，這個特殊空間稱為常數池(constant pool)，這玩意兒在JVM中相當重要，它存放兩種東西：</p>
@@ -102,7 +101,7 @@
 <li><p>Symbolic References<br>主要是類別和介面的<a href="https://en.wikipedia.org/wiki/Fully_qualified_name" target="_blank" rel="external">Fully qualified name</a>，欄位和方法的名稱。</p>
 </li>
 </ul>
-<p>每當編譯完成，編譯器這些東西便會被包進.class中，Java原始碼中的每一個字面量會被構成一個常數表，我們能以索引的型式參照它。而當JVM載入這份.class檔時，會特別為常數池的在方法區建立一個資料結構，更重要的是，JVM會把常數表中所有的字面量在Heap上生成一個實例(即是String.intern()的行為)。</p>
+<p>每當編譯完成，編譯器這些東西便會被包進.class中，原始碼中每一個字面量會被統一編成一個常數表，我們能以索引的型式參照它。而當JVM載入這份.class檔時，會特別為常數池在方法區建立一個資料結構，更重要的是，JVM會把常數表中所有的字面量在Heap上生成一個實例(即是String.intern()的工作內容)。</p>
 <p>除了String，Java對<code>double</code>及<code>float</code>以外的基本類別在區間<code>-128~127</code>都實作了常數池，也就是說</p>
 <figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="constant">Integer i1</span> = <span class="number">1</span>;</span><br><span class="line"><span class="constant">Integer i2</span> = <span class="number">1</span>;</span><br><span class="line"><span class="constant">Integer i3</span> = <span class="number">128</span>;</span><br><span class="line"><span class="constant">Integer i4</span> = <span class="number">128</span>;</span><br><span class="line"><span class="constant">System.out.println(i1</span>==i2);<span class="comment">//true</span></span><br><span class="line"><span class="constant">System.out.println(i3</span>==i4);<span class="comment">//false</span></span><br></pre></td></tr></table></figure>
 <p>關於這點，我們也可從Integer類別中valueOf的實作得到證實：</p>
@@ -133,7 +132,7 @@
 <li>heap 產生 “lo”</li>
 <li>使用String方法.append()合併”Hel”與”lo”，傳回一個新字串給s5</li>
 </ol>
-<p>第五題則是和第三題的類比，會回傳false可不是因為它是拆成He與llo，而是跟先前提到的優化有關，它只會進行常數的優化，這是因為編譯器不知道我們在<code>String s9 = s7+s8;</code>這行前，會不會對<code>s7</code>與<code>s8</code>的值進行修改，若貿然的假設<code>s7</code>仍是He或<code>s8</code>仍是llo，反而可能造成預期外的錯誤，這風險可不是編譯器能承擔的，所以自然也不會處理這個部分。</p>
+<p>第五題則是和第三題的類比，會回傳false可不是因為它是拆成He與llo，而是跟先前提到的優化有關，它只會進行常數的優化，這是因為編譯器不知道我們在<code>String s9 = s7+s8;</code>這行前，會不會對<code>s7</code>與<code>s8</code>的值進行修改，若貿然的假設<code>s7</code>仍是He或<code>s8</code>仍是llo，反而可能導致預期外的錯誤，這風險可不是編譯器能承擔的，所以自然也不會負責這個部分。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
