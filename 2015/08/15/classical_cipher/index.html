@@ -30,7 +30,7 @@ Welcome to modern">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/4/41/English-slf.png">
 <meta property="og:image" content="http://1.bp.blogspot.com/-CLC48A92h_w/VJFiTQvAhCI/AAAAAAAAAQk/XOSwXGlgeho/s1600/hILL%2BCIPHER.png">
 <meta property="og:image" content="https://3.bp.blogspot.com/-DwYbQG7U6u0/VGWGDLIZM-I/AAAAAAAAAMM/tXsTlLvCw14/s400/300px-Vigene%CC%80re_square.svg.png">
-<meta property="og:updated_time" content="2015-09-07T13:21:37.000Z">
+<meta property="og:updated_time" content="2015-09-13T10:27:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="古典密碼學">
 <meta name="twitter:description" content="古典密碼學已經被電腦打爆了，但這跟它重不重要一點關係都沒有。── 我的資安導師總是這樣嘮叨著……
@@ -107,9 +107,8 @@ Welcome to modern">
 <p>最近重新改寫以前的<a href="http://sogacsie.blogspot.tw/" target="_blank" rel="external">Blog</a>，終於理解這句話的意涵。舉凡近代加密演算法，多為古典密碼學<strong>手段</strong>的組合，只不過以前人力與能力都不及。</p>
 <p>比方說你不會想把16個字母放進一個矩陣中，每個查表代換10次，再每行平移幾個單位，然後各別乘上一個矩陣，最後再和別的矩陣做XOR邏輯判斷。</p>
 <p><em>Welcome to modern cryptography</em></p>
-<p>一個正常人不會想用紙筆來圈圈畫畫這些詭異的流程。不過若將這些細項拆開來看，就不會覺得那麼艱澀。平移對應到移項式密碼，代換跟替換式密碼有關，矩陣運算則是來自希爾密碼，XOR就比較特別了些，但兩無關序列間的運算，可讓人追溯至維吉尼亞密碼的金鑰概念，這些都屬於古典加密的範疇。所以若想踏入近代密碼的殿堂，古典密碼當為一個必經的前哨站。</p>
+<p>這也太繁瑣了，正常人才不會想圈圈畫畫這些詭異的流程。不過，若將這些細項拆開來看，平移對應到移項式密碼，代換跟替換式密碼有關，矩陣運算則是來自希爾密碼，XOR就比較特別了些，但兩無關序列間的運算，可讓人追溯至維吉尼亞密碼的金鑰概念，這些都屬於古典加密的範疇。所以若想踏入近代密碼的殿堂，古典密碼當為一個必經的前哨站，助於釐清算法本身的原理與優劣勢。</p>
 <a id="more"></a>
-<p>相較古文，追加了攻擊類型的紀錄，或許其不該包含於古典密碼學，但是對於初入資訊領域的生手而言，這應該會是相當重要的概念。</p>
 <hr>
 <h2 id="基本概念">基本概念</h2><h4 id="明文_(Plain_text)">明文 (Plain text)</h4><p>即是要加密的內容，不過，文不一定單指文字，也包含了圖片、音樂、各式各樣的檔案都可以當作明文。又因為明文的單字為Plain text，在密碼學上，我們常常用大寫字母<code>P</code>來表示它。</p>
 <h4 id="密文_(Cipher_text)">密文 (Cipher text)</h4><p>呃…顧名思義，加密後的結果，跟明文一樣能有很多種型式，<a href="https://code.google.com/p/corkami/source/detail?r=1906" target="_blank" rel="external">比方可以把圖片加密成另一張圖片</a>。因為單字是Cipher text，所以用<code>C</code>來表示它。</p>
@@ -146,9 +145,8 @@ Welcome to modern">
 <p>例如 ABCDEFGHIJK，在K=3時，得出密文DEFGHIJKLMN。(K=3是最初的凱撒密碼)<br>解密時 P = (C - K)mod 26。</p>
 <p>由於凱撒密碼只是對英文字母進行簡單的代換，我們可以透過分析各個字母出現的頻率推斷明文，比方說英文書寫上最常出現的字為 E ，我們便可以猜測密文中出現最多次數的英文字母是 E 的代換，藉此得出 P 與 C 的關係。</p>
 <p>由於這個方法主要是觀察英文字母使用的頻率，故又稱為頻率分析法，對於簡單的字母代換，頻率分析往往是有效的手段。</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/English-slf.png" alt="FrequencyofAlphabet"></p>
-<p>(“English-slf”。使用來自维基共享资源-的創用CC姓名標示-相同方式分享 3.0 條款授權)</p>
-<p>也因其架構簡單，現今電腦已能用暴力法輕易破解，故只用於字謎類遊戲(ROT-13)。</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/English-slf.png" alt="&quot;English-slf&quot;。使用來自维基共享资源-的創用CC姓名標示-相同方式分享 3.0 條款授權"></p>
+<p>也因其架構簡單，現今電腦已能用暴力法輕易破解，故鮮少在資安領域出現了，不過仍常在字謎遊戲見到它的蹤影，比如ROT-13。</p>
 <h5 id="2-希爾密碼">2.希爾密碼</h5><p>使用矩陣進行加密，由密文構成的密文矩陣C = KP，其中P為明文構成的明文矩陣，K為密鑰矩陣，密鑰矩陣須為可逆才可供解密</p>
 <p><img src="http://1.bp.blogspot.com/-CLC48A92h_w/VJFiTQvAhCI/AAAAAAAAAQk/XOSwXGlgeho/s1600/hILL%2BCIPHER.png" alt="HillCipher"></p>
 <p>希爾加密避開了頻率分析攻擊，然而在已知明文的情況下，可透過逆運算求得金鑰，無法保證安全性。</p>
@@ -179,7 +177,7 @@ Welcome to modern">
 <p>用最最直觀的角度來看，要做一個加密流程很容易，我們可以有很多把金鑰，再搭配各式各樣的函式打造自己的流程，反覆做個幾十次，甚至幾百次，雖然它的效率不怎麼樣<span style="color:#666">(其實這是個大問題)</span>，但只要流程與金鑰不外洩，這個演算法理論上牢不可破。</p>
 <p>但是換個立場，如果我們是使用者，今天開發者送來了一個自行開發的加密算法，就像上述的流程一樣繁瑣，明文與密文間根本找不著對應。乍看之下，這個加密器可說是有效的，但是，如果它擁有一把尚未發現的萬用鑰匙呢？或是說這幾百道的換算其實能被規約成兩三條式子，是不是藏著一些未發現的漏洞或暗門？。</p>
 <p>對這些疑問，身為使用者的我們無法斷言，至於開發者？如果知道，那他便是最危險的攻擊者。若連開發者也不能肯定，這個算法隨時都有可能會爆炸，更糟糕的是，爆炸按鈕還是我們自己觸發的。</p>
-<p>確實，加密流程較少人知道會較安全，但暗門也較難找出。對加密這種保護機密資料的演算法，應該公開給全世界敲敲打打，讓公眾好好審視一番，把流程都公開，如果還是牢不可破，這個算法的安全性便有全球資安好手掛保證，像是近代算法中的AES、A5/1，便透過各方人才的審核，不但確保了使用上了安全性，也建立出自己的好口碑。</p>
+<p>確實，加密流程較少人知道會較安全，但暗門也較難找出。對這種保護機密資料的演算法，應該公開給全世界敲敲打打，把流程都公開，如果還是牢不可破，這個算法的安全性便有全球資安好手掛保證，像是近代算法中的AES、A5/1，便透過各方人才的審核，不但確保了使用上了安全性，也建立出自己的好口碑。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -283,7 +281,7 @@ Welcome to modern">
 			
 		
 			
-				<li><a href="/tags/面試問題/" title="面試問題">面試問題<sup>1</sup></a></li>
+				<li><a href="/tags/解題/" title="解題">解題<sup>1</sup></a></li>
 			
 		
 			
@@ -298,7 +296,7 @@ Welcome to modern">
   <div class="tagcloudlist">
     <p class="asidetitle">Tag Cloud</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/密碼學/" style="font-size: 10px;">密碼學</a> <a href="/tags/演講摘記/" style="font-size: 20px;">演講摘記</a> <a href="/tags/訊息鑑別/" style="font-size: 10px;">訊息鑑別</a> <a href="/tags/遊戲設計/" style="font-size: 20px;">遊戲設計</a> <a href="/tags/面試問題/" style="font-size: 10px;">面試問題</a>
+       <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/密碼學/" style="font-size: 10px;">密碼學</a> <a href="/tags/演講摘記/" style="font-size: 20px;">演講摘記</a> <a href="/tags/解題/" style="font-size: 10px;">解題</a> <a href="/tags/訊息鑑別/" style="font-size: 10px;">訊息鑑別</a> <a href="/tags/遊戲設計/" style="font-size: 20px;">遊戲設計</a>
     </div>
   </div>
 
