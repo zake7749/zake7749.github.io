@@ -4,22 +4,35 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>雷德麥的藏書閣</title>
+    <title>SocketProgramming | 雷德麥的藏書閣</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Justin Yang">
     
 
     
-    <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="雷德麥的藏書閣">
-<meta property="og:url" content="http://zake7749.github.io/index.html">
+    <meta name="description" content="建立一個Socket使用socket(int,int,int)，它能幫助我們在kernel中建立一個socket，並傳回對該socket的檔案描述符。
+Prototype1int socket(int domain, int type, int protocol);
+Argumentsdomain定義了socket要在哪個領域溝通，常用的有2種：
+
+AF_UNIX/AF_LOCAL：用在本機程序與">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SocketProgramming">
+<meta property="og:url" content="http://zake7749.github.io/2015/10/17/SocketProgramming/index.html">
 <meta property="og:site_name" content="雷德麥的藏書閣">
-<meta property="og:description">
+<meta property="og:description" content="建立一個Socket使用socket(int,int,int)，它能幫助我們在kernel中建立一個socket，並傳回對該socket的檔案描述符。
+Prototype1int socket(int domain, int type, int protocol);
+Argumentsdomain定義了socket要在哪個領域溝通，常用的有2種：
+
+AF_UNIX/AF_LOCAL：用在本機程序與">
+<meta property="og:updated_time" content="2015-10-17T15:55:56.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="雷德麥的藏書閣">
-<meta name="twitter:description">
+<meta name="twitter:title" content="SocketProgramming">
+<meta name="twitter:description" content="建立一個Socket使用socket(int,int,int)，它能幫助我們在kernel中建立一個socket，並傳回對該socket的檔案描述符。
+Prototype1int socket(int domain, int type, int protocol);
+Argumentsdomain定義了socket要在哪個領域溝通，常用的有2種：
+
+AF_UNIX/AF_LOCAL：用在本機程序與">
 <link rel="publisher" href="110210184472476277760">
 
     
@@ -71,23 +84,18 @@
 </div>
     </header>
     <div id="container">
-      <div id="main" class="moveMain">
-
-	<div class = "headmeta">
-	<time class="datetime" datetime="2015-10-17T12:57:24.000Z" itemprop="datePublished">2015-10-17</time><a class="cat-link" href="/categories/程式語言/">程式語言</a><a class="cat-link" href="/categories/程式語言/C/">C</a>
-  	</div>
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
+      <div id="main" class="post moveMain" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
   <h1 itemprop="name">
     
       <a href="/2015/10/17/SocketProgramming/" title="SocketProgramming" itemprop="url">SocketProgramming</a>
   </h1>
 </header>
-    <div class="article-content">
-        
-        <h2 id="建立一個Socket">建立一個Socket</h2><p>使用<code>socket(int,int,int)</code>，它能幫助我們在kernel中建立一個socket，並傳回對該socket的<a href="https://zh.wikipedia.org/wiki/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6" target="_blank" rel="external">檔案描述符</a>。</p>
+	<div class="article-content">
+		
+		<h2 id="建立一個Socket">建立一個Socket</h2><p>使用<code>socket(int,int,int)</code>，它能幫助我們在kernel中建立一個socket，並傳回對該socket的<a href="https://zh.wikipedia.org/wiki/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6" target="_blank" rel="external">檔案描述符</a>。</p>
 <h3 id="Prototype">Prototype</h3><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">socket</span><span class="params">(<span class="keyword">int</span> domain, <span class="keyword">int</span> type, <span class="keyword">int</span> protocol)</span></span>;</span><br></pre></td></tr></table></figure>
 <h3 id="Arguments">Arguments</h3><h4 id="domain">domain</h4><p>定義了socket要在哪個領域溝通，常用的有2種：</p>
 <ul>
@@ -170,14 +178,9 @@
 <h3 id="Example-5">Example</h3><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int forClientSockfd<span class="comment">;</span></span><br><span class="line">struct sockaddr_in client_info<span class="comment">;</span></span><br><span class="line">int addrlen = sizeof<span class="list">(<span class="keyword">client_addr</span>)</span><span class="comment">;</span></span><br><span class="line"></span><br><span class="line">forClientSockfd = accept<span class="list">(<span class="keyword">sockfd</span>,<span class="list">(<span class="keyword">structsockaddr*</span>)</span> <span class="keyword">&amp;client_addr</span>, <span class="keyword">&amp;addrlen</span>)</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
 <h2 id="Server_範例程式">Server 範例程式</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc , <span class="keyword">char</span> *argv[])</span></span><br><span class="line"></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="comment">//socket的建立</span></span><br><span class="line">    <span class="keyword">char</span> inputBuffer[<span class="number">256</span>] = &#123;&#125;;</span><br><span class="line">    <span class="keyword">char</span> message[] = &#123;<span class="string">"Hi,this is server.\n"</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> sockfd = <span class="number">0</span>,forClientSockfd = <span class="number">0</span>;</span><br><span class="line">    sockfd = socket(AF_INET , SOCK_STREAM , <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (sockfd == -<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Fail to create a socket."</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//socket的連線</span></span><br><span class="line">    <span class="keyword">struct</span> sockaddr_in serverInfo,clientInfo;</span><br><span class="line">    <span class="keyword">int</span> addrlen = <span class="keyword">sizeof</span>(clientInfo);</span><br><span class="line">    bzero(&amp;serverInfo,<span class="keyword">sizeof</span>(serverInfo));</span><br><span class="line"></span><br><span class="line">    serverInfo.sin_family = PF_INET;</span><br><span class="line">    serverInfo.sin_addr.s_addr = INADDR_ANY;</span><br><span class="line">    serverInfo.sin_port = htons(<span class="number">8700</span>);</span><br><span class="line">    bind(sockfd,(<span class="keyword">struct</span> sockaddr *)&amp;serverInfo,<span class="keyword">sizeof</span>(serverInfo));</span><br><span class="line">    listen(sockfd,<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">        forClientSockfd = accept(sockfd,(<span class="keyword">struct</span> sockaddr*) &amp;clientInfo, &amp;addrlen);</span><br><span class="line">        send(forClientSockfd,message,<span class="keyword">sizeof</span>(message),<span class="number">0</span>);</span><br><span class="line">        recv(forClientSockfd,inputBuffer,<span class="keyword">sizeof</span>(inputBuffer),<span class="number">0</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Get:%s\n"</span>,inputBuffer);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="Client_範例程式">Client 範例程式</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc , <span class="keyword">char</span> *argv[])</span></span><br><span class="line"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//socket的建立</span></span><br><span class="line">    <span class="keyword">int</span> sockfd = <span class="number">0</span>;</span><br><span class="line">    sockfd = socket(AF_INET , SOCK_STREAM , <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (sockfd == -<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Fail to create a socket."</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//socket的連線</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">struct</span> sockaddr_in info;</span><br><span class="line">    bzero(&amp;info,<span class="keyword">sizeof</span>(info));</span><br><span class="line">    info.sin_family = PF_INET;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//localhost test</span></span><br><span class="line">    info.sin_addr.s_addr = inet_addr(<span class="string">"127.0.0.1"</span>);</span><br><span class="line">    info.sin_port = htons(<span class="number">8700</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> err = connect(sockfd,(<span class="keyword">struct</span> sockaddr *)&amp;info,<span class="keyword">sizeof</span>(info));</span><br><span class="line">    <span class="keyword">if</span>(err==-<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Connection error"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//Send a message to server</span></span><br><span class="line">    <span class="keyword">char</span> message[] = &#123;<span class="string">"Hi there"</span>&#125;;</span><br><span class="line">    <span class="keyword">char</span> receiveMessage[<span class="number">100</span>] = &#123;&#125;;</span><br><span class="line">    send(sockfd,message,<span class="keyword">sizeof</span>(message),<span class="number">0</span>);</span><br><span class="line">     recv(sockfd,receiveMessage,<span class="keyword">sizeof</span>(receiveMessage),<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s"</span>,receiveMessage);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"close Socket\n"</span>);</span><br><span class="line">    close(sockfd);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
+  
+	</div>
+		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
 <div class="article-categories">
@@ -195,258 +198,35 @@
 
 
 
-
-<div class="comments-count">
+	<div class="article-share" id="share">
 	
-</div>
+	  <div data-url="http://zake7749.github.io/2015/10/17/SocketProgramming/" data-title="SocketProgramming | 雷德麥的藏書閣" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
 
 </footer>
 
-
-    </article>
-
-
-
-
-
-
-	<div class = "headmeta">
-	<time class="datetime" datetime="2015-09-22T14:22:58.000Z" itemprop="datePublished">2015-09-22</time><a class="cat-link" href="/categories/演算法/">演算法</a>
-  	</div>
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/09/22/insertionSort/" title="插入排序法" itemprop="url">插入排序法</a>
-  </h1>
-</header>
-    <div class="article-content">
-        
-        <p>插入排序(insertion sort)是一種排序演算法，它將一個數列分成<strong>已排序</strong>與<strong>未排序</strong>兩個部分，透過不斷將未排序數列插入至已排序數列的正確位置達成，嗯…這個定義唸起來實在有些饒口，不如讓我們看個實例：</p>
-<p>假設我們要由小到大排序數列：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">25</span> <span class="number">49</span> <span class="number">22</span> <span class="number">33</span> <span class="number">47</span></span><br></pre></td></tr></table></figure>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/09/22/insertionSort/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/演算法/">演算法</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/學習筆記/">學習筆記</a><a href="/tags/排序/">排序</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
+   	       
+	</article>
 	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/09/22/insertionSort/"  title="插入排序法">
+ <strong>下一篇：</strong><br/> 
+ <span>插入排序法
+</span>
+</a>
 </div>
 
-</footer>
+</nav>
 
-
-    </article>
-
-
-
-
-
-
-	<div class = "headmeta">
-	<time class="datetime" datetime="2015-09-18T05:45:53.000Z" itemprop="datePublished">2015-09-18</time><a class="cat-link" href="/categories/演算法/">演算法</a>
-  	</div>
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/09/18/Introduction-to-algorithm/" title="初探演算法" itemprop="url">初探演算法</a>
-  </h1>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<p>「試著用一句話解釋什麼是演算法？演算法又該具備些什麼？」</p>
-</blockquote>
-<p>才開學一個禮拜，光是這個問題就足足被問到三次（╯‵□′）╯︵┴─┴</p>
-<h2 id="用一句話來回答">用一句話來回答</h2><p>我想任何一個在資訊領域打滾的人，多多少少都聽過「演算法」這個名詞，乃至能滔滔不絕的枚舉各類演算法：比如排序一個陣列可以怎麼做，或是怎麼去搜索一顆給定的樹等等。</p>
-<p>但聽到只能以一句話來形容，著實令我徬徨了一會兒，記得最後是這麼回答的：「就是解決一個問題的方法。」</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/09/18/Introduction-to-algorithm/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/演算法/">演算法</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/學習筆記/">學習筆記</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
 	
-</div>
 
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-	<div class = "headmeta">
-	<time class="datetime" datetime="2015-09-08T11:18:35.000Z" itemprop="datePublished">2015-09-08</time><a class="cat-link" href="/categories/程式語言/">程式語言</a><a class="cat-link" href="/categories/程式語言/Java/">Java</a>
-  	</div>
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/09/08/constantPool/" title="淺談Java的常數池" itemprop="url">淺談Java的常數池</a>
-  </h1>
-</header>
-    <div class="article-content">
-        
-        <figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * 	What is the output of this program ?</span><br><span class="line"> *	猜猜看，這個程式的輸出是什麼？</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="label">public</span> class ConstanPool &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(<span class="keyword">String[] </span>args) &#123;</span><br><span class="line">		</span><br><span class="line">		ConstanPool <span class="preprocessor">cp</span> = new ConstanPool()<span class="comment">;</span></span><br><span class="line">		<span class="preprocessor">cp</span>.aboutString()<span class="comment">;</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public void aboutString()&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">String </span><span class="literal">s1</span> = <span class="string">"Hello"</span><span class="comment">;</span></span><br><span class="line">		<span class="keyword">String </span><span class="literal">s2</span> = <span class="string">"Hello"</span><span class="comment">;</span></span><br><span class="line">		<span class="keyword">String </span><span class="literal">s3</span> = new <span class="keyword">String("Hello");</span><br><span class="line"></span>		<span class="keyword">String </span><span class="literal">s4</span> = <span class="string">"Hel"</span> + <span class="string">"lo"</span><span class="comment">;</span></span><br><span class="line">		<span class="keyword">String </span><span class="literal">s5</span> = <span class="string">"Hel"</span> + new <span class="keyword">String("lo");</span><br><span class="line"></span>		<span class="keyword">String </span><span class="literal">s7</span> = <span class="string">"He"</span><span class="comment">;</span></span><br><span class="line">		<span class="keyword">String </span><span class="literal">s8</span> = <span class="string">"llo"</span><span class="comment">;</span></span><br><span class="line">		<span class="keyword">String </span><span class="literal">s9</span> = <span class="literal">s7</span>+<span class="literal">s8</span><span class="comment">;</span></span><br><span class="line">		<span class="keyword">String </span><span class="literal">s10</span> = new <span class="keyword">String("Hello");</span><br><span class="line"></span>		</span><br><span class="line">		<span class="comment">/*</span><br><span class="line">		 * Try this :)</span><br><span class="line">		 */</span></span><br><span class="line">		 </span><br><span class="line">		System.out.println(<span class="literal">s1</span>=<span class="label">=s2</span>)<span class="comment">;</span></span><br><span class="line">		System.out.println(<span class="literal">s1</span>=<span class="label">=s3</span>)<span class="comment">;</span></span><br><span class="line">		System.out.println(<span class="literal">s1</span>=<span class="label">=s4</span>)<span class="comment">;</span></span><br><span class="line">		System.out.println(<span class="literal">s1</span>=<span class="label">=s5</span>)<span class="comment">;</span></span><br><span class="line">		System.out.println(<span class="literal">s1</span>=<span class="label">=s9</span>)<span class="comment">;</span></span><br><span class="line">		System.out.println(<span class="literal">s3</span>=<span class="label">=s10</span>)<span class="comment">;</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/09/08/constantPool/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/程式語言/">程式語言</a>►<a class="article-category-link" href="/categories/程式語言/Java/">Java</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Java/">Java</a><a href="/tags/解題/">解題</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-	<div class = "headmeta">
-	<time class="datetime" datetime="2015-09-07T12:47:47.000Z" itemprop="datePublished">2015-09-07</time><a class="cat-link" href="/categories/程式語言/">程式語言</a><a class="cat-link" href="/categories/程式語言/語言原理/">語言原理</a>
-  	</div>
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/09/07/minimalEvaluation/" title="短路求值" itemprop="url">短路求值</a>
-  </h1>
-</header>
-    <div class="article-content">
-        
-        <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line">	What is the output of this program ?</span><br><span class="line">	猜猜看，這個程式的輸出是什麼？</span><br><span class="line">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Problem</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>) </span>&#123;</span><br><span class="line">		</span><br><span class="line">		Problem p = <span class="keyword">new</span> Problem();</span><br><span class="line">		p.evaluation();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> boolean <span class="title">sayHello</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"Hello"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">evaluation</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		</span><br><span class="line">		boolean t = <span class="keyword">true</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(t||sayHello())&#123;</span><br><span class="line">			System.<span class="keyword">out</span>.println(<span class="string">"finish"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/09/07/minimalEvaluation/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/程式語言/">程式語言</a>►<a class="article-category-link" href="/categories/程式語言/語言原理/">語言原理</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Java/">Java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-
-  <nav id="page-nav" class="clearfix">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
-  </nav>
-
-</div>
+</div>  
       <div class="openaside fadinIn" style="top: 80px; display: block;"><a class="navbutton" href="#" title="顯示側邊攔"></a></div>
 
 <div id="asidepart" class="fadeOut" style="display: none;">
@@ -634,6 +414,81 @@ $(document).ready(function(){
 });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
 
 
 
@@ -694,4 +549,4 @@ $(document).ready(function(){
 <!-- Tiny_search End -->
 
   </body>
- </html>
+</html>
