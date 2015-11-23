@@ -25,7 +25,7 @@ Prototype1int socket(int domain, int type, int protocol);
 Argumentsdomain定義了socket要在哪個領域溝通，常用的有2種：
 
 AF_UNIX/AF_LOCAL：用在本機程序與">
-<meta property="og:updated_time" content="2015-11-07T16:39:15.000Z">
+<meta property="og:updated_time" content="2015-11-23T14:39:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Socket Programming 學習筆記">
 <meta name="twitter:description" content="建立一個Socket使用socket(int,int,int)，它能幫助我們在kernel中建立一個socket，並傳回對該socket的檔案描述符。
@@ -68,7 +68,7 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
 					
 						<li><a href="/categories">Category</a></li>
 					
-						<li><a href="http://140.116.245.148/WebCourse/students/f74026284/hw1/index.html">About</a></li>
+						<li><a href="/about">About</a></li>
 					
 					<li>
  					
@@ -110,6 +110,7 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
 <h4 id="protocol">protocol</h4><p>設定socket的協定標準，一般來說都會設為0，讓kernel選擇type對應的默認協議。</p>
 <h4 id="Return_Value">Return Value</h4><p>成功產生socket時，會返回該socket的檔案描述符(socket file descriptor)，我們可以透過它來操作socket。若socket創建失敗則會回傳-1(INVALID_SOCKET)。</p>
 <h3 id="Example">Example</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span><span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc , <span class="keyword">char</span> *argv[])</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sockfd = <span class="number">0</span>;</span><br><span class="line">    sockfd = socket(AF_INET , SOCK_STREAM , <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (socket_fd == -<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Fail to create a socket."</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <h2 id="從Client連向Server">從Client連向Server</h2><p>客戶端要連向伺服端，需要先知道並儲存伺服端的IP及port，<code>netinet/in.h</code>已經為我們定義好了一個<code>struct sockaddr_in</code>來儲存這些資訊：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IPv4 AF_INET sockets:</span></span><br><span class="line"><span class="comment">// IPv6參見 sockaddr_in6</span></span><br><span class="line"><span class="keyword">struct</span> sockaddr_in &#123;</span><br><span class="line">    <span class="keyword">short</span>            sin_family;   <span class="comment">// AF_INET,因為這是IPv4;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span>   sin_port;     <span class="comment">// 儲存port No</span></span><br><span class="line">    <span class="keyword">struct</span> in_addr   sin_addr;     <span class="comment">// 參見struct in_addr</span></span><br><span class="line">    <span class="keyword">char</span>             sin_zero[<span class="number">8</span>];  <span class="comment">// Not used, must be zero */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> in_addr &#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> s_addr;          <span class="comment">// load with inet_pton()</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>有了IP跟port，我們就能使用<code>connect(int struct sockaddr, int)</code>進行客戶端與伺服端之間的連線。</p>
