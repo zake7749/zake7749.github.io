@@ -39,3 +39,19 @@
 .post-title{
 	color:#E04D37;
 }
+
+.img-detail{
+	color:#AAA;
+	font-size:14px;
+	text-align: center;
+}
+
+.img-detail::before{
+	content: "# ";
+	margin-right: 0px;
+	padding-right:0px; 
+	font-size:12px;
+	font-family: "georgia";
+	font-size: #BBB;
+	text-align: center;
+}

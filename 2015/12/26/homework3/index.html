@@ -1,0 +1,452 @@
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+    
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="雷德麥的藏書閣">
+    <title>打造一個書籤管理網站 - 雷德麥的藏書閣</title>
+    <meta name="author" content="Justin Yang">
+    
+    
+        <link rel="alternative" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <meta name="description" content="最近系上的OJ不幸陣亡，恰好這學期修了網頁設計，打算自己東敲西打搞出一個新的批改系統，其實只是想不到更好的專題。不過於網頁設計，我只算個新鮮人，以前只在別人的系統抓蟲，無中生有還真沒試過。適逢這次的作業是個書籤管理網，需要登入介面及支援線上修改，不妨就拿來小試身手吧 ~">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="打造一個書籤管理網站">
+<meta property="og:url" content="http://zake7749.github.io/2015/12/26/homework3/index.html">
+<meta property="og:site_name" content="雷德麥的藏書閣">
+<meta property="og:description" content="最近系上的OJ不幸陣亡，恰好這學期修了網頁設計，打算自己東敲西打搞出一個新的批改系統，其實只是想不到更好的專題。不過於網頁設計，我只算個新鮮人，以前只在別人的系統抓蟲，無中生有還真沒試過。適逢這次的作業是個書籤管理網，需要登入介面及支援線上修改，不妨就拿來小試身手吧 ~">
+<meta property="og:image" content="http://i.imgur.com/RyXs7Nd.png">
+<meta property="og:image" content="http://i.imgur.com/6fysL00.png">
+<meta property="og:image" content="http://i.imgur.com/VJvhkyG.jpg">
+<meta property="og:image" content="http://i.imgur.com/nDfXp06.png">
+<meta property="og:updated_time" content="2015-12-26T05:15:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="打造一個書籤管理網站">
+<meta name="twitter:description" content="最近系上的OJ不幸陣亡，恰好這學期修了網頁設計，打算自己東敲西打搞出一個新的批改系統，其實只是想不到更好的專題。不過於網頁設計，我只算個新鮮人，以前只在別人的系統抓蟲，無中生有還真沒試過。適逢這次的作業是個書籤管理網，需要登入介面及支援線上修改，不妨就拿來小試身手吧 ~">
+    
+        <meta rel="publisher" content="https://plus.google.com/+Justin Yang"/>
+    
+    
+    
+    
+        <meta property="og:image" content="/2015/12/26/homework3/http://i.imgur.com/EURBkTQ.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="http://zake7749.github.io/2015/12/26/homework3/http://i.imgur.com/EURBkTQ.jpg" />
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style.min.css" type="text/css">
+    <!--STYLES END-->
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <h1 class="header-title">
+        <a class="header-title-link" href="/ ">雷德麥的藏書閣</a>
+    </h1>
+    
+</header>
+            <nav id="sidebar" data-behavior="4">
+    
+    
+        <ul class="sidebar-buttons">
+        
+            <li class="sidebar-button">
+                
+                    <a  class="sidebar-button-link "
+                         href="/ "
+                        
+                    >
+                
+                    <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+                    <span class="sidebar-button-desc">Home</span>
+                </a>
+        </li>
+        
+            <li class="sidebar-button">
+                
+                    <a  class="sidebar-button-link "
+                         href="/all-categories"
+                        
+                    >
+                
+                    <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+                    <span class="sidebar-button-desc">Categories</span>
+                </a>
+        </li>
+        
+            <li class="sidebar-button">
+                
+                    <a  class="sidebar-button-link "
+                         href="/all-tags"
+                        
+                    >
+                
+                    <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+                    <span class="sidebar-button-desc">Tags</span>
+                </a>
+        </li>
+        
+            <li class="sidebar-button">
+                
+                    <a  class="sidebar-button-link "
+                         href="/all-archives"
+                        
+                    >
+                
+                    <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+                    <span class="sidebar-button-desc">Archive</span>
+                </a>
+        </li>
+        
+            <li class="sidebar-button">
+                
+                    <a  class="sidebar-button-link st-search-show-outputs"
+                         href="/#search"
+                        
+                    >
+                
+                    <i class="sidebar-button-icon fa fa-lg fa-search"></i>
+                    <span class="sidebar-button-desc">Search</span>
+                </a>
+        </li>
+        
+            <li class="sidebar-button">
+                
+                    <a  class="sidebar-button-link "
+                         href="/#about"
+                        
+                    >
+                
+                    <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+                    <span class="sidebar-button-desc">About</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+        <ul class="sidebar-buttons">
+        
+            <li class="sidebar-button">
+                
+                    <a  class="sidebar-button-link " href="https://github.com/zake7749" target="_blank">
+                
+                    <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+                    <span class="sidebar-button-desc">GitHub</span>
+                </a>
+        </li>
+        
+            <li class="sidebar-button">
+                
+                    <a  class="sidebar-button-link " href="https://plus.google.com/110210184472476277760" target="_blank">
+                
+                    <i class="sidebar-button-icon fa fa-lg fa-google-plus"></i>
+                    <span class="sidebar-button-desc">Google Plus</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+    
+    
+        <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title" itemprop="headline">
+            打造一個書籤管理網站
+        </h1>
+    
+    <div class="post-meta">
+    <time itemprop="datePublished" content="Sat Dec 26 2015 20:03:07 GMT+0800">
+	
+		    12月 26, 2015
+    	
+    </time>
+    
+        <span>@ </span>
+        
+    <a class="category-link" href="/categories/網頁設計/">網頁設計</a>
+
+
+    
+</div>
+</div>
+    
+    <div class="post-content markdown" itemprop="articleBody">
+        <div class="main-content-wrap">
+            <p>最近系上的OJ不幸陣亡，恰好這學期修了網頁設計，打算自己東敲西打搞出一個新的批改系統，<s>其實只是想不到更好的專題</s>。不過於網頁設計，我只算個新鮮人，以前只在別人的系統抓蟲，無中生有還真沒試過。適逢這次的作業是個書籤管理網，需要登入介面及支援線上修改，不妨就拿來小試身手吧 ~</p>
+<a id="more"></a>
+<p>目前整個網站都放在<a href="https://github.com/zake7749/Leaftag" target="_blank" rel="external">Github</a>上，這篇文章只摘記了一些實作方法與概念，若有任何問題或改進方向歡迎留言及提出Issue。</p>
+<h2 id="u7DB2_u7AD9_u6982_u89C0"><a href="#u7DB2_u7AD9_u6982_u89C0" class="headerlink" title="網站概觀"></a>網站概觀</h2><p><img src="http://i.imgur.com/RyXs7Nd.png" alt="Imgur"></p>
+<p>這是一個簡單的書籤管理網站，不妨就當成會走路的「我的最愛」吧。</p>
+<p>使用者登入後，就能夠新增/刪改自己的書籤集。此外，連結多起來時，也提供了篩選功能可快速取得需要的書籤。</p>
+<p>作業要求是這麼說啦，不過目前登入與註冊都蠻方便的，所以當成個線上筆記條也不賴。以後出門在外，瀏覽到了什麼精彩文章，也不必再發訊息給自己，就直接在<a href="http://140.116.245.148/WebCourse/students/f74026284/hw3/login.html" target="_blank" rel="external">LeafTag</a>上留下足跡吧。</p>
+<h2 id="u5F9E_u767B_u5165_u9801_u9762_u8AAA_u8D77"><a href="#u5F9E_u767B_u5165_u9801_u9762_u8AAA_u8D77" class="headerlink" title="從登入頁面說起"></a>從登入頁面說起</h2><p><img src="http://i.imgur.com/6fysL00.png" alt="Imgur"><br><span class="img-detail">很熟悉嗎？其實是照著Github刻出來的(´･ω･`) </span></p>
+<p>網站的運作流程大致是這樣：</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">              SESSION之壁</span><br><span class="line">  login.html  --login--&gt;   index.php - 標籤管理</span><br><span class="line">      |<span class="string">           </span>|<span class="string">        metaSearch.php - 資料搜尋</span><br><span class="line">      </span>|<span class="string">           </span>|<span class="string">        update.php - 個人資訊管理</span><br><span class="line">register.html     </span>|<span class="string">        上述三者使用navbar.html切換</span></span><br></pre></td></tr></table></figure>
+<p>當登入成功後，會在伺服端建立<code>$_SESSION[&#39;userID&#39;]</code>，除了告知目前的使用者是誰外，也可透過檢測<code>$_SESSION[&#39;userID&#39;]</code>來阻止未登入用戶存取頁面：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//如果沒記錄登入訊息，就把用戶送回登入頁面</span><br><span class="line"><span class="php"><span class="meta">&lt;?php</span></span><br><span class="line">  session_start();</span><br><span class="line">  <span class="keyword">if</span>(!<span class="keyword">isset</span>($_SESSION[<span class="string">'userID'</span>]))&#123;</span><br><span class="line">    header(<span class="string">"Location: login.html"</span>);</span><br><span class="line">  &#125;</span><br><span class="line"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>除了metasearch以外，各頁面對php的請求統一會送往<code>action.php</code>，在表單中繪設置一個隱藏欄位或參數<code>action</code>，我透過<code>switch(_POST[&quot;action&quot;])</code>來告知接下來伺服端該做什麼：</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">/<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line">    Get the action command from client</span><br><span class="line"></span><br><span class="line">    Usage:</span><br><span class="line">      switch(_POST[<span class="string">"action"</span>])</span><br><span class="line"></span><br><span class="line">    Value:</span><br><span class="line">      - 0 : login</span><br><span class="line">      - 1 : Register</span><br><span class="line">      - 2 : Logout</span><br><span class="line">      - 3 : Add a tag</span><br><span class="line">      - 4 : Modify a tag</span><br><span class="line">      - 5 : Delete a tag</span><br><span class="line">      - 6 : Update personal data.</span><br><span class="line">      - 7 : List all the tags</span><br><span class="line"><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>/</span><br><span class="line">switch ($_POST[<span class="string">"action"</span>]) &#123;</span><br><span class="line">  case '0':</span><br><span class="line">      login($link);</span><br><span class="line">    break;</span><br><span class="line">  case '1':</span><br><span class="line">      register($link);</span><br><span class="line">    break;</span><br><span class="line">  case '2':</span><br><span class="line">      logout();</span><br><span class="line">    break;</span><br><span class="line">  case '3':</span><br><span class="line">      addTag($link);</span><br><span class="line">    break;</span><br><span class="line">  case '4':</span><br><span class="line">      modifyTag($link);</span><br><span class="line">    break;</span><br><span class="line">  case '5':</span><br><span class="line">      deleteTag($link);</span><br><span class="line">    break;</span><br><span class="line">  case '6':</span><br><span class="line">      updateData($link);</span><br><span class="line">    break;</span><br><span class="line">  case '7':</span><br><span class="line">      listAllTags($link);</span><br><span class="line">    break;</span><br><span class="line">  default:</span><br><span class="line">    break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以login為例：</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> login($db)&#123;</span><br><span class="line"></span><br><span class="line">  $escapeUN = mysql_real_escape_string($_POST[<span class="string">"username"</span>]);</span><br><span class="line">  $query= <span class="string">"SELECT * FROM `user_table` WHERE username = '"</span>.$escapeUN.<span class="string">"'"</span>;</span><br><span class="line">  $result= mysql_query($query,$db) or die (<span class="string">"Error in query: $query."</span>. mysql_error());</span><br><span class="line">  $rows=mysql_fetch_array($result);</span><br><span class="line">  $password = $rows[<span class="number">1</span>];</span><br><span class="line">  if(md5($_POST[<span class="string">"password"</span>]) == $password)&#123;</span><br><span class="line">    echo(<span class="string">"Success"</span>);</span><br><span class="line">    $_SESSION[<span class="string">"userID"</span>] = $_POST[<span class="string">"username"</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  else&#123;</span><br><span class="line">    echo(<span class="string">"Wrong username or password.&lt;br/&gt;"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>action.php</code> 不會輸出任何頁面，而只簡單的回報工作成果，這全都要歸功於 AJAX 的發明。</p>
+<h3 id="u5229_u7528AJAX_u4F86_u6E9D_u901A_u5427"><a href="#u5229_u7528AJAX_u4F86_u6E9D_u901A_u5427" class="headerlink" title="利用AJAX來溝通吧"></a>利用AJAX來溝通吧</h3><p>在上古時期，客戶端使用Form提交時，會把資料以POST/GET的方式丟到後端，伺服端處理好請求後，再回傳一個新的網頁，最糟糕的是，這個全新網頁和原本使用者用來提交資料的網頁幾乎一模一樣，無疑是在浪費頻寬與時間。<br>於是有人想到了，我們每次提交表單時，<strong>就只更新需要更新的部分</strong>，別把整個頁面都重新整理，這就是AJAX的中心思想。以這個網站的<code>login.html</code>為例，使用者送出請求後，如果成功，直接登入系統，失敗則只在 Sign in 下追加一行提示訊息，而非把整頁面重刷一次。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--login.html表單內容--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">"user-information"</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"action"</span> <span class="attr">value</span>=<span class="string">"0"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-group"</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"username"</span>&gt;</span>Username<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">name</span>=<span class="string">"username"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-group"</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"password"</span>&gt;</span>Password<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"password"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">id</span>=<span class="string">"pw"</span> <span class="attr">name</span>=<span class="string">"password"</span> &gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">class</span>=<span class="string">"gitbuh-submit-button"</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"Sign in"</span> <span class="attr">onClick</span>=<span class="string">"Submit()"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"response-text"</span> <span class="attr">class</span>=<span class="string">"feedback"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>按下送出後，AJAX會將資料擲往伺服器，再將伺服器的輸出(<code>echo</code>/<code>print</code>)填入id為<code>response-text</code>的區塊中。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--JQuery with AJAX --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="keyword">var</span> Submit=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    $.ajax(&#123;</span><br><span class="line">            <span class="comment">//該傳往哪個php</span></span><br><span class="line">            url: <span class="string">"action.php"</span>,</span><br><span class="line">            <span class="comment">//把表格序列化即是把資料串起來</span></span><br><span class="line">            <span class="comment">//比如username=hello&amp;passowrd=world</span></span><br><span class="line">            data: $(<span class="string">'#user-information'</span>).serialize(),</span><br><span class="line">            <span class="comment">//說明php的傳輸方式</span></span><br><span class="line">            type:<span class="string">"POST"</span>,</span><br><span class="line">            dataType:<span class="string">'text'</span>,</span><br><span class="line">			</span><br><span class="line">            <span class="comment">//AJAX執行成功時</span></span><br><span class="line">            <span class="comment">//如果驗證成功，把使用者導向index.php</span></span><br><span class="line">            <span class="comment">//如果驗證失敗，把伺服器的說明填到response-text裡</span></span><br><span class="line">            success: <span class="function"><span class="keyword">function</span>(<span class="params">response</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(response == <span class="string">"Success"</span>)&#123;</span><br><span class="line">                    <span class="built_in">document</span>.location.href=<span class="string">"index.php"</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                	<span class="comment">//show the error message in login.html</span></span><br><span class="line">                    $(<span class="string">'#response-text'</span>).html(response);</span><br><span class="line">                    $(<span class="string">'#response-text'</span>).fadeIn(<span class="string">"slow"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//如果AJAX執行中發生了錯誤，提示Exception與AJAX status</span></span><br><span class="line">            error:<span class="function"><span class="keyword">function</span>(<span class="params">xhr, ajaxOptions, thrownError</span>)</span>&#123;</span><br><span class="line">                alert(xhr.status);</span><br><span class="line">                alert(thrownError);</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="u66F8_u7C64_u7684_u52D5_u614B_u522A_u6E1B"><a href="#u66F8_u7C64_u7684_u52D5_u614B_u522A_u6E1B" class="headerlink" title="書籤的動態刪減"></a>書籤的動態刪減</h3><p>毫無疑問，做為一個書籤網站，如果每增加或刪除一個書籤，頁面就要重新整理一次，使用者體驗實在有待加強。要讓書籤的刪改儘可能自然，不妨讓AJAX一手包辦吧。在tag.js實作了新增、刪除、修改書籤這類基本操作：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//新增與修改書籤</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> TagOperate=<span class="function"><span class="keyword">function</span>(<span class="params">actionCode</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> para = $(<span class="string">'#tagTable'</span>).serialize() + <span class="string">"&amp;action="</span> + actionCode;</span><br><span class="line">  $.ajax(&#123;</span><br><span class="line">      url: <span class="string">"action.php"</span>,</span><br><span class="line">      data: para,</span><br><span class="line">      type:<span class="string">"POST"</span>,</span><br><span class="line">      dataType:<span class="string">'text'</span>,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span>(<span class="params">response</span>)</span>&#123;</span><br><span class="line">        $(<span class="string">'#tag-list'</span>).html(response);</span><br><span class="line">        $(<span class="string">'#tag-list'</span>).fadeIn(<span class="string">"slow"</span>);</span><br><span class="line">      &#125;,</span><br><span class="line">      error:<span class="function"><span class="keyword">function</span>(<span class="params">xhr, ajaxOptions, thrownError</span>)</span>&#123;</span><br><span class="line">        alert(thrownError);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>事實上，只要增加參數，再處理一下<code>para</code>就能將所有操作整合在一塊兒，不過我的php端已經繳交了，所以就…… ╮(￣▽￣)╭</p>
+<h2 id="u66F8_u7C64_u641C_u5C0B"><a href="#u66F8_u7C64_u641C_u5C0B" class="headerlink" title="書籤搜尋"></a>書籤搜尋</h2><p>當初會想搞這個是想<a href="http://zake7749.github.io/all-tags/">仿效一下Blog的篩選功能</a>，可惜本錢不夠</p>
+<p><img src="http://i.imgur.com/VJvhkyG.jpg" alt="Imgur"></p>
+<p>我的做法是單純的字串比對，找到符合的就留下來，不符合的就把它隱藏起來</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- HTML端的書籤搜尋欄 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"tag-filter"</span> <span class="attr">placeholder</span>=<span class="string">"書籤搜尋"</span>&gt;</span><span class="tag">&lt;/<span class="name">input</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>使用KeyUp監聽使用者的輸入，當按鍵一放開，就開始篩選需要的標籤。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//將KeyUp綁定在輸入欄上</span></span><br><span class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  $(<span class="string">"#tag-filter"</span>).keyup(tagSearch);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//KeyUp觸發時，開始篩選</span></span><br><span class="line"><span class="keyword">var</span> tagSearch=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="comment">//取得使用者的關鍵字</span></span><br><span class="line">  <span class="keyword">var</span> itag = $(<span class="string">"#tag-filter"</span>).val();</span><br><span class="line">  <span class="comment">//把所有tag都抓下來</span></span><br><span class="line">  <span class="keyword">var</span> list = $(<span class="string">".tag-detail"</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//為空代表使用者沒有查詢，即是所有標籤都符合</span></span><br><span class="line">  <span class="keyword">if</span>(itag != <span class="string">""</span>)&#123;</span><br><span class="line">    <span class="comment">//遍歷 - 如果比對失敗就隱藏，比對成功則留下來</span></span><br><span class="line">    <span class="keyword">var</span> i=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;list.length;i++)&#123;</span><br><span class="line">      <span class="keyword">if</span>(!stringMatching(itag,list[i].innerHTML))&#123;</span><br><span class="line">        $(<span class="string">"#"</span>+i).addClass(<span class="string">"hideThis"</span>);</span><br><span class="line">      &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        $(<span class="string">"#"</span>+i).removeClass(<span class="string">"hideThis"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    listAllTag();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//字串比對</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">stringMatching</span>(<span class="params">matcher,matchee</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> patternLength = matchee.length - matcher.length + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">var</span> i = <span class="number">0</span> , j = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; patternLength ; i++)</span><br><span class="line">    <span class="keyword">for</span>(j = <span class="number">0</span> ; i+j &lt; matchee.length &amp;&amp; matchee[i+j] == matcher[j] ; j++)</span><br><span class="line">      <span class="keyword">if</span>(j+<span class="number">1</span> == matcher.length)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="u9019_u500B_u7DB2_u7AD9_u5B89_u5168_u55CE_uFF1F"><a href="#u9019_u500B_u7DB2_u7AD9_u5B89_u5168_u55CE_uFF1F" class="headerlink" title="這個網站安全嗎？"></a>這個網站安全嗎？</h2><p><strong>不安全</strong>，這只是個登入網站的小範例，請別直接移植它。<br><img src="http://i.imgur.com/nDfXp06.png" alt="Imgur"><span class="img-detail">看吶 ~ 火狐的精美吐槽。</span></p>
+<p>目前在網路安全上只做了兩點：</p>
+<ul>
+<li>擋 SQL injection</li>
+</ul>
+<p>關於SQL注射式攻擊在網路上已一談再談，解決方法也很多，像是<a href="https://zh.wikipedia.org/wiki/%E5%8F%83%E6%95%B8%E5%8C%96%E6%9F%A5%E8%A9%A2" target="_blank" rel="external">參數化查詢</a>啦、弄個簡單的cleanInput()過濾輸入啦，而我採用的是最懶人的策略：<code>mysql_real_escape_string</code>，他可以在特殊字元前加上跳脫字元，比如<code>&#39;</code>會變成<code>\&#39;</code>，這麼一來，即便使用者在輸入填上了SQL指令，也會被篩成一般的字串，能避免基本的SQL注射。</p>
+<ul>
+<li>SQL 端的密碼以MD5呈現</li>
+</ul>
+<p>我曾經想過先在用戶端取得密碼雜湊，再傳送至伺服端，避免監聽人抓到的是原始密碼。不過話說回來，這其實就是TLS/SSL的工作，只要有伺服端的控制權，要追加根本不成問題，自己刻一個簡直多此一舉，說不定還會留下漏洞給別人攻擊。</p>
+<p>所以我就只在PHP端雜湊一下使用者的密碼囉，不過只防君子。以前曾看過一個使用者與密碼都是原始值的資料庫，這種做法其實相當危險，會讓管理者變成最恐怖的攻擊者。如果說在送到資料庫前多一層雜湊保護，至少能減少這類不必要的風險。</p>
+
+            
+                
+
+            
+        </div>
+    </div>
+    <div class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/JavaScript/">JavaScript</a> <a class="tag tag--primary tag--small t-link" href="/tags/PHP/">PHP</a> <a class="tag tag--primary tag--small t-link" href="/tags/專題記錄/">專題記錄</a>
+
+            </div>
+        
+        <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/10/07/SocketProgramming/" data-tooltip="Socket Programming 學習筆記">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions"  href="#btn-open-shareoptions">
+                <i class="fa fa-share-alt"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://zake7749.github.io/2015/12/26/homework3/">
+                <i class="fa fa-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://zake7749.github.io/2015/12/26/homework3/">
+                <i class="fa fa-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://zake7749.github.io/2015/12/26/homework3/">
+                <i class="fa fa-twitter"></i>
+            </a>
+        </li>
+        
+            <li class="post-action">
+                <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                    <i class="fa fa-comment-o"></i>
+                </a>
+            </li>
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#">
+            
+                <i class="fa fa-list"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+            <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2015 Justin Yang. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/10/07/SocketProgramming/" data-tooltip="Socket Programming 學習筆記">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions"  href="#btn-open-shareoptions">
+                <i class="fa fa-share-alt"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://zake7749.github.io/2015/12/26/homework3/">
+                <i class="fa fa-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://zake7749.github.io/2015/12/26/homework3/">
+                <i class="fa fa-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://zake7749.github.io/2015/12/26/homework3/">
+                <i class="fa fa-twitter"></i>
+            </a>
+        </li>
+        
+            <li class="post-action">
+                <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                    <i class="fa fa-comment-o"></i>
+                </a>
+            </li>
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#">
+            
+                <i class="fa fa-list"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <ul class="share-options">
+        <li class="share-option">
+            <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://zake7749.github.io/2015/12/26/homework3/">
+                <i class="fa fa-google-plus"></i><span class="">Share on Google Plus</span>
+            </a>
+        </li>
+        <li class="share-option">
+            <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://zake7749.github.io/2015/12/26/homework3/">
+                <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+            </a>
+        </li>
+        <li class="share-option">
+            <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://zake7749.github.io/2015/12/26/homework3/">
+                <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+            
+        </div>
+        <div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <h4 id="about-card-name">Justin Yang</h4>
+        
+            <h5 id="about-card-bio"><p>新手攻城獅一枚，正在探求神乎其技的AI之道</p>
+</h5>
+        
+        
+            <h5 id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Student</p>
+
+            </h5>
+        
+        
+    </div>
+</div>
+
+        <div id="cover" style="background-image:url('/assets/images/sunset.jpg');"></div>
+    </body>
+    <!--SCRIPTS-->
+<script src="/assets/js/script.min.js" type="text/javascript"></script>
+<!--SCRIPTS END-->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'zake7749';
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+
+
+</html>
