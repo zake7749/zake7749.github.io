@@ -2,13 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://zake7749.github.io/2015/12/26/homework3/</loc>
-    <lastmod>2016-03-05T16:33:15.000Z</lastmod>
+    <loc>http://zake7749.github.io/categories/index.html</loc>
+    <lastmod>2016-07-14T15:31:04.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://zake7749.github.io/2015/10/07/SocketProgramming/</loc>
-    <lastmod>2015-12-26T05:16:57.000Z</lastmod>
+    <loc>http://zake7749.github.io/tags/index.html</loc>
+    <lastmod>2016-07-14T15:31:01.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://zake7749.github.io/2015/09/17/SocketProgramming/</loc>
+    <lastmod>2016-05-01T14:49:09.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://zake7749.github.io/2015/12/26/homework3/</loc>
+    <lastmod>2016-03-06T15:45:18.000Z</lastmod>
   </url>
   
   <url>
@@ -74,16 +84,6 @@
   <url>
     <loc>http://zake7749.github.io/2015/09/07/minimalEvaluation/</loc>
     <lastmod>2015-09-12T08:49:56.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://zake7749.github.io/categories/index.html</loc>
-    <lastmod>2015-08-12T10:45:41.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://zake7749.github.io/tags/index.html</loc>
-    <lastmod>2015-08-05T06:27:02.000Z</lastmod>
   </url>
   
 </urlset>

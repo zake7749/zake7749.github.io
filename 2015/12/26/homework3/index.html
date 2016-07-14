@@ -1,212 +1,324 @@
+<!doctype html>
 
-<!DOCTYPE html>
-<html lang="zh-tw">
-    
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="雷德麥的藏書閣">
-    <title>打造一個書籤管理網站 - 雷德麥的藏書閣</title>
-    <meta name="author" content="Justin Yang">
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
     
     
-        <link rel="alternative" type="application/atom+xml" title="RSS" href="/atom.xml">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
     
-    <meta name="description" content="最近系上的OJ不幸陣亡，恰好這學期修了網頁設計，打算自己東敲西打搞出一個新的批改系統，其實只是想不到更好的專題。不過於網頁設計，我只算個新鮮人，以前只在別人的系統抓蟲，無中生有還真沒試過。適逢這次的作業是個書籤管理網，需要登入介面及支援線上修改，不妨就拿來小試身手吧 ~">
-<meta property="og:type" content="blog">
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="JavaScript,PHP," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雷德麥的藏書閣" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="最近系上的OJ不幸陣亡，打算自己東敲西打搞出一個新的批改系統，適逢這次的作業是個書籤管理網，需要登入介面及支援線上修改，不妨就拿來小試身手吧 ~">
+<meta property="og:type" content="article">
 <meta property="og:title" content="打造一個書籤管理網站">
 <meta property="og:url" content="http://zake7749.github.io/2015/12/26/homework3/index.html">
 <meta property="og:site_name" content="雷德麥的藏書閣">
-<meta property="og:description" content="最近系上的OJ不幸陣亡，恰好這學期修了網頁設計，打算自己東敲西打搞出一個新的批改系統，其實只是想不到更好的專題。不過於網頁設計，我只算個新鮮人，以前只在別人的系統抓蟲，無中生有還真沒試過。適逢這次的作業是個書籤管理網，需要登入介面及支援線上修改，不妨就拿來小試身手吧 ~">
+<meta property="og:description" content="最近系上的OJ不幸陣亡，打算自己東敲西打搞出一個新的批改系統，適逢這次的作業是個書籤管理網，需要登入介面及支援線上修改，不妨就拿來小試身手吧 ~">
 <meta property="og:image" content="http://i.imgur.com/RyXs7Nd.png">
 <meta property="og:image" content="http://i.imgur.com/6fysL00.png">
 <meta property="og:image" content="http://i.imgur.com/VJvhkyG.jpg">
 <meta property="og:image" content="http://i.imgur.com/nDfXp06.png">
-<meta property="og:updated_time" content="2016-03-05T16:33:15.000Z">
+<meta property="og:updated_time" content="2016-03-06T15:45:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="打造一個書籤管理網站">
-<meta name="twitter:description" content="最近系上的OJ不幸陣亡，恰好這學期修了網頁設計，打算自己東敲西打搞出一個新的批改系統，其實只是想不到更好的專題。不過於網頁設計，我只算個新鮮人，以前只在別人的系統抓蟲，無中生有還真沒試過。適逢這次的作業是個書籤管理網，需要登入介面及支援線上修改，不妨就拿來小試身手吧 ~">
-    
-        <meta rel="publisher" content="https://plus.google.com/110210184472476277760"/>
-    
-    
-    
-        <meta property="og:image" content="/assets/images/owl.png"/>
-    
-    
-        <meta property="og:image" content="/2015/12/26/homework3/http://i.imgur.com/EURBkTQ.jpg"/>
-        <meta class="swiftype" name="image" data-type="enum" content="http://zake7749.github.io/2015/12/26/homework3/http://i.imgur.com/EURBkTQ.jpg" />
-    
-    
-    
-    <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style.min.css" type="text/css">
-    <!--STYLES END-->
-    
+<meta name="twitter:description" content="最近系上的OJ不幸陣亡，打算自己東敲西打搞出一個新的批改系統，適逢這次的作業是個書籤管理網，需要登入介面及支援線上修改，不妨就拿來小試身手吧 ~">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://zake7749.github.io/2015/12/26/homework3/"/>
+
+  <title> 打造一個書籤管理網站 | 雷德麥的藏書閣 </title>
 </head>
 
-    <body>
-        <div id="blog">
-            <header id="header" data-behavior="3">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <h1 class="header-title">
-        <a class="header-title-link" href="/ ">雷德麥的藏書閣</a>
-    </h1>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
     
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">雷德麥的藏書閣</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
         
-            <a  class="header-right-icon st-search-show-outputs"
-                href="/#search">
-        
-                <i class="fa fa-lg fa-search"></i>
-            </a>
-    
-</header>
-            <nav id="sidebar" data-behavior="3">
-    
-        <div class="sidebar-profile">
-            <a href="/#about">
-                
-                    <img class="sidebar-profile-picture" src="/assets/images/owl.png"/>
-                
-            </a>
-            <span class="sidebar-profile-name">Justin Yang</span>
-        </div>
-    
-    
-        <ul class="sidebar-buttons">
-        
-            <li class="sidebar-button">
-                
-                    <a  class="sidebar-button-link "
-                         href="/ "
-                        
-                    >
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-home"></i>
-                    <span class="sidebar-button-desc">Home</span>
-                </a>
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
         </li>
+      
         
-            <li class="sidebar-button">
-                
-                    <a  class="sidebar-button-link "
-                         href="/all-categories"
-                        
-                    >
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
-                    <span class="sidebar-button-desc">Categories</span>
-                </a>
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分類
+          </a>
         </li>
+      
         
-            <li class="sidebar-button">
-                
-                    <a  class="sidebar-button-link "
-                         href="/all-tags"
-                        
-                    >
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
-                    <span class="sidebar-button-desc">Tags</span>
-                </a>
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
         </li>
+      
         
-            <li class="sidebar-button">
-                
-                    <a  class="sidebar-button-link "
-                         href="/all-archives"
-                        
-                    >
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
-                    <span class="sidebar-button-desc">Archive</span>
-                </a>
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
         </li>
-        
-            <li class="sidebar-button">
-                
-                    <a  class="sidebar-button-link st-search-show-outputs"
-                         href="/#search"
-                        
-                    >
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-search"></i>
-                    <span class="sidebar-button-desc">Search</span>
-                </a>
-        </li>
-        
-            <li class="sidebar-button">
-                
-                    <a  class="sidebar-button-link "
-                         href="/#about"
-                        
-                    >
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-info"></i>
-                    <span class="sidebar-button-desc">About</span>
-                </a>
-        </li>
-        
+      
+
+      
     </ul>
-    
-        <ul class="sidebar-buttons">
-        
-            <li class="sidebar-button">
-                
-                    <a  class="sidebar-button-link " href="https://github.com/zake7749" target="_blank">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-github"></i>
-                    <span class="sidebar-button-desc">GitHub</span>
-                </a>
-        </li>
-        
-            <li class="sidebar-button">
-                
-                    <a  class="sidebar-button-link " href="https://plus.google.com/110210184472476277760" target="_blank">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-google-plus"></i>
-                    <span class="sidebar-button-desc">Google Plus</span>
-                </a>
-        </li>
-        
-    </ul>
-    
+  
+
+  
 </nav>
 
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
             
-            <div id="main" data-behavior="3"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+
+  <div id="posts" class="posts-expand">
     
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
     
-        <div class="post-header main-content-wrap text-center">
-    
-        <h1 class="post-title" itemprop="headline">
-            打造一個書籤管理網站
-        </h1>
-    
-    <div class="post-meta">
-    <time itemprop="datePublished" content="Sat Dec 26 2015 20:03:07 GMT+0800">
-	
-		    12月 26, 2015
-    	
-    </time>
-    
-        <span>@ </span>
+      <header class="post-header">
+
         
-    <a class="category-link" href="/categories/網頁設計/">網頁設計</a>
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                打造一個書籤管理網站
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2015-12-26T20:03:07+08:00" content="2015-12-26">
+              2015-12-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/網頁設計/" itemprop="url" rel="index">
+                    <span itemprop="name">網頁設計</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/12/26/homework3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/12/26/homework3/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
 
 
-    
-</div>
-</div>
-    
-    <div class="post-content markdown" itemprop="articleBody">
-        <div class="main-content-wrap">
-            <p>最近系上的OJ不幸陣亡，恰好這學期修了網頁設計，打算自己東敲西打搞出一個新的批改系統，<s>其實只是想不到更好的專題</s>。不過於網頁設計，我只算個新鮮人，以前只在別人的系統抓蟲，無中生有還真沒試過。適逢這次的作業是個書籤管理網，需要登入介面及支援線上修改，不妨就拿來小試身手吧 ~</p>
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近系上的OJ不幸陣亡，打算自己東敲西打搞出一個新的批改系統，適逢這次的作業是個書籤管理網，需要登入介面及支援線上修改，不妨就拿來小試身手吧 ~</p>
 <a id="more"></a>
 <p>目前整個網站都放在<a href="https://github.com/zake7749/Leaftag" target="_blank" rel="external">Github</a>上，這篇文章只摘記了一些實作方法與概念，若有任何問題或改進方向歡迎留言及提出Issue。</p>
 <h2 id="u7DB2_u7AD9_u6982_u89C0"><a href="#u7DB2_u7AD9_u6982_u89C0" class="headerlink" title="網站概觀"></a>網站概觀</h2><p><img src="http://i.imgur.com/RyXs7Nd.png" alt="Imgur"></p>
@@ -250,225 +362,349 @@
 <p>我曾經想過先在用戶端取得密碼雜湊，再傳送至伺服端，避免監聽人抓到的是原始密碼。不過話說回來，這其實就是TLS/SSL的工作，只要有伺服端的控制權，要追加根本不成問題，自己刻一個簡直多此一舉，說不定還會留下漏洞給別人攻擊。</p>
 <p>所以我就只在PHP端雜湊一下使用者的密碼囉，不過只防君子。以前曾看過一個使用者與密碼都是原始值的資料庫，這種做法其實相當危險，會讓管理者變成最恐怖的攻擊者。如果說在送到資料庫前多一層雜湊保護，至少能減少這類不必要的風險。</p>
 
-            
-                
-
-            
-        </div>
+      
     </div>
-    <div class="post-footer main-content-wrap">
-        
-            <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
-                
-    <a class="tag tag--primary tag--small t-link" href="/tags/JavaScript/">JavaScript</a> <a class="tag tag--primary tag--small t-link" href="/tags/PHP/">PHP</a>
 
-            </div>
+    <div>
+      
         
-        <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    <a class="post-action-btn btn btn--disabled">
-                
-                    <i class="fa fa-angle-left"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                </a>
-            </li>
-            <li class="post-action">
-                
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/10/07/SocketProgramming/" data-tooltip="Socket Programming 學習筆記">
-                
-                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                    <i class="fa fa-angle-right"></i>
-                </a>
-            </li>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag">#JavaScript</a>
+          
+            <a href="/tags/PHP/" rel="tag">#PHP</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/22/insertionSort/" rel="next" title="插入排序法">
+                <i class="fa fa-chevron-left"></i> 插入排序法
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
         </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions"  href="#btn-open-shareoptions">
-                <i class="fa fa-share-alt"></i>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/1428482092251.gif"
+               alt="Justin Yang" />
+          <p class="site-author-name" itemprop="name">Justin Yang</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-name">文章</span>
             </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://zake7749.github.io/2015/12/26/homework3/">
-                <i class="fa fa-google-plus"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://zake7749.github.io/2015/12/26/homework3/">
-                <i class="fa fa-facebook-official"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://zake7749.github.io/2015/12/26/homework3/">
-                <i class="fa fa-twitter"></i>
-            </a>
-        </li>
-        
-            <li class="post-action">
-                <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                    <i class="fa fa-comment-o"></i>
-                </a>
-            </li>
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#">
-            
-                <i class="fa fa-list"></i>
-            </a>
-        </li>
-    </ul>
-</div>
+          </div>
 
-
-        
-            <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-        
-    </div>
-</article>
-
-
-
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2016 Justin Yang. All Rights Reserved.
-    </span>
-</footer>
-
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
             </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="3">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    <a class="post-action-btn btn btn--disabled">
-                
-                    <i class="fa fa-angle-left"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                </a>
-            </li>
-            <li class="post-action">
-                
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2015/10/07/SocketProgramming/" data-tooltip="Socket Programming 學習筆記">
-                
-                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                    <i class="fa fa-angle-right"></i>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions"  href="#btn-open-shareoptions">
-                <i class="fa fa-share-alt"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://zake7749.github.io/2015/12/26/homework3/">
-                <i class="fa fa-google-plus"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://zake7749.github.io/2015/12/26/homework3/">
-                <i class="fa fa-facebook-official"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://zake7749.github.io/2015/12/26/homework3/">
-                <i class="fa fa-twitter"></i>
-            </a>
-        </li>
-        
-            <li class="post-action">
-                <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                    <i class="fa fa-comment-o"></i>
-                </a>
-            </li>
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#">
-            
-                <i class="fa fa-list"></i>
-            </a>
-        </li>
-    </ul>
-</div>
+          
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
 
-                </div>
-                <div id="share-options-bar" class="share-options-bar" data-behavior="3">
-    <ul class="share-options">
-        <li class="share-option">
-            <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://zake7749.github.io/2015/12/26/homework3/">
-                <i class="fa fa-google-plus"></i><span class="">Share on Google Plus</span>
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
             </a>
-        </li>
-        <li class="share-option">
-            <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://zake7749.github.io/2015/12/26/homework3/">
-                <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
-            </a>
-        </li>
-        <li class="share-option">
-            <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://zake7749.github.io/2015/12/26/homework3/">
-                <i class="fa fa-twitter"></i><span>Share on Twitter</span>
-            </a>
-        </li>
-    </ul>
-</div>
-<div id="share-options-mask" class="share-options-mask"></div>
-            
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
         </div>
-        <div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
-        </div>
-        
-            <img id="about-card-picture" src="/assets/images/owl.png"/>
-        
-            <h4 id="about-card-name">Justin Yang</h4>
-        
-            <h5 id="about-card-bio"><p>新手攻城獅一枚，正在探求神乎其技的AI之道</p>
-</h5>
-        
-        
-            <h5 id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>Student</p>
 
-            </h5>
         
         
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#u7DB2_u7AD9_u6982_u89C0"><span class="nav-number">1.</span> <span class="nav-text">網站概觀</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u5F9E_u767B_u5165_u9801_u9762_u8AAA_u8D77"><span class="nav-number">2.</span> <span class="nav-text">從登入頁面說起</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5229_u7528AJAX_u4F86_u6E9D_u901A_u5427"><span class="nav-number">2.1.</span> <span class="nav-text">利用AJAX來溝通吧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u66F8_u7C64_u7684_u52D5_u614B_u522A_u6E1B"><span class="nav-number">2.2.</span> <span class="nav-text">書籤的動態刪減</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u66F8_u7C64_u641C_u5C0B"><span class="nav-number">3.</span> <span class="nav-text">書籤搜尋</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u9019_u500B_u7DB2_u7AD9_u5B89_u5168_u55CE_uFF1F"><span class="nav-number">4.</span> <span class="nav-text">這個網站安全嗎？</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
     </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Justin Yang</span>
 </div>
 
-        <div id="cover" style="background-image:url('/assets/images/city-night-evening-canal.jpg');"></div>
-    </body>
-    <!--SCRIPTS-->
-<script src="/assets/js/script.min.js" type="text/javascript"></script>
-<!--SCRIPTS END-->
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
 
     <script type="text/javascript">
-        var disqus_shortname = 'zake7749';
-        (function() {
-            var dsq = document.createElement('script');
-            dsq.type = 'text/javascript';
-            dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
+      var disqus_shortname = 'zake7749';
+      var disqus_identifier = '2015/12/26/homework3/';
+      var disqus_title = "打造一個書籤管理網站";
+      var disqus_url = 'http://zake7749.github.io/2015/12/26/homework3/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
     </script>
+  
 
 
 
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+
+</body>
 </html>
