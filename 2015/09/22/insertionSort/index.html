@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion">
+<html class="theme-next mist use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -63,6 +63,7 @@
 
 
 
+
 <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
@@ -96,7 +97,7 @@
 <meta property="og:description" content="插入排序(insertion sort)是一種排序演算法，它將一個數列分成已排序與未排序兩個部分，透過不斷將未排序數列插入至已排序數列的正確位置達成，嗯…這個定義唸起來實在有些饒口，不如讓我們看個實例：
 假設我們要由小到大排序數列：
 125 49 22 33 47">
-<meta property="og:updated_time" content="2015-10-08T14:44:42.000Z">
+<meta property="og:updated_time" content="2016-07-17T13:48:32.838Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="插入排序法">
 <meta name="twitter:description" content="插入排序(insertion sort)是一種排序演算法，它將一個數列分成已排序與未排序兩個部分，透過不斷將未排序數列插入至已排序數列的正確位置達成，嗯…這個定義唸起來實在有些饒口，不如讓我們看個實例：
@@ -108,7 +109,7 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Pisces',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -151,23 +152,6 @@
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">雷德麥的藏書閣</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-  <p class="site-subtitle"></p>
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
 </div>
 
 <nav class="site-nav">
@@ -175,46 +159,33 @@
 
   
     <ul id="menu" class="menu">
+      <a class="website-text-logo" href="/">
+        <b class="text-logo-eg">R</b><span class="text-logo-ch">雷德麥的藏書閣</span>
+      </a>
       
         
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
+        <a class="menu-item menu-item-categories red-tooltip" href="/categories" data-toggle="tooltip" title="分類目錄">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i>
+              <span class="sidebar-title">分類目錄</span>
             
-            首頁
           </a>
-        </li>
       
         
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
+        <a class="menu-item menu-item-archives red-tooltip" href="/archives" data-toggle="tooltip" title="文章歸檔">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i>
+              <span class="sidebar-title">文章歸檔</span>
             
-            分類
           </a>
-        </li>
       
         
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
+        <a class="menu-item menu-item-tags red-tooltip" href="/tags" data-toggle="tooltip" title="特色標籤">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i>
+              <span class="sidebar-title">特色標籤</span>
             
-            歸檔
           </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            標籤
-          </a>
-        </li>
       
 
       
@@ -223,8 +194,13 @@
 
   
 </nav>
-
  </div>
+      <ul id="btm-menu" class="menu cus-menu">
+        <a id="lightbulb" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="施工中 ─=≡Σ(((っﾟДﾟ)っ">
+          <i class="menu-item-icon fa fa-lightbulb-o"></i>
+          <span class="sidebar-title">顯示模式</span>
+        </a>
+      </ul>
     </header>
 
     <main id="main" class="main">
@@ -243,7 +219,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal  post-index-border" itemscope itemtype="http://schema.org/Article">
 
     
       <header class="post-header">
@@ -364,7 +340,7 @@
 <figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> insertionSort(<span class="type">int</span> arr[],<span class="type">int</span> <span class="built_in">length</span>)&#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> i=<span class="number">0</span>,j=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="built_in">length</span>;i++)&#123;</span><br><span class="line">    	<span class="comment">//已排序陣列|key|未排序陣列</span></span><br><span class="line">        <span class="type">int</span> key = arr[i];</span><br><span class="line">        <span class="comment">//從已排序陣列(0~i-1)去找適合的位置</span></span><br><span class="line">        <span class="keyword">for</span>(j=i<span class="number">-1</span>;j&gt;=<span class="number">0</span> &amp;&amp; arr[j]&gt;key;j--)&#123;</span><br><span class="line">            SWAP(arr[j],arr[j+<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>熟悉之後，將key拿掉會更為簡潔：</p>
 <figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> insertionSort(<span class="type">int</span> arr[],<span class="type">int</span> <span class="built_in">length</span>)&#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> i=<span class="number">0</span>,j=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="built_in">length</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(j=i;j&gt;<span class="number">0</span> &amp;&amp; arr[j]&lt;arr[j<span class="number">-1</span>];j--)&#123;</span><br><span class="line">            SWAP(arr[j],arr[j<span class="number">-1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="u6E1B_u5C11_u8CE6_u503C_u7684_u6B21_u6578"><a href="#u6E1B_u5C11_u8CE6_u503C_u7684_u6B21_u6578" class="headerlink" title="減少賦值的次數"></a>減少賦值的次數</h4><p>先前的做法是透過不斷交換來把Key的位置往前推動，但若交換後Key的位置並不正確，其實我們也不一定要把Key塞進去，因為即便塞進了錯誤的位置，再往前查找仍<br>還要做交換，導致要往前N個單位，勢必要進行2N次的賦值。</p>
+<h4 id="u6E1B_u5C11_u8CE6_u503C_u7684_u6B21_u6578"><a href="#u6E1B_u5C11_u8CE6_u503C_u7684_u6B21_u6578" class="headerlink" title="減少賦值的次數"></a>減少賦值的次數</h4><p>先前的做法是透過不斷交換來把Key的位置往前推動，但若交換後Key的位置並不正確，其實我們也不一定要把Key塞進去，因為即便塞進了錯誤的位置，再往前查找仍還要做交換，導致要往前N個單位，勢必要進行2N次的賦值。</p>
 <p>為了減少賦值的次數，不妨只動Key一次，而這一次恰巧位在已排序陣列的正確位置，實作方法是以一個變數儲存Key的值，看看老例子：</p>
 <figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">我們的目標是把<span class="number">22</span>放到正確位置</span><br><span class="line"></span><br><span class="line"><span class="number">25</span> <span class="number">49</span> <span class="number">22</span> <span class="string">| 33 47</span></span><br></pre></td></tr></table></figure>
 <p>22為Key，我們用變數Key來儲存22</p>
@@ -421,8 +397,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/17/SocketProgramming/" rel="next" title="TCP Socket Programming 學習筆記">
-                <i class="fa fa-chevron-left"></i> TCP Socket Programming 學習筆記
+              <a href="/2015/09/08/constantPool/" rel="next" title="淺談Java的常數池">
+                <i class="fa fa-chevron-left"></i> 淺談Java的常數池
               </a>
             
           </div>
@@ -542,6 +518,26 @@
 
         <div class="links-of-author motion-element">
           
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zake7749" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://plus.google.com/110210184472476277760" target="_blank" title="Google">
+                  
+                    <i class="fa fa-fw fa-google-plus"></i>
+                  
+                  Google
+                </a>
+              </span>
+            
+          
         </div>
 
         
@@ -580,19 +576,19 @@
   &copy; 
   <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-heart" style="color:rgb(255,160,180);"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Justin Yang</span>
 </div>
 
 <div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
-  主題 -
+  Theme -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Mist
   </a>
 </div>
 
@@ -657,13 +653,6 @@
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
-
-
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
@@ -733,6 +722,8 @@
   <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 
+  <script type="text/javascript" src="/js/src/jquery.tipsy.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
   
 
   

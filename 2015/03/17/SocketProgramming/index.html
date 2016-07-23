@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion">
+<html class="theme-next mist use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -63,6 +63,7 @@
 
 
 
+
 <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
@@ -86,35 +87,27 @@
 
 
 
-<meta name="description" content="建立一個Socket使用socket(int,int,int)，它能幫助我們在kernel中建立一個socket，並傳回對該socket的檔案描述符。
-Prototype1int socket(int domain, int type, int protocol);
-Argumentsdomain定義了socket要在哪個領域溝通，常用的有2種：
-
-AF_UNIX/AF_LOCAL：用在本機程序與">
+<meta name="description" content="有別於 IPC ，Socket 是用於網路上不同程序的互相溝通，比如說流覽器要怎麼跟 Web Server 拿取資料、Messenger 訊息的收發、 ftp 檔案的上傳與下載等等，在現今的網路編程中，Socket 可以說是無所不在。
+至今 Socket 也應不同的需求或 OS 衍生出了不少版本，這篇筆計主要是討論 Linux 的 socket ，並專注在實現 TCP 編程：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TCP Socket Programming 學習筆記">
-<meta property="og:url" content="http://zake7749.github.io/2015/09/17/SocketProgramming/index.html">
+<meta property="og:url" content="http://zake7749.github.io/2015/03/17/SocketProgramming/index.html">
 <meta property="og:site_name" content="雷德麥的藏書閣">
-<meta property="og:description" content="建立一個Socket使用socket(int,int,int)，它能幫助我們在kernel中建立一個socket，並傳回對該socket的檔案描述符。
-Prototype1int socket(int domain, int type, int protocol);
-Argumentsdomain定義了socket要在哪個領域溝通，常用的有2種：
-
-AF_UNIX/AF_LOCAL：用在本機程序與">
-<meta property="og:updated_time" content="2016-05-01T14:49:09.000Z">
+<meta property="og:description" content="有別於 IPC ，Socket 是用於網路上不同程序的互相溝通，比如說流覽器要怎麼跟 Web Server 拿取資料、Messenger 訊息的收發、 ftp 檔案的上傳與下載等等，在現今的網路編程中，Socket 可以說是無所不在。
+至今 Socket 也應不同的需求或 OS 衍生出了不少版本，這篇筆計主要是討論 Linux 的 socket ，並專注在實現 TCP 編程：">
+<meta property="og:image" content="http://i.imgur.com/cqr4O2P.png">
+<meta property="og:updated_time" content="2016-07-17T09:38:54.344Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TCP Socket Programming 學習筆記">
-<meta name="twitter:description" content="建立一個Socket使用socket(int,int,int)，它能幫助我們在kernel中建立一個socket，並傳回對該socket的檔案描述符。
-Prototype1int socket(int domain, int type, int protocol);
-Argumentsdomain定義了socket要在哪個領域溝通，常用的有2種：
-
-AF_UNIX/AF_LOCAL：用在本機程序與">
+<meta name="twitter:description" content="有別於 IPC ，Socket 是用於網路上不同程序的互相溝通，比如說流覽器要怎麼跟 Web Server 拿取資料、Messenger 訊息的收發、 ftp 檔案的上傳與下載等等，在現今的網路編程中，Socket 可以說是無所不在。
+至今 Socket 也應不同的需求或 OS 衍生出了不少版本，這篇筆計主要是討論 Linux 的 socket ，並專注在實現 TCP 編程：">
 
 
 
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Pisces',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -128,7 +121,7 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
 
 
 
-  <link rel="canonical" href="http://zake7749.github.io/2015/09/17/SocketProgramming/"/>
+  <link rel="canonical" href="http://zake7749.github.io/2015/03/17/SocketProgramming/"/>
 
   <title> TCP Socket Programming 學習筆記 | 雷德麥的藏書閣 </title>
 </head>
@@ -157,23 +150,6 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">雷德麥的藏書閣</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-  <p class="site-subtitle"></p>
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
 </div>
 
 <nav class="site-nav">
@@ -181,46 +157,33 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
 
   
     <ul id="menu" class="menu">
+      <a class="website-text-logo" href="/">
+        <b class="text-logo-eg">R</b><span class="text-logo-ch">雷德麥的藏書閣</span>
+      </a>
       
         
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
+        <a class="menu-item menu-item-categories red-tooltip" href="/categories" data-toggle="tooltip" title="分類目錄">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i>
+              <span class="sidebar-title">分類目錄</span>
             
-            首頁
           </a>
-        </li>
       
         
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
+        <a class="menu-item menu-item-archives red-tooltip" href="/archives" data-toggle="tooltip" title="文章歸檔">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i>
+              <span class="sidebar-title">文章歸檔</span>
             
-            分類
           </a>
-        </li>
       
         
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
+        <a class="menu-item menu-item-tags red-tooltip" href="/tags" data-toggle="tooltip" title="特色標籤">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i>
+              <span class="sidebar-title">特色標籤</span>
             
-            歸檔
           </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            標籤
-          </a>
-        </li>
       
 
       
@@ -229,8 +192,13 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
 
   
 </nav>
-
  </div>
+      <ul id="btm-menu" class="menu cus-menu">
+        <a id="lightbulb" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="施工中 ─=≡Σ(((っﾟДﾟ)っ">
+          <i class="menu-item-icon fa fa-lightbulb-o"></i>
+          <span class="sidebar-title">顯示模式</span>
+        </a>
+      </ul>
     </header>
 
     <main id="main" class="main">
@@ -249,7 +217,7 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal  post-index-border" itemscope itemtype="http://schema.org/Article">
 
     
       <header class="post-header">
@@ -272,8 +240,8 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">發表於</span>
-            <time itemprop="dateCreated" datetime="2015-09-17T20:57:24+08:00" content="2015-09-17">
-              2015-09-17
+            <time itemprop="dateCreated" datetime="2015-03-17T20:57:24+08:00" content="2015-03-17">
+              2015-03-17
             </time>
           </span>
 
@@ -314,8 +282,8 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/09/17/SocketProgramming/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/17/SocketProgramming/" itemprop="commentsCount"></span>
+                <a href="/2015/03/17/SocketProgramming/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/17/SocketProgramming/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -338,7 +306,11 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
       
 
       
-        <h2 id="u5EFA_u7ACB_u4E00_u500BSocket"><a href="#u5EFA_u7ACB_u4E00_u500BSocket" class="headerlink" title="建立一個Socket"></a>建立一個Socket</h2><p>使用<code>socket(int,int,int)</code>，它能幫助我們在kernel中建立一個socket，並傳回對該socket的<a href="https://zh.wikipedia.org/wiki/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6" target="_blank" rel="external">檔案描述符</a>。</p>
+        <p>有別於 IPC ，Socket 是用於網路上不同程序的互相溝通，比如說流覽器要怎麼跟 Web Server 拿取資料、Messenger 訊息的收發、 ftp 檔案的上傳與下載等等，在現今的網路編程中，Socket 可以說是無所不在。</p>
+<p>至今 Socket 也應不同的需求或 OS 衍生出了不少版本，這篇筆計主要是討論 Linux 的 <code>socket</code> ，並專注在實現 TCP 編程：</p>
+<p><img src="http://i.imgur.com/cqr4O2P.png" alt="TCP"></p>
+<a id="more"></a>
+<h2 id="u5148_u5F9E_u5EFA_u7ACB_u4E00_u500B_Socket__u51FA_u767C"><a href="#u5148_u5F9E_u5EFA_u7ACB_u4E00_u500B_Socket__u51FA_u767C" class="headerlink" title="先從建立一個 Socket 出發"></a>先從建立一個 Socket 出發</h2><p>使用<code>socket(int,int,int)</code>，它能幫助我們在kernel中建立一個socket，並傳回對該socket的<a href="https://zh.wikipedia.org/wiki/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6" target="_blank" rel="external">檔案描述符</a>。</p>
 <h3 id="Prototype"><a href="#Prototype" class="headerlink" title="Prototype"></a>Prototype</h3><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">socket</span><span class="params">(<span class="keyword">int</span> domain, <span class="keyword">int</span> type, <span class="keyword">int</span> protocol)</span></span>;</span><br></pre></td></tr></table></figure>
 <h3 id="Arguments"><a href="#Arguments" class="headerlink" title="Arguments"></a>Arguments</h3><h4 id="domain"><a href="#domain" class="headerlink" title="domain"></a>domain</h4><p>定義了socket要在哪個領域溝通，常用的有2種：</p>
 <ul>
@@ -353,7 +325,6 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
 <h4 id="protocol"><a href="#protocol" class="headerlink" title="protocol"></a>protocol</h4><p>設定socket的協定標準，一般來說都會設為0，讓kernel選擇type對應的默認協議。</p>
 <h4 id="Return_Value"><a href="#Return_Value" class="headerlink" title="Return Value"></a>Return Value</h4><p>成功產生socket時，會返回該socket的檔案描述符(socket file descriptor)，我們可以透過它來操作socket。若socket創建失敗則會回傳-1(INVALID_SOCKET)。</p>
 <h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc , <span class="keyword">char</span> *argv[])</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sockfd = <span class="number">0</span>;</span><br><span class="line">    sockfd = socket(AF_INET , SOCK_STREAM , <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (socket_fd == <span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Fail to create a socket."</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
 <h2 id="u5F9EClient_u9023_u5411Server"><a href="#u5F9EClient_u9023_u5411Server" class="headerlink" title="從Client連向Server"></a>從Client連向Server</h2><p>客戶端要連向伺服端，需要先知道並儲存伺服端的IP及port，<code>netinet/in.h</code>已經為我們定義好了一個<code>struct sockaddr_in</code>來儲存這些資訊：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IPv4 AF_INET sockets:</span></span><br><span class="line"><span class="comment">// IPv6參見 sockaddr_in6</span></span><br><span class="line"><span class="keyword">struct</span> sockaddr_in &#123;</span><br><span class="line">    <span class="keyword">short</span>            sin_family;   <span class="comment">// AF_INET,因為這是IPv4;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span>   sin_port;     <span class="comment">// 儲存port No</span></span><br><span class="line">    <span class="keyword">struct</span> in_addr   sin_addr;     <span class="comment">// 參見struct in_addr</span></span><br><span class="line">    <span class="keyword">char</span>             sin_zero[<span class="number">8</span>];  <span class="comment">// Not used, must be zero */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> in_addr &#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> s_addr;          <span class="comment">// load with inet_pton()</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>有了IP跟port，我們就能使用<code>connect(int struct sockaddr, int)</code>進行客戶端與伺服端之間的連線。</p>
@@ -457,16 +428,16 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/08/constantPool/" rel="next" title="淺談Java的常數池">
-                <i class="fa fa-chevron-left"></i> 淺談Java的常數池
+              <a href="/2014/10/30/C4labsLinux/" rel="next" title="C4Labs Linux講座">
+                <i class="fa fa-chevron-left"></i> C4Labs Linux講座
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/22/insertionSort/" rel="prev" title="插入排序法">
-                插入排序法 <i class="fa fa-chevron-right"></i>
+              <a href="/2015/08/06/message_auth/" rel="prev" title="訊息鑑別技術">
+                訊息鑑別技術 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -578,6 +549,26 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
 
         <div class="links-of-author motion-element">
           
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zake7749" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://plus.google.com/110210184472476277760" target="_blank" title="Google">
+                  
+                    <i class="fa fa-fw fa-google-plus"></i>
+                  
+                  Google
+                </a>
+              </span>
+            
+          
         </div>
 
         
@@ -595,7 +586,7 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#u5EFA_u7ACB_u4E00_u500BSocket"><span class="nav-number">1.</span> <span class="nav-text">建立一個Socket</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype"><span class="nav-number">1.1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arguments"><span class="nav-number">1.2.</span> <span class="nav-text">Arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#domain"><span class="nav-number">1.2.1.</span> <span class="nav-text">domain</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#type"><span class="nav-number">1.2.2.</span> <span class="nav-text">type</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#protocol"><span class="nav-number">1.2.3.</span> <span class="nav-text">protocol</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return_Value"><span class="nav-number">1.2.4.</span> <span class="nav-text">Return Value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">1.3.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u5F9EClient_u9023_u5411Server"><span class="nav-number">2.</span> <span class="nav-text">從Client連向Server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-1"><span class="nav-number">2.1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arguments-1"><span class="nav-number">2.2.</span> <span class="nav-text">Arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sd"><span class="nav-number">2.2.1.</span> <span class="nav-text">sd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#server"><span class="nav-number">2.2.2.</span> <span class="nav-text">server</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#iner_addr_28_29_u662F_u4EC0_u9EBC_u6771_u6771_uFF1F"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">iner_addr()是什麼東東？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#u90A3htons_28_29_u53C8_u505A_u4E86_u4EC0_u9EBC_uFF1F"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">那htons()又做了什麼？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#addr_len"><span class="nav-number">2.2.3.</span> <span class="nav-text">addr_len</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return_value"><span class="nav-number">2.2.4.</span> <span class="nav-text">Return value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-1"><span class="nav-number">2.3.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u63A5_u6536_u8CC7_u6599"><span class="nav-number">3.</span> <span class="nav-text">接收資料</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-2"><span class="nav-number">3.1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arguments-2"><span class="nav-number">3.2.</span> <span class="nav-text">Arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sockfd"><span class="nav-number">3.2.1.</span> <span class="nav-text">sockfd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#buf"><span class="nav-number">3.2.2.</span> <span class="nav-text">buf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#len"><span class="nav-number">3.2.3.</span> <span class="nav-text">len</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flags"><span class="nav-number">3.2.4.</span> <span class="nav-text">flags</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return_value-1"><span class="nav-number">3.2.5.</span> <span class="nav-text">Return value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-2"><span class="nav-number">3.3.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u50B3_u9001_u8CC7_u6599"><span class="nav-number">4.</span> <span class="nav-text">傳送資料</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-3"><span class="nav-number">4.1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arguments-3"><span class="nav-number">4.2.</span> <span class="nav-text">Arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sockfd-1"><span class="nav-number">4.2.1.</span> <span class="nav-text">sockfd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#buf-1"><span class="nav-number">4.2.2.</span> <span class="nav-text">buf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#len-1"><span class="nav-number">4.2.3.</span> <span class="nav-text">len</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flags-1"><span class="nav-number">4.2.4.</span> <span class="nav-text">flags</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return_value-2"><span class="nav-number">4.2.5.</span> <span class="nav-text">Return value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-3"><span class="nav-number">4.3.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u7D81_u5B9AServer_u7AEF_u7684_u5730_u5740"><span class="nav-number">5.</span> <span class="nav-text">綁定Server端的地址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-4"><span class="nav-number">5.1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arguments-4"><span class="nav-number">5.2.</span> <span class="nav-text">Arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sockfd-2"><span class="nav-number">5.2.1.</span> <span class="nav-text">sockfd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#addr"><span class="nav-number">5.2.2.</span> <span class="nav-text">addr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#addrlen"><span class="nav-number">5.2.3.</span> <span class="nav-text">addrlen</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return_value-3"><span class="nav-number">5.2.4.</span> <span class="nav-text">Return value</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u8A2D_u7F6EServer_u7684_u76E3_u807D_u968A_u5217"><span class="nav-number">6.</span> <span class="nav-text">設置Server的監聽隊列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-5"><span class="nav-number">6.1.</span> <span class="nav-text">Prototype</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Argument"><span class="nav-number">6.1.1.</span> <span class="nav-text">Argument</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#sockfd-3"><span class="nav-number">6.1.1.1.</span> <span class="nav-text">sockfd</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#backlog"><span class="nav-number">6.1.1.2.</span> <span class="nav-text">backlog</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return_value-4"><span class="nav-number">6.1.2.</span> <span class="nav-text">Return value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-4"><span class="nav-number">6.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server__u63A5_u6536_u8ACB_u6C42"><span class="nav-number">7.</span> <span class="nav-text">Server 接收請求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-6"><span class="nav-number">7.1.</span> <span class="nav-text">Prototype</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Argument-1"><span class="nav-number">7.1.1.</span> <span class="nav-text">Argument</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#sockfd-4"><span class="nav-number">7.1.1.1.</span> <span class="nav-text">sockfd</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#addr-1"><span class="nav-number">7.1.1.2.</span> <span class="nav-text">addr</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#addrlen-1"><span class="nav-number">7.1.1.3.</span> <span class="nav-text">addrlen</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return_value-5"><span class="nav-number">7.1.2.</span> <span class="nav-text">Return value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-5"><span class="nav-number">7.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server__u7BC4_u4F8B_u7A0B_u5F0F"><span class="nav-number">8.</span> <span class="nav-text">Server 範例程式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client__u7BC4_u4F8B_u7A0B_u5F0F"><span class="nav-number">9.</span> <span class="nav-text">Client 範例程式</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#u5148_u5F9E_u5EFA_u7ACB_u4E00_u500B_Socket__u51FA_u767C"><span class="nav-number">1.</span> <span class="nav-text">先從建立一個 Socket 出發</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype"><span class="nav-number">1.1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arguments"><span class="nav-number">1.2.</span> <span class="nav-text">Arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#domain"><span class="nav-number">1.2.1.</span> <span class="nav-text">domain</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#type"><span class="nav-number">1.2.2.</span> <span class="nav-text">type</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#protocol"><span class="nav-number">1.2.3.</span> <span class="nav-text">protocol</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return_Value"><span class="nav-number">1.2.4.</span> <span class="nav-text">Return Value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">1.3.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u5F9EClient_u9023_u5411Server"><span class="nav-number">2.</span> <span class="nav-text">從Client連向Server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-1"><span class="nav-number">2.1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arguments-1"><span class="nav-number">2.2.</span> <span class="nav-text">Arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sd"><span class="nav-number">2.2.1.</span> <span class="nav-text">sd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#server"><span class="nav-number">2.2.2.</span> <span class="nav-text">server</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#iner_addr_28_29_u662F_u4EC0_u9EBC_u6771_u6771_uFF1F"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">iner_addr()是什麼東東？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#u90A3htons_28_29_u53C8_u505A_u4E86_u4EC0_u9EBC_uFF1F"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">那htons()又做了什麼？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#addr_len"><span class="nav-number">2.2.3.</span> <span class="nav-text">addr_len</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return_value"><span class="nav-number">2.2.4.</span> <span class="nav-text">Return value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-1"><span class="nav-number">2.3.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u63A5_u6536_u8CC7_u6599"><span class="nav-number">3.</span> <span class="nav-text">接收資料</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-2"><span class="nav-number">3.1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arguments-2"><span class="nav-number">3.2.</span> <span class="nav-text">Arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sockfd"><span class="nav-number">3.2.1.</span> <span class="nav-text">sockfd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#buf"><span class="nav-number">3.2.2.</span> <span class="nav-text">buf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#len"><span class="nav-number">3.2.3.</span> <span class="nav-text">len</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flags"><span class="nav-number">3.2.4.</span> <span class="nav-text">flags</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return_value-1"><span class="nav-number">3.2.5.</span> <span class="nav-text">Return value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-2"><span class="nav-number">3.3.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u50B3_u9001_u8CC7_u6599"><span class="nav-number">4.</span> <span class="nav-text">傳送資料</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-3"><span class="nav-number">4.1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arguments-3"><span class="nav-number">4.2.</span> <span class="nav-text">Arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sockfd-1"><span class="nav-number">4.2.1.</span> <span class="nav-text">sockfd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#buf-1"><span class="nav-number">4.2.2.</span> <span class="nav-text">buf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#len-1"><span class="nav-number">4.2.3.</span> <span class="nav-text">len</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flags-1"><span class="nav-number">4.2.4.</span> <span class="nav-text">flags</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return_value-2"><span class="nav-number">4.2.5.</span> <span class="nav-text">Return value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-3"><span class="nav-number">4.3.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u7D81_u5B9AServer_u7AEF_u7684_u5730_u5740"><span class="nav-number">5.</span> <span class="nav-text">綁定Server端的地址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-4"><span class="nav-number">5.1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arguments-4"><span class="nav-number">5.2.</span> <span class="nav-text">Arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sockfd-2"><span class="nav-number">5.2.1.</span> <span class="nav-text">sockfd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#addr"><span class="nav-number">5.2.2.</span> <span class="nav-text">addr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#addrlen"><span class="nav-number">5.2.3.</span> <span class="nav-text">addrlen</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return_value-3"><span class="nav-number">5.2.4.</span> <span class="nav-text">Return value</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u8A2D_u7F6EServer_u7684_u76E3_u807D_u968A_u5217"><span class="nav-number">6.</span> <span class="nav-text">設置Server的監聽隊列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-5"><span class="nav-number">6.1.</span> <span class="nav-text">Prototype</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Argument"><span class="nav-number">6.1.1.</span> <span class="nav-text">Argument</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#sockfd-3"><span class="nav-number">6.1.1.1.</span> <span class="nav-text">sockfd</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#backlog"><span class="nav-number">6.1.1.2.</span> <span class="nav-text">backlog</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return_value-4"><span class="nav-number">6.1.2.</span> <span class="nav-text">Return value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-4"><span class="nav-number">6.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server__u63A5_u6536_u8ACB_u6C42"><span class="nav-number">7.</span> <span class="nav-text">Server 接收請求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-6"><span class="nav-number">7.1.</span> <span class="nav-text">Prototype</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Argument-1"><span class="nav-number">7.1.1.</span> <span class="nav-text">Argument</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#sockfd-4"><span class="nav-number">7.1.1.1.</span> <span class="nav-text">sockfd</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#addr-1"><span class="nav-number">7.1.1.2.</span> <span class="nav-text">addr</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#addrlen-1"><span class="nav-number">7.1.1.3.</span> <span class="nav-text">addrlen</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return_value-5"><span class="nav-number">7.1.2.</span> <span class="nav-text">Return value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-5"><span class="nav-number">7.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server__u7BC4_u4F8B_u7A0B_u5F0F"><span class="nav-number">8.</span> <span class="nav-text">Server 範例程式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client__u7BC4_u4F8B_u7A0B_u5F0F"><span class="nav-number">9.</span> <span class="nav-text">Client 範例程式</span></a></li></ol></div>
             
           </div>
         </section>
@@ -616,19 +607,19 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
   &copy; 
   <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-heart" style="color:rgb(255,160,180);"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Justin Yang</span>
 </div>
 
 <div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
-  主題 -
+  Theme -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Mist
   </a>
 </div>
 
@@ -694,13 +685,6 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
   
   
 
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
-
-
-
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
@@ -722,9 +706,9 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
 
     <script type="text/javascript">
       var disqus_shortname = 'zake7749';
-      var disqus_identifier = '2015/09/17/SocketProgramming/';
+      var disqus_identifier = '2015/03/17/SocketProgramming/';
       var disqus_title = "TCP Socket Programming 學習筆記";
-      var disqus_url = 'http://zake7749.github.io/2015/09/17/SocketProgramming/';
+      var disqus_url = 'http://zake7749.github.io/2015/03/17/SocketProgramming/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
@@ -769,6 +753,8 @@ AF_UNIX/AF_LOCAL：用在本機程序與">
   <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 
+  <script type="text/javascript" src="/js/src/jquery.tipsy.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
   
 
   
