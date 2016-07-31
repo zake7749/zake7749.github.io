@@ -97,7 +97,7 @@
 <meta property="og:description" content="插入排序(insertion sort)是一種排序演算法，它將一個數列分成已排序與未排序兩個部分，透過不斷將未排序數列插入至已排序數列的正確位置達成，嗯…這個定義唸起來實在有些饒口，不如讓我們看個實例：
 假設我們要由小到大排序數列：
 125 49 22 33 47">
-<meta property="og:updated_time" content="2016-07-17T13:48:32.838Z">
+<meta property="og:updated_time" content="2016-07-24T14:10:29.305Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="插入排序法">
 <meta name="twitter:description" content="插入排序(insertion sort)是一種排序演算法，它將一個數列分成已排序與未排序兩個部分，透過不斷將未排序數列插入至已排序數列的正確位置達成，嗯…這個定義唸起來實在有些饒口，不如讓我們看個實例：
@@ -196,12 +196,15 @@
 </nav>
  </div>
       <ul id="btm-menu" class="menu cus-menu">
-
-        <a id="cus-map" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="關閉側邊欄">
-          <i class="menu-item-icon fa fa-map-o"></i>
+        <a id="cus-object-group" href="https://csienckugrade3.hackpad.com/" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="CS Notes">
+          <i class="menu-item-icon fa fa fa-object-group"></i>
+          <span class="sidebar-title">CS Note pads</span>
+        </a>
+        <a id="cus-map" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="關閉側邊欄">
+          <i class="menu-item-icon fa fa-map"></i>
           <span class="sidebar-title">關閉側邊欄</span>
         </a>
-        <a id="cus-lightbulb" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="施工中 ─=≡Σ(((っﾟДﾟ)っ">
+        <a id="cus-lightbulb" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="施工中 ─=≡Σ(((っﾟДﾟ)っ">
           <i class="menu-item-icon fa fa-lightbulb-o"></i>
           <span class="sidebar-title">顯示模式</span>
         </a>
@@ -309,7 +312,7 @@
 <figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">NULL <span class="string">| 25 49 22 33 47</span></span><br><span class="line"></span><br><span class="line">目前什麼都沒做，所以已排序的部分為空，未排序的部分為整個數列。</span><br></pre></td></tr></table></figure>
 <p>接下來開始遍歷數列，首先遇到值<code>25</code>，如前所述，我們要將未排序數插入至已排序數的正確位置，不過目前未排序區段是空的，所以也沒什麼值能跟<code>25</code>相比，便直接將25放入已排序數列的首位吧：</p>
 <figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">25</span> <span class="string">| 49 22 33 47</span></span><br><span class="line"></span><br><span class="line">已排序前 <span class="number">1</span> 個數</span><br></pre></td></tr></table></figure>
-<p>第二個遇到的是<code>49</code>，重申最後一次，我們將它插至已排序數列的正確位置。目前以排序的有<code>25</code>，因為是由小排到大，我們便把<code>49</code>放到<code>25</code>的後頭：</p>
+<p>第二個遇到的是<code>49</code>，重申最後一次，我們將它插至已排序數列的正確位置。目前已排序的有<code>25</code>，因為是由小排到大，我們便把<code>49</code>放到<code>25</code>的後頭：</p>
 <figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">25</span> <span class="number">49</span> <span class="string">| 22 33 47</span></span><br><span class="line"></span><br><span class="line">已排序前 <span class="number">2</span> 個數</span><br></pre></td></tr></table></figure>
 <p>第三個遇到的是<code>22</code>，直觀來排的話，我們會直接把<code>22</code>放在<code>25</code>前頭，不過遍歷陣列是循序的，實際上插入排序做的是<strong>不斷從22的索引值往前找，直到找到一個數比22小或至陣列盡頭，再將22放於該數後</strong>，所以我們會先遇到<code>49</code>：</p>
 <figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">25</span> <span class="number">49</span> <span class="number">22</span> <span class="string">| 33 47</span></span><br><span class="line"></span><br><span class="line">排序中</span><br></pre></td></tr></table></figure>
@@ -331,7 +334,7 @@
 <figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">22</span> <span class="number">25</span> <span class="number">33</span> <span class="number">47</span> <span class="number">49</span> <span class="string">|</span></span><br><span class="line"></span><br><span class="line">排序中</span><br></pre></td></tr></table></figure>
 <p><code>47</code>&gt;<code>33</code>，放在<code>33</code>後頭，排序完成：</p>
 <figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">22</span> <span class="number">25</span> <span class="number">33</span> <span class="number">47</span> <span class="number">49</span> <span class="string">|</span></span><br><span class="line"></span><br><span class="line">已排序前 <span class="number">5</span> 個數，排序完成 :)</span><br></pre></td></tr></table></figure>
-<p>以上就是插入排序法，雖然演練相當繁瑣，但流程其實簡明易懂(假設由小到大)：</p>
+<p>以上就是插入排序法，演練有點繁瑣，但流程其實能簡要成幾個步驟，假設我們想由小排到大的話：</p>
 <ol>
 <li>挑選未排序數列的一個值為 Key</li>
 <li>將 Key 與已排序數 N 比較</li>
