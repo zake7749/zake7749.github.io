@@ -98,8 +98,8 @@
 
 所以就找上了非監督學習的 word2vec，為了銜接後續的資料處理，我使用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，這篇文章裡所有的程式碼都會傳上 github，現在，就讓我">
 <meta property="og:image" content="http://i.imgur.com/VnjnW7S.jpg">
-<meta property="og:image" content="http://i.imgur.com/Sg2LP1r.jpg">
-<meta property="og:updated_time" content="2016-08-27T17:54:54.468Z">
+<meta property="og:image" content="http://i.imgur.com/KR2ISOg.jpg">
+<meta property="og:updated_time" content="2016-08-27T18:10:25.251Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="以 gensim 訓練中文詞向量">
 <meta name="twitter:description" content="最近在練習文本的聚類分析，不過苦於沒有中文資料，原本打算先爬文章，再標tag將它們分門別類，試過幾次後，真是遺憾吶。
@@ -329,9 +329,8 @@
 <h3 id="Stopwords_and_Window"><a href="#Stopwords_and_Window" class="headerlink" title="Stopwords and Window"></a>Stopwords and Window</h3><p>好啦，這個東西大概要跑個 80 分鐘，<s>先讓我講些幹話</s>，先讓我們看看上頭做了什麼。除了先前演示的斷詞外，我這裡還多做了兩件事，一是調整jieba的辭典，讓他對繁體斷詞比較友善，二是引入了<a href="https://zh.wikipedia.org/wiki/%E5%81%9C%E7%94%A8%E8%AF%8D" target="_blank" rel="external">停用詞</a>，停用詞就是像英文中的 the,a,this，中文的你我他，與其他詞相比顯得不怎麼重要，就可將它視為停用詞。而要排除停用詞的理由，其實與word2vec的實作概念大大相關，由於在開頭講明了不深究概念，就讓我舉個例子替代長篇大論。</p>
 <p>首先，在word2vec有一個概念叫 windows，我習慣叫他窗口，因為它給我的感覺跟TCP 那個會滑來滑去的很像。</p>
 <h2 id="Word2Vec"><a href="#Word2Vec" class="headerlink" title="Word2Vec"></a>Word2Vec</h2><p>很顯然，一個詞的意涵跟他的左右鄰居很有關係，比如「雨越下越大，茶越充越淡」，什麼會「下」？「雨」會下，什麼會「淡」？茶會「淡」，這樣的類比舉不勝舉，那麼，若把思維逆轉過來呢？</p>
-<p>顯然，我們或多或少能從左右鄰居是誰，猜出中間的是什麼，這很像我們國高中時天天在練的英文克漏字，再舉個例子，「真像一塊塊『？』」。</p>
-<p><img src="http://i.imgur.com/Sg2LP1r.jpg" alt="You know it"></p>
-<p>那麼問題來了，左右鄰居有誰？能更精確地說，你要往左往右看幾個？假設我們以「孔乙己 一到 店 所有 喝酒 的 人 便都 看著 他 笑」為例，如果往左往右各看一個：</p>
+<p><img src="http://i.imgur.com/KR2ISOg.jpg" alt=""></p>
+<p>顯然，我們或多或少能從左右鄰居是誰，猜出中間的是什麼，這很像我們國高中時天天在練的英文克漏字。那麼問題來了，左右鄰居有誰？能更精確地說，你要往左往右看幾個？假設我們以「孔乙己 一到 店 所有 喝酒 的 人 便都 看著 他 笑」為例，如果往左往右各看一個：</p>
 <figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[孔乙己 一到] 店 所有 喝酒 的 人 便 都 看著 他 笑</span><br><span class="line">[孔乙己 一到 店] 所有 喝酒 的 人 便 都 看著 他 笑</span><br><span class="line">孔乙己 [一到 店 所有] 喝酒 的 人 便 都 看著 他 笑</span><br><span class="line">孔乙己 一到 [店 所有 喝酒] 的 人 便 都 看著 他 笑</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
 <p>這樣就構成了一個 size=1 的 windows，這個 1 是極端的例子，為了讓我們看看有停用詞跟沒停用詞差在哪，這句話去除了停用詞應該會變成：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">孔乙己 一到 店 所有 喝酒 人 看著 笑</span><br></pre></td></tr></table></figure>

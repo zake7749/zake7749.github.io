@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zake7749.github.io/"/>
-  <updated>2016-08-27T17:54:54.468Z</updated>
+  <updated>2016-08-27T18:10:25.251Z</updated>
   <id>http://zake7749.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://zake7749.github.io/2016/08/28/word2vec-with-gensim/"/>
     <id>http://zake7749.github.io/2016/08/28/word2vec-with-gensim/</id>
     <published>2016-08-27T16:56:23.000Z</published>
-    <updated>2016-08-27T17:54:54.468Z</updated>
+    <updated>2016-08-27T18:10:25.251Z</updated>
     
     <content type="html">&lt;p&gt;最近在練習文本的聚類分析，不過苦於沒有中文資料，原本打算先爬文章，再標tag將它們分門別類，試過幾次後，真是遺憾吶。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/VnjnW7S.jpg&quot; alt=&quot;太麻煩的事我不會做&quot;&gt;&lt;/p&gt;
@@ -45,9 +45,8 @@
 &lt;h3 id=&quot;Stopwords_and_Window&quot;&gt;&lt;a href=&quot;#Stopwords_and_Window&quot; class=&quot;headerlink&quot; title=&quot;Stopwords and Window&quot;&gt;&lt;/a&gt;Stopwords and Window&lt;/h3&gt;&lt;p&gt;好啦，這個東西大概要跑個 80 分鐘，&lt;s&gt;先讓我講些幹話&lt;/s&gt;，先讓我們看看上頭做了什麼。除了先前演示的斷詞外，我這裡還多做了兩件事，一是調整jieba的辭典，讓他對繁體斷詞比較友善，二是引入了&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E5%81%9C%E7%94%A8%E8%AF%8D&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;停用詞&lt;/a&gt;，停用詞就是像英文中的 the,a,this，中文的你我他，與其他詞相比顯得不怎麼重要，就可將它視為停用詞。而要排除停用詞的理由，其實與word2vec的實作概念大大相關，由於在開頭講明了不深究概念，就讓我舉個例子替代長篇大論。&lt;/p&gt;
 &lt;p&gt;首先，在word2vec有一個概念叫 windows，我習慣叫他窗口，因為它給我的感覺跟TCP 那個會滑來滑去的很像。&lt;/p&gt;
 &lt;h2 id=&quot;Word2Vec&quot;&gt;&lt;a href=&quot;#Word2Vec&quot; class=&quot;headerlink&quot; title=&quot;Word2Vec&quot;&gt;&lt;/a&gt;Word2Vec&lt;/h2&gt;&lt;p&gt;很顯然，一個詞的意涵跟他的左右鄰居很有關係，比如「雨越下越大，茶越充越淡」，什麼會「下」？「雨」會下，什麼會「淡」？茶會「淡」，這樣的類比舉不勝舉，那麼，若把思維逆轉過來呢？&lt;/p&gt;
-&lt;p&gt;顯然，我們或多或少能從左右鄰居是誰，猜出中間的是什麼，這很像我們國高中時天天在練的英文克漏字，再舉個例子，「真像一塊塊『？』」。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/Sg2LP1r.jpg&quot; alt=&quot;You know it&quot;&gt;&lt;/p&gt;
-&lt;p&gt;那麼問題來了，左右鄰居有誰？能更精確地說，你要往左往右看幾個？假設我們以「孔乙己 一到 店 所有 喝酒 的 人 便都 看著 他 笑」為例，如果往左往右各看一個：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/KR2ISOg.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;顯然，我們或多或少能從左右鄰居是誰，猜出中間的是什麼，這很像我們國高中時天天在練的英文克漏字。那麼問題來了，左右鄰居有誰？能更精確地說，你要往左往右看幾個？假設我們以「孔乙己 一到 店 所有 喝酒 的 人 便都 看著 他 笑」為例，如果往左往右各看一個：&lt;/p&gt;
 &lt;figure class=&quot;highlight prolog&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;[孔乙己 一到] 店 所有 喝酒 的 人 便 都 看著 他 笑&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;[孔乙己 一到 店] 所有 喝酒 的 人 便 都 看著 他 笑&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;孔乙己 [一到 店 所有] 喝酒 的 人 便 都 看著 他 笑&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;孔乙己 一到 [店 所有 喝酒] 的 人 便 都 看著 他 笑&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;......&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;這樣就構成了一個 size=1 的 windows，這個 1 是極端的例子，為了讓我們看看有停用詞跟沒停用詞差在哪，這句話去除了停用詞應該會變成：&lt;/p&gt;
 &lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;孔乙己 一到 店 所有 喝酒 人 看著 笑&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -395,7 +394,7 @@
     <link href="http://zake7749.github.io/2015/08/15/classical_cipher/"/>
     <id>http://zake7749.github.io/2015/08/15/classical_cipher/</id>
     <published>2015-08-15T12:03:07.000Z</published>
-    <updated>2015-09-13T10:27:30.696Z</updated>
+    <updated>2016-08-27T18:14:49.032Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;古典密碼學已經被電腦打爆了，但這跟它重不重要一點關係都沒有。&lt;br&gt;── 我的資安導師總是這樣嘮叨著……&lt;/p&gt;
@@ -405,13 +404,12 @@
 &lt;p&gt;&lt;em&gt;Welcome to modern cryptography&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;這也太繁瑣了，正常人才不會想圈圈畫畫這些詭異的流程。不過，若將這些細項拆開來看，平移對應到移項式密碼，代換跟替換式密碼有關，矩陣運算則是來自希爾密碼，XOR就比較特別了些，但兩無關序列間的運算，可讓人追溯至維吉尼亞密碼的金鑰概念，這些都屬於古典加密的範疇。所以若想踏入近代密碼的殿堂，古典密碼當為一個必經的前哨站，助於釐清算法本身的原理與優劣勢。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;hr&gt;
-&lt;h2 id=&quot;u57FA_u672C_u6982_u5FF5&quot;&gt;&lt;a href=&quot;#u57FA_u672C_u6982_u5FF5&quot; class=&quot;headerlink&quot; title=&quot;基本概念&quot;&gt;&lt;/a&gt;基本概念&lt;/h2&gt;&lt;h4 id=&quot;u660E_u6587__28Plain_text_29&quot;&gt;&lt;a href=&quot;#u660E_u6587__28Plain_text_29&quot; class=&quot;headerlink&quot; title=&quot;明文 (Plain text)&quot;&gt;&lt;/a&gt;明文 (Plain text)&lt;/h4&gt;&lt;p&gt;即是要加密的內容，不過，文不一定單指文字，也包含了圖片、音樂、各式各樣的檔案都可以當作明文。又因為明文的單字為Plain text，在密碼學上，我們常常用大寫字母&lt;code&gt;P&lt;/code&gt;來表示它。&lt;/p&gt;
-&lt;h4 id=&quot;u5BC6_u6587__28Cipher_text_29&quot;&gt;&lt;a href=&quot;#u5BC6_u6587__28Cipher_text_29&quot; class=&quot;headerlink&quot; title=&quot;密文 (Cipher text)&quot;&gt;&lt;/a&gt;密文 (Cipher text)&lt;/h4&gt;&lt;p&gt;呃…顧名思義，加密後的結果，跟明文一樣能有很多種型式，&lt;a href=&quot;https://code.google.com/p/corkami/source/detail?r=1906&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;比方可以把圖片加密成另一張圖片&lt;/a&gt;。因為單字是Cipher text，所以用&lt;code&gt;C&lt;/code&gt;來表示它。&lt;/p&gt;
-&lt;h4 id=&quot;u91D1_u9470&quot;&gt;&lt;a href=&quot;#u91D1_u9470&quot; class=&quot;headerlink&quot; title=&quot;金鑰&quot;&gt;&lt;/a&gt;金鑰&lt;/h4&gt;&lt;p&gt;有些加密算法會有的另一個參數，當然它也不是真的鑰匙，可能為一組文字序列，演算法把它和明文做處理後產出密文。&lt;/p&gt;
-&lt;h4 id=&quot;u7D55_u5C0D_u5B89_u5168&quot;&gt;&lt;a href=&quot;#u7D55_u5C0D_u5B89_u5168&quot; class=&quot;headerlink&quot; title=&quot;絕對安全&quot;&gt;&lt;/a&gt;絕對安全&lt;/h4&gt;&lt;p&gt;若我們說一個演算法是絕對安全的，代表即便有無限的時間、無限的資源，也沒辦法靠蠻力破解該算法。&lt;/p&gt;
-&lt;h4 id=&quot;u8A08_u7B97_u5B89_u5168&quot;&gt;&lt;a href=&quot;#u8A08_u7B97_u5B89_u5168&quot; class=&quot;headerlink&quot; title=&quot;計算安全&quot;&gt;&lt;/a&gt;計算安全&lt;/h4&gt;&lt;p&gt;若我們說一個演算法是計算安全的，則是說靠蠻力攻擊，我們確實能破解這個算法，不過得付出極為大量的時間。&lt;/p&gt;
-&lt;h4 id=&quot;u52A0_u5BC6_u7B97_u6CD5&quot;&gt;&lt;a href=&quot;#u52A0_u5BC6_u7B97_u6CD5&quot; class=&quot;headerlink&quot; title=&quot;加密算法&quot;&gt;&lt;/a&gt;加密算法&lt;/h4&gt;&lt;p&gt;它會吃進明文吐出密文，接下來的重頭戲。&lt;/p&gt;
+&lt;h2 id=&quot;u57FA_u672C_u6982_u5FF5&quot;&gt;&lt;a href=&quot;#u57FA_u672C_u6982_u5FF5&quot; class=&quot;headerlink&quot; title=&quot;基本概念&quot;&gt;&lt;/a&gt;基本概念&lt;/h2&gt;&lt;h3 id=&quot;u660E_u6587__28Plain_text_29&quot;&gt;&lt;a href=&quot;#u660E_u6587__28Plain_text_29&quot; class=&quot;headerlink&quot; title=&quot;明文 (Plain text)&quot;&gt;&lt;/a&gt;明文 (Plain text)&lt;/h3&gt;&lt;p&gt;即是要加密的內容，不過，文不一定單指文字，也包含了圖片、音樂、各式各樣的檔案都可以當作明文。又因為明文的單字為Plain text，在密碼學上，我們常常用大寫字母&lt;code&gt;P&lt;/code&gt;來表示它。&lt;/p&gt;
+&lt;h3 id=&quot;u5BC6_u6587__28Cipher_text_29&quot;&gt;&lt;a href=&quot;#u5BC6_u6587__28Cipher_text_29&quot; class=&quot;headerlink&quot; title=&quot;密文 (Cipher text)&quot;&gt;&lt;/a&gt;密文 (Cipher text)&lt;/h3&gt;&lt;p&gt;呃…顧名思義，加密後的結果，跟明文一樣能有很多種型式，&lt;a href=&quot;https://code.google.com/p/corkami/source/detail?r=1906&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;比方可以把圖片加密成另一張圖片&lt;/a&gt;。因為單字是Cipher text，所以用&lt;code&gt;C&lt;/code&gt;來表示它。&lt;/p&gt;
+&lt;h3 id=&quot;u91D1_u9470&quot;&gt;&lt;a href=&quot;#u91D1_u9470&quot; class=&quot;headerlink&quot; title=&quot;金鑰&quot;&gt;&lt;/a&gt;金鑰&lt;/h3&gt;&lt;p&gt;有些加密算法會有的另一個參數，當然它也不是真的鑰匙，可能為一組文字序列，演算法把它和明文做處理後產出密文。&lt;/p&gt;
+&lt;h3 id=&quot;u7D55_u5C0D_u5B89_u5168&quot;&gt;&lt;a href=&quot;#u7D55_u5C0D_u5B89_u5168&quot; class=&quot;headerlink&quot; title=&quot;絕對安全&quot;&gt;&lt;/a&gt;絕對安全&lt;/h3&gt;&lt;p&gt;若我們說一個演算法是絕對安全的，代表即便有無限的時間、無限的資源，也沒辦法靠蠻力破解該算法。&lt;/p&gt;
+&lt;h3 id=&quot;u8A08_u7B97_u5B89_u5168&quot;&gt;&lt;a href=&quot;#u8A08_u7B97_u5B89_u5168&quot; class=&quot;headerlink&quot; title=&quot;計算安全&quot;&gt;&lt;/a&gt;計算安全&lt;/h3&gt;&lt;p&gt;若我們說一個演算法是計算安全的，則是說靠蠻力攻擊，我們確實能破解這個算法，不過得付出極為大量的時間。&lt;/p&gt;
+&lt;h3 id=&quot;u52A0_u5BC6_u7B97_u6CD5&quot;&gt;&lt;a href=&quot;#u52A0_u5BC6_u7B97_u6CD5&quot; class=&quot;headerlink&quot; title=&quot;加密算法&quot;&gt;&lt;/a&gt;加密算法&lt;/h3&gt;&lt;p&gt;它會吃進明文吐出密文，接下來的重頭戲。&lt;/p&gt;
 &lt;p&gt;一個好的加密算法應至少具備這兩項條件：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;混淆(confusion)&lt;/li&gt;
@@ -421,19 +419,17 @@
 &lt;li&gt;擴散(diffusion)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;擴散是指即便明文間只有一丁點的不同，產生出的密文也要大不相同。&lt;/p&gt;
-&lt;h2 id=&quot;u52A0_u5BC6_u5DE5_u5177&quot;&gt;&lt;a href=&quot;#u52A0_u5BC6_u5DE5_u5177&quot; class=&quot;headerlink&quot; title=&quot;加密工具&quot;&gt;&lt;/a&gt;加密工具&lt;/h2&gt;&lt;hr&gt;
-&lt;h5 id=&quot;1-_u5BC6_u78BC_u68D2__28Scytale_29&quot;&gt;&lt;a href=&quot;#1-_u5BC6_u78BC_u68D2__28Scytale_29&quot; class=&quot;headerlink&quot; title=&quot;1.密碼棒 (Scytale)&quot;&gt;&lt;/a&gt;1.密碼棒 (Scytale)&lt;/h5&gt;&lt;p&gt;&lt;img src=&quot;https://3.bp.blogspot.com/-cIUNh6ALKzs/VGV1ikUgOKI/AAAAAAAAAL0/t2mG1J9F1qA/s320/scytale.gif&quot; alt=&quot;skytale&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;u52A0_u5BC6_u5DE5_u5177&quot;&gt;&lt;a href=&quot;#u52A0_u5BC6_u5DE5_u5177&quot; class=&quot;headerlink&quot; title=&quot;加密工具&quot;&gt;&lt;/a&gt;加密工具&lt;/h2&gt;&lt;h3 id=&quot;1-_u5BC6_u78BC_u68D2__28Scytale_29&quot;&gt;&lt;a href=&quot;#1-_u5BC6_u78BC_u68D2__28Scytale_29&quot; class=&quot;headerlink&quot; title=&quot;1.密碼棒 (Scytale)&quot;&gt;&lt;/a&gt;1.密碼棒 (Scytale)&lt;/h3&gt;&lt;p&gt;&lt;img src=&quot;https://3.bp.blogspot.com/-cIUNh6ALKzs/VGV1ikUgOKI/AAAAAAAAAL0/t2mG1J9F1qA/s320/scytale.gif&quot; alt=&quot;skytale&quot;&gt;&lt;/p&gt;
 &lt;p&gt;取布條將其纏繞於木棒上，橫向寫下明文後取下布條。解密時，必須取得相同直徑的木棒。&lt;/p&gt;
-&lt;h5 id=&quot;2-_u5361_u723E_u9054_u8AFE_u6F0F_u683C_u677F__28CardanGrille_29&quot;&gt;&lt;a href=&quot;#2-_u5361_u723E_u9054_u8AFE_u6F0F_u683C_u677F__28CardanGrille_29&quot; class=&quot;headerlink&quot; title=&quot;2.卡爾達諾漏格板 (CardanGrille)&quot;&gt;&lt;/a&gt;2.卡爾達諾漏格板 (CardanGrille)&lt;/h5&gt;&lt;p&gt;&lt;img src=&quot;http://3.bp.blogspot.com/-awX-BGDZDMM/VGYhoh_nnsI/AAAAAAAAAMc/vq9awjlikUQ/s1600/CardanGrille.png&quot; alt=&quot;CardanGrille&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;2-_u5361_u723E_u9054_u8AFE_u6F0F_u683C_u677F__28CardanGrille_29&quot;&gt;&lt;a href=&quot;#2-_u5361_u723E_u9054_u8AFE_u6F0F_u683C_u677F__28CardanGrille_29&quot; class=&quot;headerlink&quot; title=&quot;2.卡爾達諾漏格板 (CardanGrille)&quot;&gt;&lt;/a&gt;2.卡爾達諾漏格板 (CardanGrille)&lt;/h3&gt;&lt;p&gt;&lt;img src=&quot;http://3.bp.blogspot.com/-awX-BGDZDMM/VGYhoh_nnsI/AAAAAAAAAMc/vq9awjlikUQ/s1600/CardanGrille.png&quot; alt=&quot;CardanGrille&quot;&gt;&lt;/p&gt;
 &lt;p&gt;依照漏格書寫明文以及觀看明文。&lt;/p&gt;
-&lt;h5 id=&quot;3-_u4E00_u6B21_u6027_u5BC6_u78BC_u672C&quot;&gt;&lt;a href=&quot;#3-_u4E00_u6B21_u6027_u5BC6_u78BC_u672C&quot; class=&quot;headerlink&quot; title=&quot;3.一次性密碼本&quot;&gt;&lt;/a&gt;3.一次性密碼本&lt;/h5&gt;&lt;p&gt;使用亂數產生的一本加密用密碼本，可以把它想成一組金鑰，每當要產生明文時，將明文與密碼本的內容相加，如明文中的字母C (3)與密碼本的字母 X (25)，3+25=28，因為28超過了26個英文字母，而對28取餘數得2，即得加密完成的密文字母B。&lt;br&gt;一次性密碼本有三個限制：&lt;/p&gt;
+&lt;h3 id=&quot;3-_u4E00_u6B21_u6027_u5BC6_u78BC_u672C&quot;&gt;&lt;a href=&quot;#3-_u4E00_u6B21_u6027_u5BC6_u78BC_u672C&quot; class=&quot;headerlink&quot; title=&quot;3.一次性密碼本&quot;&gt;&lt;/a&gt;3.一次性密碼本&lt;/h3&gt;&lt;p&gt;使用亂數產生的一本加密用密碼本，可以把它想成一組金鑰，每當要產生明文時，將明文與密碼本的內容相加，如明文中的字母C (3)與密碼本的字母 X (25)，3+25=28，因為28超過了26個英文字母，而對28取餘數得2，即得加密完成的密文字母B。&lt;br&gt;一次性密碼本有三個限制：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;確定密碼本是由隨機產生的&lt;/li&gt;
 &lt;li&gt;密碼本必須只能使用一次&lt;/li&gt;
 &lt;li&gt;因為要與明文相加，密碼本至少要與明文一樣長&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&quot;u52A0_u5BC6_u7B97_u6CD5-1&quot;&gt;&lt;a href=&quot;#u52A0_u5BC6_u7B97_u6CD5-1&quot; class=&quot;headerlink&quot; title=&quot;加密算法&quot;&gt;&lt;/a&gt;加密算法&lt;/h2&gt;&lt;hr&gt;
-&lt;h5 id=&quot;1-_u51F1_u6492_u5BC6_u78BC&quot;&gt;&lt;a href=&quot;#1-_u51F1_u6492_u5BC6_u78BC&quot; class=&quot;headerlink&quot; title=&quot;1.凱撒密碼&quot;&gt;&lt;/a&gt;1.凱撒密碼&lt;/h5&gt;&lt;p&gt;凱撒密碼出自羅馬軍事家&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E5%B0%A4%E5%88%A9%E7%83%8F%E6%96%AF%C2%B7%E5%87%B1%E6%92%92&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;尤利烏斯·凱撒&lt;/a&gt;，遽聞其當年曾用此與將領們進行秘密通訊。&lt;/p&gt;
+&lt;h2 id=&quot;u52A0_u5BC6_u7B97_u6CD5-1&quot;&gt;&lt;a href=&quot;#u52A0_u5BC6_u7B97_u6CD5-1&quot; class=&quot;headerlink&quot; title=&quot;加密算法&quot;&gt;&lt;/a&gt;加密算法&lt;/h2&gt;&lt;h3 id=&quot;u51F1_u6492_u5BC6_u78BC&quot;&gt;&lt;a href=&quot;#u51F1_u6492_u5BC6_u78BC&quot; class=&quot;headerlink&quot; title=&quot;凱撒密碼&quot;&gt;&lt;/a&gt;凱撒密碼&lt;/h3&gt;&lt;p&gt;凱撒密碼出自羅馬軍事家&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E5%B0%A4%E5%88%A9%E7%83%8F%E6%96%AF%C2%B7%E5%87%B1%E6%92%92&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;尤利烏斯·凱撒&lt;/a&gt;，遽聞其當年曾用此與將領們進行秘密通訊。&lt;/p&gt;
 &lt;p&gt;凱撒密碼的流程並不難，因為當時的敵人多是目不識丁的。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;已知明文字母P，引入一個參數K，得出密文 C = (P + K)mod 26&lt;/p&gt;
@@ -443,15 +439,13 @@
 &lt;p&gt;由於這個方法主要是觀察英文字母使用的頻率，故又稱為頻率分析法，對於簡單的字母代換，頻率分析往往是有效的手段。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/4/41/English-slf.png&quot; alt=&quot;&amp;quot;English-slf&amp;quot;。使用來自维基共享资源-的創用CC姓名標示-相同方式分享 3.0 條款授權&quot;&gt;&lt;/p&gt;
 &lt;p&gt;也因其架構簡單，現今電腦已能用暴力法輕易破解，故鮮少在資安領域出現了，不過仍常在字謎遊戲見到它的蹤影，比如ROT-13。&lt;/p&gt;
-&lt;h5 id=&quot;2-_u5E0C_u723E_u5BC6_u78BC&quot;&gt;&lt;a href=&quot;#2-_u5E0C_u723E_u5BC6_u78BC&quot; class=&quot;headerlink&quot; title=&quot;2.希爾密碼&quot;&gt;&lt;/a&gt;2.希爾密碼&lt;/h5&gt;&lt;p&gt;使用矩陣進行加密，由密文構成的密文矩陣C = KP，其中P為明文構成的明文矩陣，K為密鑰矩陣，密鑰矩陣須為可逆才可供解密&lt;/p&gt;
+&lt;h3 id=&quot;u5E0C_u723E_u5BC6_u78BC&quot;&gt;&lt;a href=&quot;#u5E0C_u723E_u5BC6_u78BC&quot; class=&quot;headerlink&quot; title=&quot;希爾密碼&quot;&gt;&lt;/a&gt;希爾密碼&lt;/h3&gt;&lt;p&gt;使用矩陣進行加密，由密文構成的密文矩陣C = KP，其中P為明文構成的明文矩陣，K為密鑰矩陣，密鑰矩陣須為可逆才可供解密&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://1.bp.blogspot.com/-CLC48A92h_w/VJFiTQvAhCI/AAAAAAAAAQk/XOSwXGlgeho/s1600/hILL%2BCIPHER.png&quot; alt=&quot;HillCipher&quot;&gt;&lt;/p&gt;
 &lt;p&gt;希爾加密避開了頻率分析攻擊，然而在已知明文的情況下，可透過逆運算求得金鑰，無法保證安全性。&lt;/p&gt;
-&lt;h5 id=&quot;3-_u8DEF_u7531_u52A0_u5BC6&quot;&gt;&lt;a href=&quot;#3-_u8DEF_u7531_u52A0_u5BC6&quot; class=&quot;headerlink&quot; title=&quot;3.路由加密&quot;&gt;&lt;/a&gt;3.路由加密&lt;/h5&gt;&lt;p&gt;近似於密碼棒，採用直書橫寫的方式進行加密。&lt;/p&gt;
-&lt;h5 id=&quot;4-_u55AE_u5B57_u6BCD_u66FF_u63DB_u5BC6_u78BC&quot;&gt;&lt;a href=&quot;#4-_u55AE_u5B57_u6BCD_u66FF_u63DB_u5BC6_u78BC&quot; class=&quot;headerlink&quot; title=&quot;4.單字母替換密碼&quot;&gt;&lt;/a&gt;4.單字母替換密碼&lt;/h5&gt;&lt;p&gt;與凱撒密碼同為單字母取代的概念。將26個英文字母分別做對應，比如A對應C，B對應F，替換不受限於特定規則，也不要求有跡可循，純粹是做出26個字母的明文密文對應表，以供加密與解密時使用。&lt;/p&gt;
-&lt;p&gt;我們能運用洗牌演算法很輕易的產生出單字母密碼替換表。&lt;/p&gt;
-&lt;figure class=&quot;highlight processing&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;char&lt;/span&gt; alp[&lt;span class=&quot;number&quot;&gt;26&lt;/span&gt;];&lt;span class=&quot;comment&quot;&gt;//儲存26個英文字母&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt;(&lt;span class=&quot;built_in&quot;&gt;int&lt;/span&gt; t=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;t&amp;lt;&lt;span class=&quot;number&quot;&gt;26&lt;/span&gt;;t++)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;random&lt;/span&gt; = rand()%&lt;span class=&quot;number&quot;&gt;26&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;int&lt;/span&gt; temp = alp[&lt;span class=&quot;built_in&quot;&gt;random&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    alp[&lt;span class=&quot;built_in&quot;&gt;random&lt;/span&gt;] = alp[t];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    alp[t] = temp;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;儘管其複雜度(26!)遠遠高於凱撒密碼，但明文字母與密文字母仍屬一對一對應，同樣易受頻率分析攻擊破解，當然也擋不住電腦暴力搜尋。一個可行的解決方案是：在明文中添加一些無關緊要的擾亂字母，或是一份明文使用多個表進行對應。&lt;/p&gt;
-&lt;h5 id=&quot;5-_u7DAD_u5409_u5C3C_u96C5_u5BC6_u78BC&quot;&gt;&lt;a href=&quot;#5-_u7DAD_u5409_u5C3C_u96C5_u5BC6_u78BC&quot; class=&quot;headerlink&quot; title=&quot;5.維吉尼雅密碼&quot;&gt;&lt;/a&gt;5.維吉尼雅密碼&lt;/h5&gt;&lt;p&gt;維吉尼亞密碼主要是透過查表進行字母的轉換&lt;/p&gt;
+&lt;h3 id=&quot;u8DEF_u7531_u52A0_u5BC6&quot;&gt;&lt;a href=&quot;#u8DEF_u7531_u52A0_u5BC6&quot; class=&quot;headerlink&quot; title=&quot;路由加密&quot;&gt;&lt;/a&gt;路由加密&lt;/h3&gt;&lt;p&gt;近似於密碼棒，採用直書橫寫的方式進行加密。&lt;/p&gt;
+&lt;h3 id=&quot;u55AE_u5B57_u6BCD_u66FF_u63DB_u5BC6_u78BC&quot;&gt;&lt;a href=&quot;#u55AE_u5B57_u6BCD_u66FF_u63DB_u5BC6_u78BC&quot; class=&quot;headerlink&quot; title=&quot;單字母替換密碼&quot;&gt;&lt;/a&gt;單字母替換密碼&lt;/h3&gt;&lt;p&gt;與凱撒密碼同為單字母取代的概念。將26個英文字母分別做對應，比如A對應C，B對應F，替換不受限於特定規則，也不要求有跡可循，純粹是做出26個字母的明文密文對應表，以供加密與解密時使用。&lt;/p&gt;
+&lt;p&gt;我們能運用洗牌演算法很輕易的產生出單字母密碼替換表。儘管其複雜度(26!)遠遠高於凱撒密碼，但明文字母與密文字母仍屬一對一對應，同樣易受頻率分析攻擊破解，當然也擋不住電腦暴力搜尋。一個可行的解決方案是：在明文中添加一些無關緊要的擾亂字母，或是一份明文使用多個表進行對應。&lt;/p&gt;
+&lt;h3 id=&quot;u7DAD_u5409_u5C3C_u96C5_u5BC6_u78BC&quot;&gt;&lt;a href=&quot;#u7DAD_u5409_u5C3C_u96C5_u5BC6_u78BC&quot; class=&quot;headerlink&quot; title=&quot;維吉尼雅密碼&quot;&gt;&lt;/a&gt;維吉尼雅密碼&lt;/h3&gt;&lt;p&gt;維吉尼亞密碼主要是透過查表進行字母的轉換&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://3.bp.blogspot.com/-DwYbQG7U6u0/VGWGDLIZM-I/AAAAAAAAAMM/tXsTlLvCw14/s400/300px-Vigene%CC%80re_square.svg.png&quot; alt=&quot;維吉尼亞加密&quot;&gt;&lt;/p&gt;
 &lt;p&gt;上圖其實是由26個凱撒密碼構成的。&lt;/p&gt;
 &lt;ul&gt;
@@ -465,11 +459,10 @@
 
 &lt;p&gt;接下來，取第Ａ行第Ｃ列得Ａ(實際上就是雙重的凱撒密碼)，取第Ｂ行第Ｉ列得Ｊ…取第Ｇ行第Ｃ列得I，如此完成加密。&lt;/p&gt;
 &lt;p&gt;由於引入了金鑰這個變換要素，我們在明文上做了兩次變換，普通的頻率分析不適用在維吉尼亞密碼，只要確保金鑰不過度重複(如配合一次性密碼本)，維吉尼亞密碼是足夠安全的。&lt;/p&gt;
-&lt;h2 id=&quot;u653B_u64CA_u985E_u578B&quot;&gt;&lt;a href=&quot;#u653B_u64CA_u985E_u578B&quot; class=&quot;headerlink&quot; title=&quot;攻擊類型&quot;&gt;&lt;/a&gt;攻擊類型&lt;/h2&gt;&lt;hr&gt;
-&lt;h5 id=&quot;1-_u50C5_u77E5_u5BC6_u6587_u653B_u64CA&quot;&gt;&lt;a href=&quot;#1-_u50C5_u77E5_u5BC6_u6587_u653B_u64CA&quot; class=&quot;headerlink&quot; title=&quot;1.僅知密文攻擊&quot;&gt;&lt;/a&gt;1.僅知密文攻擊&lt;/h5&gt;&lt;p&gt;攻擊者在只知道密文的情況下試圖求得明文或金鑰。&lt;/p&gt;
-&lt;h5 id=&quot;2-_u5DF2_u77E5_u660E_u6587_u653B_u64CA&quot;&gt;&lt;a href=&quot;#2-_u5DF2_u77E5_u660E_u6587_u653B_u64CA&quot; class=&quot;headerlink&quot; title=&quot;2.已知明文攻擊&quot;&gt;&lt;/a&gt;2.已知明文攻擊&lt;/h5&gt;&lt;p&gt;攻擊者在知道部分明文與密文配對的情況下試圖破解。&lt;/p&gt;
-&lt;h5 id=&quot;3-_u9078_u64C7_u660E_u6587_u653B_u64CA&quot;&gt;&lt;a href=&quot;#3-_u9078_u64C7_u660E_u6587_u653B_u64CA&quot; class=&quot;headerlink&quot; title=&quot;3.選擇明文攻擊&quot;&gt;&lt;/a&gt;3.選擇明文攻擊&lt;/h5&gt;&lt;p&gt;公開加密器，攻擊者可以自由輸入明文及得到該明文的密文，藉此試圖破解算法。&lt;/p&gt;
-&lt;p&gt;儘管選擇明文攻擊攻防上看似不合理，&lt;span style=&quot;color:#a9e74b&quot;&gt;&lt;strong&gt;但在近代密碼學中，十分強調在公開演算法的情況下，還能保證安全的才是優秀的演算法。&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h2 id=&quot;u653B_u64CA_u985E_u578B&quot;&gt;&lt;a href=&quot;#u653B_u64CA_u985E_u578B&quot; class=&quot;headerlink&quot; title=&quot;攻擊類型&quot;&gt;&lt;/a&gt;攻擊類型&lt;/h2&gt;&lt;h3 id=&quot;1-_u50C5_u77E5_u5BC6_u6587_u653B_u64CA&quot;&gt;&lt;a href=&quot;#1-_u50C5_u77E5_u5BC6_u6587_u653B_u64CA&quot; class=&quot;headerlink&quot; title=&quot;1.僅知密文攻擊&quot;&gt;&lt;/a&gt;1.僅知密文攻擊&lt;/h3&gt;&lt;p&gt;攻擊者在只知道密文的情況下試圖求得明文或金鑰。&lt;/p&gt;
+&lt;h3 id=&quot;2-_u5DF2_u77E5_u660E_u6587_u653B_u64CA&quot;&gt;&lt;a href=&quot;#2-_u5DF2_u77E5_u660E_u6587_u653B_u64CA&quot; class=&quot;headerlink&quot; title=&quot;2.已知明文攻擊&quot;&gt;&lt;/a&gt;2.已知明文攻擊&lt;/h3&gt;&lt;p&gt;攻擊者在知道部分明文與密文配對的情況下試圖破解。&lt;/p&gt;
+&lt;h3 id=&quot;3-_u9078_u64C7_u660E_u6587_u653B_u64CA&quot;&gt;&lt;a href=&quot;#3-_u9078_u64C7_u660E_u6587_u653B_u64CA&quot; class=&quot;headerlink&quot; title=&quot;3.選擇明文攻擊&quot;&gt;&lt;/a&gt;3.選擇明文攻擊&lt;/h3&gt;&lt;p&gt;公開加密器，攻擊者可以自由輸入明文及得到該明文的密文，藉此試圖破解算法。&lt;/p&gt;
+&lt;p&gt;儘管選擇明文攻擊攻防上看似不合理，&lt;strong&gt;但在近代密碼學中，十分強調在公開演算法的情況下，還能保證安全的才是優秀的演算法。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;用最最直觀的角度來看，要做一個加密流程很容易，我們可以有很多把金鑰，再搭配各式各樣的函式打造自己的流程，反覆做個幾十次，甚至幾百次，雖然它的效率不怎麼樣&lt;span style=&quot;color:#666&quot;&gt;(其實這是個大問題)&lt;/span&gt;，但只要流程與金鑰不外洩，這個演算法理論上牢不可破。&lt;/p&gt;
 &lt;p&gt;但是換個立場，如果我們是使用者，今天開發者送來了一個自行開發的加密算法，就像上述的流程一樣繁瑣，明文與密文間根本找不著對應。乍看之下，這個加密器可說是有效的，但是，如果它擁有一把尚未發現的萬用鑰匙呢？或是說這幾百道的換算其實能被規約成兩三條式子，是不是藏著一些未發現的漏洞或暗門？。&lt;/p&gt;
 &lt;p&gt;對這些疑問，身為使用者的我們無法斷言，至於開發者？如果知道，那他便是最危險的攻擊者。若連開發者也不能肯定，這個算法隨時都有可能會爆炸，更糟糕的是，爆炸按鈕還是我們自己觸發的。&lt;/p&gt;
