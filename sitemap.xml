@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://zake7749.github.io/2016/08/28/word2vec-with-gensim/</loc>
+    <lastmod>2016-08-27T17:30:08.292Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://zake7749.github.io/2015/08/13/Cpreprocessor/</loc>
     <lastmod>2016-07-31T13:07:34.736Z</lastmod>
   </url>
