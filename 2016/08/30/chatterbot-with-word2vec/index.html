@@ -1,0 +1,756 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Word2Vec,專題紀錄," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雷德麥的藏書閣" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="2016 will be the year of conversational commerceChris Messina
+
+在 Facebook 釋出 Messenger API 後，形形色色的 Chatterbot 如雨後春筍般湧現：
+
+Messenger chatbot - from Facebook
+
+「以對話式介面取代圖形化介面」、「2016年將成為對話式商務元年」，種種呼聲儼然令聊天機">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基於詞向量的主題匹配">
+<meta property="og:url" content="http://zake7749.github.io/2016/08/30/chatterbot-with-word2vec/index.html">
+<meta property="og:site_name" content="雷德麥的藏書閣">
+<meta property="og:description" content="2016 will be the year of conversational commerceChris Messina
+
+在 Facebook 釋出 Messenger API 後，形形色色的 Chatterbot 如雨後春筍般湧現：
+
+Messenger chatbot - from Facebook
+
+「以對話式介面取代圖形化介面」、「2016年將成為對話式商務元年」，種種呼聲儼然令聊天機">
+<meta property="og:image" content="http://i.imgur.com/rLIntyA.gif">
+<meta property="og:image" content="http://i.imgur.com/JVbysQO.png">
+<meta property="og:updated_time" content="2016-08-30T14:52:16.090Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基於詞向量的主題匹配">
+<meta name="twitter:description" content="2016 will be the year of conversational commerceChris Messina
+
+在 Facebook 釋出 Messenger API 後，形形色色的 Chatterbot 如雨後春筍般湧現：
+
+Messenger chatbot - from Facebook
+
+「以對話式介面取代圖形化介面」、「2016年將成為對話式商務元年」，種種呼聲儼然令聊天機">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://zake7749.github.io/2016/08/30/chatterbot-with-word2vec/"/>
+
+  <title> 基於詞向量的主題匹配 | 雷德麥的藏書閣 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      <a class="menu-item website-text-logo" href="/">
+        <b class="text-logo-eg">R</b><span class="text-logo-ch"><h1 class="site-title">雷德麥的藏書閣</h1></span>
+      </a>
+      
+        
+        <a class="menu-item menu-item-categories red-tooltip" href="/categories" data-toggle="tooltip" title="文章目錄">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i>
+              <span class="sidebar-title">文章目錄</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-archives red-tooltip" href="/archives" data-toggle="tooltip" title="文章歸檔">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i>
+              <span class="sidebar-title">文章歸檔</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-tags red-tooltip" href="/tags" data-toggle="tooltip" title="特色標籤">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i>
+              <span class="sidebar-title">特色標籤</span>
+            
+          </a>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+ </div>
+      <ul id="btm-menu" class="menu cus-menu">
+        <a id="cus-object-group" href="https://csienckugrade3.hackpad.com/" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="CS Notes">
+          <i class="menu-item-icon fa fa fa-object-group"></i>
+          <span class="sidebar-title">CS Note pads</span>
+        </a>
+        <a id="cus-map" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="關閉側邊欄">
+          <i class="menu-item-icon fa fa-map"></i>
+          <span class="sidebar-title">關閉側邊欄</span>
+        </a>
+        <a id="cus-lightbulb" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="施工中 ─=≡Σ(((っﾟДﾟ)っ">
+          <i class="menu-item-icon fa fa-lightbulb-o"></i>
+          <span class="sidebar-title">顯示模式</span>
+        </a>
+      </ul>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal  post-index-border" itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                基於詞向量的主題匹配
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2016-08-30T00:56:23+08:00" content="2016-08-30">
+              2016-08-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/自然語言處理/" itemprop="url" rel="index">
+                    <span itemprop="name">自然語言處理</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/30/chatterbot-with-word2vec/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/08/30/chatterbot-with-word2vec/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>2016 will be the year of conversational commerce<br>Chris Messina</p>
+</blockquote>
+<p>在 Facebook 釋出 Messenger API 後，形形色色的 Chatterbot 如雨後春筍般湧現：</p>
+<p><img src="http://i.imgur.com/rLIntyA.gif" alt="messenger"></p>
+<p class="img-meta">Messenger chatbot - from Facebook</p>
+
+<p>「以對話式介面取代圖形化介面」、「2016年將成為對話式商務元年」，種種呼聲儼然令聊天機器人成為了一個 NLP 熱點，這將是一場介面革命，我們所專注的不再是色調與元素的微調，而是去思考如何令機器人在談吐間富含溫度，在語意上理解透徹，在思維上，更貼近一個真實的人。<br><a id="more"></a></p>
+<p>嘛，開場白也講得差不多了，太企業導向的東西先放一邊，讓我們來點輕鬆的，瞧瞧這篇文章出來的成果會是什麼樣子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用者：明天早上叫我起床。</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>相似度</th>
+<th>概念</th>
+<th>匹配元</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.4521</td>
+<td>鬧鐘</td>
+<td>起床</td>
+</tr>
+<tr>
+<td>0.3904</td>
+<td>天氣</td>
+<td>早上</td>
+</tr>
+<tr>
+<td>0.3067</td>
+<td>住宿</td>
+<td>起床</td>
+</tr>
+<tr>
+<td>0.1747</td>
+<td>病症</td>
+<td>起床</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p>這個表是算法推論出的對話主題，機器看到「明天早上叫我起床」，就知道該幫你「訂鬧鐘」了，接下來，就能基於自己的語料為使用者提供服務。這個例子有趣的點在使用者壓跟沒提到「鬧鐘」，那麼，機器是怎麼推斷出「設鬧鐘」這個結論的？</p>
+<p>其實標題已經先劇透了，沒涉及到 LSTM 或 ESA 這類高端技術，只不過是把匹配的單元從「詞」替換成詞「向量」罷了，也就是基於向量間的餘弦相似度計算，來去推測每個詞可能會有的隱含主題。</p>
+<h2 id="u4E00_u5207_u7684_u8D77_u9EDE"><a href="#u4E00_u5207_u7684_u8D77_u9EDE" class="headerlink" title="一切的起點"></a>一切的起點</h2><p>其實以前我也開發過聊天機器人，方法跟目前很多框架一樣，定義了幾種匹配模式再去檢查關鍵字，用程式語言來講大概是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> user_input.contain(keyword):</span><br><span class="line">	say_something(keyword.domain)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> user_input.start_with(keyword):</span><br><span class="line">	say_something(keyowrd.domain, start=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>這麼做精度很高，且因對話是基於人工定義，答覆的品質也是一等一的，可惜缺點也相當明顯，即是開發彈性相當低，畢竟要表達一個主題的方式實作太多太多，我們不能總是指望關鍵字有辦法包山包海，人力與時間的花費都是個問題。<br>於是後來看上了LDA，要找主題問主題模型，這麼想也是理所當然的，可嘆機率模型是盤難解的棋，除此之外，無監督學習出的主題也未必是應用上需要的，再說像聊天這種等多二十幾個字的短語，我認為還是回歸到關鍵字比對會靠譜一些，重點是怎麼比呢？</p>
+<h3 id="u8A66_u8457_u6B78_u7D0D_u4E3B_u984C"><a href="#u8A66_u8457_u6B78_u7D0D_u4E3B_u984C" class="headerlink" title="試著歸納主題"></a>試著歸納主題</h3><p>自然語言處理最難的就是語言的多樣性，我想沒有人會否認這個說法，那麼化繁為簡就成為了關鍵，這讓我想到 IR 的 Stemming ，或許可以透過 domain tree 來規約一個句子的含義，比方說：</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml">User：這附近哪裏能買到泡沫紅茶？</span><br><span class="line">Domains：</span><span class="template-variable">&#123;附近|近距離&#125;</span><span class="xml">、</span><span class="template-variable">&#123;哪裡|疑問&#125;</span><span class="xml">、</span><span class="template-variable">&#123;買到|購買&#125;</span><span class="xml">、</span><span class="template-variable">&#123;泡沫紅茶|飲料&#125;</span><span class="xml"></span></span><br></pre></td></tr></table></figure>
+<p>這能透過<a href="http://ehownet.iis.sinica.edu.tw/ehownet.php" target="_blank" rel="external">廣義知網</a>實現，如此一來就把關鍵字擴充同義詞集，但是這樣還不夠，我們更關注的應該會是詞之間的主題關聯性，比如說提到<strong>肚子餓</strong>，就會想到該<strong>吃飯</strong>了，<strong>口渴</strong>了，那你可能會想<strong>買飲料</strong>。想要保存關聯，又想要建立同義關係，就我所學中最恰當的方法就是<code>Word2Vec</code>，至於如何將詞向量化呢？可以參見<a href="http://zake7749.github.io/2016/08/28/word2vec-with-gensim/">我另一篇文章</a>的紀錄。</p>
+<p>其實我本來對這個想法還頗有疑慮，直到偶然拜訪了這個 <a href="https://github.com/asd5510/word2vec-chinese-demo" target="_blank" rel="external">Word2Vec的視覺化專案</a>，它隨機將文章中某個詞替換成了與該詞相似度最高的詞，這與我目前要做的有異曲同工之妙，不過它是將文句發散出去，我是想讓概念收斂回來，就演示的結果來看，大方向應該是沒有問題的，現在該是寫程式的時候了。</p>
+<h2 id="u5148_u5B9A_u7FA9_u898F_u5247"><a href="#u5148_u5B9A_u7FA9_u898F_u5247" class="headerlink" title="先定義規則"></a>先定義規則</h2><p>既然是基於匹配，我們就得先決定好匹配的結構才行，我簡單定義了一個<code>json</code>的格式：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	"<span class="attr">domain</span>": <span class="string">"代表這個規則的抽象概念"</span>,</span><br><span class="line">	"<span class="attr">response</span>": [</span><br><span class="line">		<span class="string">"機器人給予的回覆"</span></span><br><span class="line">	],</span><br><span class="line">	"<span class="attr">concepts</span>": [</span><br><span class="line">		<span class="string">"要被比對向量的關鍵詞集"</span></span><br><span class="line">	],</span><br><span class="line">	"<span class="attr">children</span>": [<span class="string">"該規則的子規則們"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>實際建立起來可能像是這樣：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	"<span class="attr">domain</span>": <span class="string">"購買"</span>,</span><br><span class="line">	"<span class="attr">response</span>": [</span><br><span class="line">		<span class="string">"正在將您導向購物模組"</span></span><br><span class="line">	],</span><br><span class="line">	"<span class="attr">concepts</span>": [</span><br><span class="line">		<span class="string">"購買"</span>,<span class="string">"購物"</span>,<span class="string">"訂購"</span></span><br><span class="line">	],</span><br><span class="line">	"<span class="attr">children</span>": [</span><br><span class="line">		<span class="string">"購買生活用品"</span>,</span><br><span class="line">		<span class="string">"購買家電"</span>,</span><br><span class="line">		<span class="string">"購買食物"</span>,</span><br><span class="line">		<span class="string">"購買飲料"</span>,</span><br><span class="line">		<span class="string">"購買鞋子"</span>,</span><br><span class="line">		<span class="string">"購買衣服"</span>,</span><br><span class="line">		<span class="string">"購買電腦產品"</span></span><br><span class="line">	]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="u958B_u59CB_u5339_u914D"><a href="#u958B_u59CB_u5339_u914D" class="headerlink" title="開始匹配"></a>開始匹配</h2><p>現在我們就能基於規則開發資料結構，基於個人後處理的考量，接下來都會用<code>python 3.5.0</code>開發，使用到的套件有主題模型<code>gensim</code>與<code>jieba斷詞</code>。規則類的程式碼可以參見<a href="https://github.com/zake7749/Chatbot/blob/master/RuleMatcher/rulebase.py" target="_blank" rel="external">rulebase.py</a>，我創建了<code>Rule</code>與<code>RuleBase</code>，由於我<code>python</code>是新手入門，開發上又幾經波折，程式裏頭有很多無關緊要的玩意兒還請見諒。我想重點是在匹配的方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">match</span><span class="params">(self, sentence, threshold=<span class="number">0</span>)</span>:</span></span><br><span class="line"></span><br><span class="line">        max_sim = <span class="number">0.0</span></span><br><span class="line">        matchee = <span class="string">""</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> sentence:</span><br><span class="line">            <span class="keyword">for</span> term <span class="keyword">in</span> self.terms:</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    sim = self.model.similarity(term,word)</span><br><span class="line">                    <span class="keyword">if</span> sim &gt; max_sim <span class="keyword">and</span> sim &gt; threshold:</span><br><span class="line">                        max_sim = sim</span><br><span class="line">                        matchee = word</span><br><span class="line">                <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                    self.log.write(repr(e)+ <span class="string">". Try to hard-match."</span>)</span><br><span class="line">                    <span class="keyword">if</span> term == word:</span><br><span class="line">                        max_sim = <span class="number">1</span></span><br><span class="line">                        matchee = word</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> [max_sim, self.id_term, matchee]</span><br></pre></td></tr></table></figure>
+<p><code>sentence</code>是使用者輸入的斷詞結果，<code>self.terms</code> 是<code>Rule</code>的關鍵詞的列表，透過雙層迴圈讓詞袋中每一個詞和關鍵詞表中的每一個關鍵字計算相似度，最後迴傳最優的分數、自己的 ID 與匹配到的字詞。<code>RuleBase</code>的工作也沒什麼，就負責把一堆<code>Rule</code>從<code>json</code>檔中讀入，並提供了一個對外的匹配接口:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">match</span><span class="params">(self, sentence, topk=<span class="number">1</span>, threshold=<span class="number">0</span>, root=None)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> self.model <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>, <span class="string">"Please load the model before any match."</span></span><br><span class="line"></span><br><span class="line">        result_list  = []</span><br><span class="line">        at_leaf_node = <span class="keyword">False</span></span><br><span class="line">        term_trans   = <span class="string">""</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="keyword">None</span>: <span class="comment"># then search from roots of forest.</span></span><br><span class="line">            focused_rule = self.forest_base_roots</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            focused_rule = [self.rules[root]]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> at_leaf_node:</span><br><span class="line"></span><br><span class="line">            at_leaf_node = <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> rule <span class="keyword">in</span> focused_rule:</span><br><span class="line">                result_list.append(rule.match(sentence, threshold))</span><br><span class="line"></span><br><span class="line">            result_list = sorted(result_list, reverse=<span class="keyword">True</span> , key=<span class="keyword">lambda</span> k: k[<span class="number">0</span>])</span><br><span class="line">            top_domain  = result_list[<span class="number">0</span>][<span class="number">1</span>] <span class="comment"># get the best matcher's domain.</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> self.rules[top_domain].has_child():</span><br><span class="line">                result_list = []</span><br><span class="line">                term_trans += top_domain+<span class="string">'&gt;'</span></span><br><span class="line">                at_leaf_node = <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># travel to the best node's children.</span></span><br><span class="line">                focused_rule = []</span><br><span class="line">                <span class="keyword">for</span> rule_id <span class="keyword">in</span> self.rules[top_domain].children:</span><br><span class="line">                    focused_rule.append(self.rules[rule_id])</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> [result_list,term_trans]</span><br></pre></td></tr></table></figure>
+<p>我儲存規則的資料結構是字典，鍵為<code>Rule.domain</code>，值則是<code>Rule</code>的實例，那麼你可能就好奇了，怎麼不用單層迴圈就搞定？<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> rule <span class="keyword">in</span> self.rules.values():</span><br><span class="line">	grade = rule.match(sentence, threshold)</span><br><span class="line">	...</span><br></pre></td></tr></table></figure></p>
+<p>其實那是我的初號機，因為以前聊天機器人就是這麼寫的，可惜當詞變成了詞向量，這個老方法就有點力不從心。弱匹配雖然彈性很大，但規則設計上就得小心翼翼，很容易發生搶佔分數的情形，比如「附近」、「哪裡」總拿高分，讓「購物」或「觀光」這類有明確意圖的只能敬陪末座，也不能武斷的將其歸類為停用詞，因為某種程度上他們表達了「詢問地點」這層含義，那怎麼辦呢？就做一顆分類樹吧！</p>
+<h2 id="u898F_u5247_u5F88_u6A21_u7CCA_uFF1F_u90A3_u5C31_u5206_u800C_u6CBB_u4E4B"><a href="#u898F_u5247_u5F88_u6A21_u7CCA_uFF1F_u90A3_u5C31_u5206_u800C_u6CBB_u4E4B" class="headerlink" title="規則很模糊？那就分而治之"></a>規則很模糊？那就分而治之</h2><p>因為概念詞會與斷好的每個詞作匹配，那麼匹配的順序就會顯得很重要，我的想法是先從大方向抽取主題，比如「訂房」這類有明確意圖的關鍵詞，再向下觀察地點、時間及其他細項，這很像一個分類器，我們將模糊的大領域切割成若干小領域，再將它們各個擊破：<br><img src="http://i.imgur.com/JVbysQO.png" alt="Chatbot"></p>
+<p>如果一句話得出了最高相似概念是<strong>購物</strong>，我們會走向與購物相關的規則，以避免一些雜項干擾了對核心概念的評估。這樣出來的結果確實會很好多，在設計新規則時也比較不擔心與原有的抵觸。</p>
+<h2 id="u5BE6_u969B_u4F7F_u7528_u770B_u770B"><a href="#u5BE6_u969B_u4F7F_u7528_u770B_u770B" class="headerlink" title="實際使用看看"></a>實際使用看看</h2><p>我另外寫了一個 <code>console.py</code> 把斷詞、去除停用詞、匹配這些功能都包覆起來，可以前往<a href="https://github.com/zake7749/Chatbot" target="_blank" rel="external">Chatbot</a>進行測試，不過要先準備好一份自己的詞向量才可以唷，我演示所使用的是 300 維的 skipgram，以維基百科和 A+ 醫學百科跟幾本小說作為訓練語料，如果一切都就緒了，就試著調用看看吧：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> console</span><br><span class="line"></span><br><span class="line">c = console.Console(model_path=<span class="string">"詞向量模型的相對路徑"</span>)</span><br><span class="line"></span><br><span class="line">speech = input(<span class="string">'Input a sentence:'</span>)</span><br><span class="line">res,path = c.rule_match(speech)</span><br><span class="line"></span><br><span class="line">c.write_output(speech,res,path)</span><br></pre></td></tr></table></figure>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">Case# 我的肚子好餓啊</span><br><span class="line">------------------</span></span><br><span class="line">0.5014	吃喝玩樂		餓</span><br><span class="line">0.3816	鬧鐘		肚子</span><br><span class="line">0.3736	病症		肚子</span><br><span class="line">0.1807	住宿		餓</span><br><span class="line">0.1580	天氣		餓</span><br><span class="line">0.0000	觀光		</span><br><span class="line">0.0000	購買		</span><br><span class="line"><span class="section">0.0000	股票		</span><br><span class="line">------------------</span></span><br></pre></td></tr></table></figure>
+<h2 id="u4E00_u4E9B_u5C55_u671B"><a href="#u4E00_u4E9B_u5C55_u671B" class="headerlink" title="一些展望"></a>一些展望</h2><p>如果還有後續的話，希望先實現看看各平台的 adapter，或者用機器學習來調適規則的權重，目前有些關鍵字的實用性是有些不如預期，我想這跟語料的選用也有很大的關係，在取得更多有效資源前，就先在這告個段落吧！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Word2Vec/" rel="tag">#Word2Vec</a>
+          
+            <a href="/tags/專題紀錄/" rel="tag">#專題紀錄</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/28/word2vec-with-gensim/" rel="next" title="以 gensim 訓練中文詞向量">
+                <i class="fa fa-chevron-left"></i> 以 gensim 訓練中文詞向量
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/1428482092251.gif"
+               alt="Justin Yang" />
+          <p class="site-author-name" itemprop="name">Justin Yang</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zake7749" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://plus.google.com/110210184472476277760" target="_blank" title="Google">
+                  
+                    <i class="fa fa-fw fa-google-plus"></i>
+                  
+                  Google
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#u4E00_u5207_u7684_u8D77_u9EDE"><span class="nav-number">1.</span> <span class="nav-text">一切的起點</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u8A66_u8457_u6B78_u7D0D_u4E3B_u984C"><span class="nav-number">1.1.</span> <span class="nav-text">試著歸納主題</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u5148_u5B9A_u7FA9_u898F_u5247"><span class="nav-number">2.</span> <span class="nav-text">先定義規則</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u958B_u59CB_u5339_u914D"><span class="nav-number">3.</span> <span class="nav-text">開始匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u898F_u5247_u5F88_u6A21_u7CCA_uFF1F_u90A3_u5C31_u5206_u800C_u6CBB_u4E4B"><span class="nav-number">4.</span> <span class="nav-text">規則很模糊？那就分而治之</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u5BE6_u969B_u4F7F_u7528_u770B_u770B"><span class="nav-number">5.</span> <span class="nav-text">實際使用看看</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u4E00_u4E9B_u5C55_u671B"><span class="nav-number">6.</span> <span class="nav-text">一些展望</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart" style="color:rgb(255,160,180);"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Justin Yang</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div id="open-sidebar" class="open-sidebar close-this-one">
+      <i class="fa fa-map"></i>
+    </div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'zake7749';
+      var disqus_identifier = '2016/08/30/chatterbot-with-word2vec/';
+      var disqus_title = "基於詞向量的主題匹配";
+      var disqus_url = 'http://zake7749.github.io/2016/08/30/chatterbot-with-word2vec/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  <script type="text/javascript" src="/js/src/jquery.tipsy.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+  
+
+  
+
+</body>
+</html>

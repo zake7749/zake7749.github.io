@@ -235,6 +235,140 @@
             
               
                 
+                <a class="post-title-link" href="/2015/09/07/minimalEvaluation/" itemprop="url">
+                  短路求值
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2015-09-07T20:47:47+08:00" content="2015-09-07">
+              2015-09-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/程式語言/" itemprop="url" rel="index">
+                    <span itemprop="name">程式語言</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/程式語言/語言原理/" itemprop="url" rel="index">
+                    <span itemprop="name">語言原理</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/09/07/minimalEvaluation/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/07/minimalEvaluation/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line">	What is the output of this program ?</span><br><span class="line">	猜猜看，這個程式的輸出是什麼？</span><br><span class="line">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Problem</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>) </span>&#123;</span><br><span class="line">		</span><br><span class="line">		Problem p = <span class="keyword">new</span> Problem();</span><br><span class="line">		p.evaluation();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> boolean <span class="title">sayHello</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"Hello"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">evaluation</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		</span><br><span class="line">		boolean t = <span class="keyword">true</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(t||sayHello())&#123;</span><br><span class="line">			System.<span class="keyword">out</span>.println(<span class="string">"finish"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/07/minimalEvaluation/#more" rel="contents">
+              閱讀全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal  post-index-border" itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/08/15/classical_cipher/" itemprop="url">
                   古典密碼學
                 </a>
@@ -764,143 +898,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal  post-index-border" itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/10/30/C4labsLinux/" itemprop="url">
-                  C4Labs Linux講座
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">發表於</span>
-            <time itemprop="dateCreated" datetime="2014-10-30T22:39:03+08:00" content="2014-10-30">
-              2014-10-30
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分類於</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/作業系統/" itemprop="url" rel="index">
-                    <span itemprop="name">作業系統</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/10/30/C4labsLinux/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/10/30/C4labsLinux/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><div align="center"><img src="https://lh3.googleusercontent.com/P_9SNHPFYK3jj1kU3jTOovKiESAaPBWFdDk23WdCNBWcPiwSV6Kys6LIAh-LfRvEzWpv0l0U5rFecjKiAPOE13Wjklg7IekDPS9SO90CrdXE85ShgZtQyICFgM8TDd8zwnWyER0tcNmNns5nlAOp2t4HPN0BG8qMqjBCPrrFyLiYhELclbde15iMeizjKVHbA3oQ4DY-vZzCOfVvh3NewopXESbp3f-nn_ncreSPdEdA_e3xodUyokmZ3JbzXQzGoTRM_DEAHWf8Tkzi91KVRjrFGi4ZyMZ62KkBdqyrP5JuNedcttx3cTvPbQz_kOdiOo9aPg7CSlAadztfbMAlTTmWB0GQGIrD2bywo8pQ954IdHbv_5F1eH4SDqLO9utYL2LCgRzEQF5oJzSbIv3RFl5rJ-ClvWfAeGuz7l_5Rfdf2DgA97oPSruYQdOfKvqbgXY0w-Aw93HSfS8UOt5YvHbOv4dmEhHHFkPI46nbpFS1D9hdybYv-kkcVWpa1qv5Iha7mzhuQN4pOUcQSnrvKp7G6J2EtPmKyVQLa3v1hHY=w272-h319-no" alt=""></div><br>由於主持人是jserv，所以是C4Labs開學以來第一次爆滿(?)。比起分享，這次的meeting更像是推坑用讀書會，書目為<a href="http://it-ebooks.info/book/819/" target="_blank" rel="external">linux kernel development 3rd</a> 。這本書不像OS恐龍書，它假定你對基本觀念有一部分的認知了，而多著墨在怎麼去用那些觀念，所以可能不適合新手入門，而且它的圖真的很少。</p>
-<p>今天是第一次開講，所以只就幾個章節做了簡單的流覽。jserv分享還蠻有趣的，對於這次的會議內容，將談談作業系統的基本觀念與排程</p>
-<h2 id="u7A0B_u5F0F_x__u7A0B_u5E8F_x__u57F7_u884C_u7DD2"><a href="#u7A0B_u5F0F_x__u7A0B_u5E8F_x__u57F7_u884C_u7DD2" class="headerlink" title="程式 x 程序 x 執行緒"></a>程式 x 程序 x 執行緒</h2><p>進入排程之前，先讓我們釐清一件事：</p>
-<pre><code>Program：沒有反應，就只是個程式碼的集合。
-Process：執行中程式的實體。
-Thread：Process的紀錄器，告訴你這個Process幹了什麼。
-</code></pre><p>一個Program能產生多的Process，每點一次程式，就會產生一個行程，多開就是這麼回事。而每一個行程，都有一個獨立自主的小空間(記憶體區塊)，除了自己以外，沒有人能把它幹掉，同樣的，當這個行程掛掉時，別的行程也不會受到影響。</p>
-<p>執行緒既為紀錄器，也是CPU分時的最小單位。一個行程通常有很多執行緒，這其實近似多工的概念。想像一個情形，如果只有一個執行緒，行程內所有的事就得都由他一手包辦，他可能要讀入檔案，又可能又呈現畫面給使用者，但是CPU一次只能分配給一個執行緒使用，這意味著我們必須等這個執行緒讀完檔案，才會有時間來回應使用者，如果前者曠日廢時，我們通常會認為是當機了。多執行緒則把工作分攤開，我們可以有一個執行緒專職回報，告訴使用者這個行程做了什麼，而其他執行緒繼續埋頭苦幹。</p>
-<p>但有一點要注意，多執行緒是近似分工，只是讓工作能同時啟動，真正在做事的還是處理器，如果只有一個執行緒，一個處理器，那你把它分成4個執行緒也不會比較快。事實上，在多執行緒中處理器只是快速的切換執行緒，以達到工作差不多快的效果。</p>
-<h2 id="u6392_u7A0B_u5165_u9580"><a href="#u6392_u7A0B_u5165_u9580" class="headerlink" title="排程入門"></a>排程入門</h2><p>排程，其實就是切換行程的學問。Linux的排程是基於分時，也就是把CPU時間切成許多片段，每一個片段可供一個行程來使用，當程式的時間配額額滿時，就會進行行程切換的操作。而判斷執行順序是來自優先權，它可能是透過一個演算法得出的，每個行程都會有個優先權，排程器(Scheduler)會透過它得知什麼時候該執行什麼程式。</p>
-<p>我們先考慮三種行程：</p>
-<ul>
-<li>Interactive process ：會不斷跟使用者互動，需要偵測按鍵立即回覆使用者</li>
-<li>Batch process：不需要和使用者互動，常在背景執行</li>
-<li>Real-time process：即時性的，像是影音軟體</li>
-</ul>
-<p>Linux的排程器實做了一個啟發式演算法，可以依據過去行程的行為，來決定各個行程的優先順序 。</p>
-<p>此外，Linux 採取<a href="https://zh.wikipedia.org/wiki/%E6%8A%A2%E5%8D%A0%E5%BC%8F%E5%A4%9A%E4%BB%BB%E5%8A%A1%E5%A4%84%E7%90%86" target="_blank" rel="external">搶佔式多任務處理</a>，也就是說當一個行程處於可執行狀態時，核心會將他的優先權和當前執行行程的優先權進行比對，若前者較大，中斷目前的行程，讓排程器挑出應當執行的行程。此外先佔也會發生在當前行程的時間配額額滿的時候，此時，一個鑑別旗標TIF_NEED_RESCHED 會被設立，讓計時器中止及調用排程器。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -946,7 +943,7 @@ Thread：Process的紀錄器，告訴你這個Process幹了什麼。
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
@@ -963,7 +960,7 @@ Thread：Process的紀錄器，告訴你這個Process幹了什麼。
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">標籤</span>
               </a>
             </div>
