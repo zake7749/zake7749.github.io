@@ -108,7 +108,7 @@ Messenger chatbot - from Facebook
 「以對話式介面取代圖形化介面」、「2016年將成為對話式商務元年」，種種呼聲儼然令聊天機">
 <meta property="og:image" content="http://i.imgur.com/rLIntyA.gif">
 <meta property="og:image" content="http://i.imgur.com/JVbysQO.png">
-<meta property="og:updated_time" content="2016-08-30T14:52:16.090Z">
+<meta property="og:updated_time" content="2016-08-30T15:10:48.741Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基於詞向量的主題匹配">
 <meta name="twitter:description" content="2016 will be the year of conversational commerceChris Messina
@@ -369,7 +369,7 @@ Messenger chatbot - from Facebook
 <p>其實標題已經先劇透了，沒涉及到 LSTM 或 ESA 這類高端技術，只不過是把匹配的單元從「詞」替換成詞「向量」罷了，也就是基於向量間的餘弦相似度計算，來去推測每個詞可能會有的隱含主題。</p>
 <h2 id="u4E00_u5207_u7684_u8D77_u9EDE"><a href="#u4E00_u5207_u7684_u8D77_u9EDE" class="headerlink" title="一切的起點"></a>一切的起點</h2><p>其實以前我也開發過聊天機器人，方法跟目前很多框架一樣，定義了幾種匹配模式再去檢查關鍵字，用程式語言來講大概是：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> user_input.contain(keyword):</span><br><span class="line">	say_something(keyword.domain)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> user_input.start_with(keyword):</span><br><span class="line">	say_something(keyowrd.domain, start=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>這麼做精度很高，且因對話是基於人工定義，答覆的品質也是一等一的，可惜缺點也相當明顯，即是開發彈性相當低，畢竟要表達一個主題的方式實作太多太多，我們不能總是指望關鍵字有辦法包山包海，人力與時間的花費都是個問題。<br>於是後來看上了LDA，要找主題問主題模型，這麼想也是理所當然的，可嘆機率模型是盤難解的棋，除此之外，無監督學習出的主題也未必是應用上需要的，再說像聊天這種等多二十幾個字的短語，我認為還是回歸到關鍵字比對會靠譜一些，重點是怎麼比呢？</p>
+<p>這麼做精度很高，且因對話是基於人工定義，答覆的品質也是一等一的，可惜缺點也相當明顯，即是開發彈性相當低，畢竟要表達一個主題的方式實作太多太多，我們不能總是指望關鍵字有辦法包山包海，人力與時間的花費都是個問題。<br>於是後來看上了LDA，要找主題問主題模型，這麼想也是理所當然的，可嘆機率模型是盤難解的棋，除此之外，無監督學習出的主題也未必是應用上需要的，再說像聊天這種頂多二十幾個字的短語，我認為還是回歸到關鍵字比對會靠譜一些，重點是怎麼比呢？</p>
 <h3 id="u8A66_u8457_u6B78_u7D0D_u4E3B_u984C"><a href="#u8A66_u8457_u6B78_u7D0D_u4E3B_u984C" class="headerlink" title="試著歸納主題"></a>試著歸納主題</h3><p>自然語言處理最難的就是語言的多樣性，我想沒有人會否認這個說法，那麼化繁為簡就成為了關鍵，這讓我想到 IR 的 Stemming ，或許可以透過 domain tree 來規約一個句子的含義，比方說：</p>
 <figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml">User：這附近哪裏能買到泡沫紅茶？</span><br><span class="line">Domains：</span><span class="template-variable">&#123;附近|近距離&#125;</span><span class="xml">、</span><span class="template-variable">&#123;哪裡|疑問&#125;</span><span class="xml">、</span><span class="template-variable">&#123;買到|購買&#125;</span><span class="xml">、</span><span class="template-variable">&#123;泡沫紅茶|飲料&#125;</span><span class="xml"></span></span><br></pre></td></tr></table></figure>
 <p>這能透過<a href="http://ehownet.iis.sinica.edu.tw/ehownet.php" target="_blank" rel="external">廣義知網</a>實現，如此一來就把關鍵字擴充同義詞集，但是這樣還不夠，我們更關注的應該會是詞之間的主題關聯性，比如說提到<strong>肚子餓</strong>，就會想到該<strong>吃飯</strong>了，<strong>口渴</strong>了，那你可能會想<strong>買飲料</strong>。想要保存關聯，又想要建立同義關係，就我所學中最恰當的方法就是<code>Word2Vec</code>，至於如何將詞向量化呢？可以參見<a href="http://zake7749.github.io/2016/08/28/word2vec-with-gensim/">我另一篇文章</a>的紀錄。</p>
