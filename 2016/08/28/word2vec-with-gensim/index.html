@@ -88,24 +88,24 @@
 
 
 
-<meta name="description" content="最近在練習文本的聚類分析，不過苦於沒有中文資料，原本打算先爬文章，再標tag將它們分門別類，試了一下後，真是遺憾吶。
+<meta name="description" content="最近在練習文本的聚類分析，不過苦於沒有中文資料，原本打算先爬文章，再標tag將它們分門別類，試了一陣子後，真是遺憾吶。
 
-所以就找上了非監督學習的 word2vec，為了銜接後續的資料處理，我採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，這篇文章裡所有的程式碼都會傳上 github，現在，就讓我">
+所以就找上了非監督學習的 word2vec，為了銜接後續的資料處理，我採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，這篇文章裡所有的程式碼都會傳上 github，現在，就讓">
 <meta property="og:type" content="article">
 <meta property="og:title" content="以 gensim 訓練中文詞向量">
 <meta property="og:url" content="http://zake7749.github.io/2016/08/28/word2vec-with-gensim/index.html">
 <meta property="og:site_name" content="雷德麥的藏書閣">
-<meta property="og:description" content="最近在練習文本的聚類分析，不過苦於沒有中文資料，原本打算先爬文章，再標tag將它們分門別類，試了一下後，真是遺憾吶。
+<meta property="og:description" content="最近在練習文本的聚類分析，不過苦於沒有中文資料，原本打算先爬文章，再標tag將它們分門別類，試了一陣子後，真是遺憾吶。
 
-所以就找上了非監督學習的 word2vec，為了銜接後續的資料處理，我採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，這篇文章裡所有的程式碼都會傳上 github，現在，就讓我">
+所以就找上了非監督學習的 word2vec，為了銜接後續的資料處理，我採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，這篇文章裡所有的程式碼都會傳上 github，現在，就讓">
 <meta property="og:image" content="http://i.imgur.com/VnjnW7S.jpg">
 <meta property="og:image" content="http://i.imgur.com/KR2ISOg.jpg">
-<meta property="og:updated_time" content="2016-10-18T12:42:43.887Z">
+<meta property="og:updated_time" content="2016-10-18T12:46:51.605Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="以 gensim 訓練中文詞向量">
-<meta name="twitter:description" content="最近在練習文本的聚類分析，不過苦於沒有中文資料，原本打算先爬文章，再標tag將它們分門別類，試了一下後，真是遺憾吶。
+<meta name="twitter:description" content="最近在練習文本的聚類分析，不過苦於沒有中文資料，原本打算先爬文章，再標tag將它們分門別類，試了一陣子後，真是遺憾吶。
 
-所以就找上了非監督學習的 word2vec，為了銜接後續的資料處理，我採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，這篇文章裡所有的程式碼都會傳上 github，現在，就讓我">
+所以就找上了非監督學習的 word2vec，為了銜接後續的資料處理，我採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，這篇文章裡所有的程式碼都會傳上 github，現在，就讓">
 
 
 
@@ -307,7 +307,7 @@
       
 
       
-        <p>最近在練習文本的聚類分析，不過苦於沒有中文資料，原本打算先爬文章，再標tag將它們分門別類，試了一下後，真是遺憾吶。</p>
+        <p>最近在練習文本的聚類分析，不過苦於沒有中文資料，原本打算先爬文章，再標tag將它們分門別類，試了一陣子後，真是遺憾吶。</p>
 <p><img src="http://i.imgur.com/VnjnW7S.jpg" alt="太麻煩的事我不會做"></p>
 <p>所以就找上了非監督學習的 word2vec，為了銜接後續的資料處理，我採用的是基於 python 的主題模型函式庫 <a href="https://radimrehurek.com/gensim/" target="_blank" rel="external">gensim</a>。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，這篇文章裡所有的程式碼都會傳上 <a href="https://github.com/zake7749/word2vec_tutorial" target="_blank" rel="external">github</a>，現在，就讓我們進入正題吧。</p>
 <a id="more"></a>
@@ -323,11 +323,11 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 斷詞示例</span></span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"></span><br><span class="line">seg_list = jieba.cut(<span class="string">"我来到北京清华大学"</span>, cut_all=<span class="keyword">False</span>)</span><br><span class="line">print(<span class="string">"Default Mode: "</span> + <span class="string">"/ "</span>.join(seg_list))  <span class="comment"># 精确模式</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#輸出 Default Mode: 我/ 来到/ 北京/ 清华大学</span></span><br></pre></td></tr></table></figure>
 <p>現在，我們上一階段的檔案也差不多出爐了，以vi打開看起來會是這個樣子：</p>
 <figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">歐幾里得 西元前三世紀的希臘數學家 現在被認為是幾何之父 此畫為拉斐爾的作品 雅典學院 数学 是利用符号语言研究數量 结构 变化以及空间等概念的一門学科 从某种角度看屬於形式科學的一種 數學透過抽象化和邏輯推理的使用 由計數 計算 數學家們拓展這些概念 對數學基本概念的完善 早在古埃及 而在古希臘那裡有更為嚴謹的處理 從那時開始 數學 的發展便持續不斷地小幅進展 世紀的文藝復興時期 致使數學</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>Opps！出了一點狀況，我們發現簡體跟繁體混在一起了，比如「数学」與「數學」會被 word2vec 當成兩個不同的詞，所以我們在斷詞前，還需做一道繁簡轉換的手續。然而我們的語料集很蠻大的，一般的繁簡轉換會有些力不從心，建議另外採用<a href="https://github.com/BYVoid/OpenCC" target="_blank" rel="external">OpenCC</a>，要轉換很簡單：</p>
+<p>Opps！出了一點狀況，我們發現簡體跟繁體混在一起了，比如「数学」與「數學」會被 word2vec 當成兩個不同的詞，所以我們在斷詞前，還需做一道繁簡轉換的手續。然而我們的語料集蠻大的，一般的繁簡轉換會有些力不從心，建議另外採用<a href="https://github.com/BYVoid/OpenCC" target="_blank" rel="external">OpenCC</a>，轉換的方式很簡單：</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ opencc -<span class="selector-tag">i</span> wiki_texts<span class="selector-class">.txt</span> -o wiki_zh_tw<span class="selector-class">.txt</span> -c s2tw.json</span><br></pre></td></tr></table></figure>
 <p>如果是要將繁體轉為簡體，只要將config的參數從<code>s2tw.json</code>改成<code>t2s.json</code>即可。現在再檢查一次<code>wiki_zh_tw.txt</code>，的確只剩下繁體字了，終於能進入斷詞，輸入<code>python3 segment.py</code>。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    logging.basicConfig(format=<span class="string">'%(asctime)s : %(levelname)s : %(message)s'</span>, level=logging.INFO)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># jieba custom setting.</span></span><br><span class="line">    jieba.set_dictionary(<span class="string">'jieba_dict/dict.txt.big'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># load stopwords set</span></span><br><span class="line">    stopwords =open(<span class="string">'jieba_dict/stopwords.txt'</span>,<span class="string">'r'</span>).read()</span><br><span class="line">    stopwordset = set(stopwords)</span><br><span class="line">    texts_num = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    output = open(<span class="string">'wiki_seg.txt'</span>,<span class="string">'w'</span>)</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'wiki_zh_tw.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> content :</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> content:</span><br><span class="line">            words = jieba.cut(line, cut_all=<span class="keyword">False</span>)</span><br><span class="line">            <span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">                <span class="keyword">if</span> word <span class="keyword">not</span> <span class="keyword">in</span> stopwordset:</span><br><span class="line">                    output.write(word +<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line">            texts_num += <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> texts_num % <span class="number">10000</span> == <span class="number">0</span>:</span><br><span class="line">                logging.info(<span class="string">"已處理 %d 個 token"</span> % texts_num)</span><br><span class="line">    output.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
-<h3 id="Stopwords_and_Window"><a href="#Stopwords_and_Window" class="headerlink" title="Stopwords and Window"></a>Stopwords and Window</h3><p>好啦，這個東西大概要跑個 80 分鐘，<s>先讓我講些幹話</s>，先讓我們看看上頭做了什麼。除了之前演示的斷詞外，我這裡還多做了兩件事，一是調整jieba的辭典，讓他對繁體斷詞比較友善，二是引入了<a href="https://zh.wikipedia.org/wiki/%E5%81%9C%E7%94%A8%E8%AF%8D" target="_blank" rel="external">停用詞</a>，停用詞就是像英文中的 the,a,this，中文的你我他，與其他詞相比顯得不怎麼重要，對文章主題也無關緊要的，就可以將它視為停用詞。而要排除停用詞的理由，其實與word2vec的實作概念大大相關，由於在開頭講明了不深究概念，就讓我舉個例子替代長篇大論。</p>
+<h3 id="Stopwords_and_Window"><a href="#Stopwords_and_Window" class="headerlink" title="Stopwords and Window"></a>Stopwords and Window</h3><p>好啦，這個東西大概要跑個 80 分鐘，<s>先讓我講些幹話</s>，先讓我們看看上頭做了什麼。除了之前演示的斷詞外，這邊還多做了兩件事，一是調整jieba的辭典，讓他對繁體斷詞比較友善，二是引入了<a href="https://zh.wikipedia.org/wiki/%E5%81%9C%E7%94%A8%E8%AF%8D" target="_blank" rel="external">停用詞</a>，停用詞就是像英文中的 the,a,this，中文的你我他，與其他詞相比顯得不怎麼重要，對文章主題也無關緊要的，就可以將它視為停用詞。而要排除停用詞的理由，其實與word2vec的實作概念大大相關，由於在開頭講明了不深究概念，就讓我舉個例子替代長篇大論。</p>
 <p>首先，在word2vec有一個概念叫 windows，我習慣叫他窗口，因為它給我的感覺跟TCP 那個會滑來滑去的東東很像。</p>
 <h2 id="Word2Vec"><a href="#Word2Vec" class="headerlink" title="Word2Vec"></a>Word2Vec</h2><p>很顯然，一個詞的意涵跟他的左右鄰居很有關係，比如「雨越下越大，茶越充越淡」，什麼會「下」？「雨」會下，什麼會「淡」？茶會「淡」，這樣的類比舉不勝舉，那麼，若把思維逆轉過來呢？</p>
 <p><img src="http://i.imgur.com/KR2ISOg.jpg" alt="逆轉"></p>
