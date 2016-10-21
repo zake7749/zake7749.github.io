@@ -121,11 +121,11 @@
     <link href="http://zake7749.github.io/2016/08/28/word2vec-with-gensim/"/>
     <id>http://zake7749.github.io/2016/08/28/word2vec-with-gensim/</id>
     <published>2016-08-27T16:56:23.000Z</published>
-    <updated>2016-10-21T12:33:07.572Z</updated>
+    <updated>2016-10-21T12:49:20.149Z</updated>
     
     <content type="html">&lt;p&gt;最近在嘗試幾種文本的分類方法，但卻一直苦於沒有結構化的中文語料，原本打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，試了一陣子後，我親身見識到理想與現實間的距離。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/VnjnW7S.jpg&quot; alt=&quot;太麻煩的事我不會做&quot;&gt;&lt;/p&gt;
-&lt;p class=&quot;img-meta&quot;&gt;&lt;a href=&quot;https://github.com/zake7749/PTT-Text-Mining&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;儘管後來還是搞定了(；´ﾟωﾟ｀)&lt;/a&gt;&lt;/p&gt;
+&lt;p class=&quot;img-meta&quot;&gt;&lt;a href=&quot;https://github.com/zake7749/PTT-Text-Mining&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;儘管後來還是搞定了 ヾ(´︶`*)ﾉ&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;所以我就找上了非監督學習的 word2vec，為了銜接後續的資料處理，這邊採用的是基於 python 的主題模型函式庫 &lt;a href=&quot;https://radimrehurek.com/gensim/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;gensim&lt;/a&gt;。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，文章裡所有的程式碼都會傳上 &lt;a href=&quot;https://github.com/zake7749/word2vec_tutorial&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;github&lt;/a&gt;，現在，就讓我們進入正題吧。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -181,7 +181,7 @@
     
       &lt;p&gt;最近在嘗試幾種文本的分類方法，但卻一直苦於沒有結構化的中文語料，原本打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，試了一陣子後，我親身見識到理想與現實間的距離。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/VnjnW7S.jpg&quot; alt=&quot;太麻煩的事我不會做&quot;&gt;&lt;/p&gt;
-&lt;p class=&quot;img-meta&quot;&gt;&lt;a href=&quot;https://github.com/zake7749/PTT-Text-Mining&quot;&gt;儘管後來還是搞定了(；´ﾟωﾟ｀)&lt;/a&gt;&lt;/p&gt;
+&lt;p class=&quot;img-meta&quot;&gt;&lt;a href=&quot;https://github.com/zake7749/PTT-Text-Mining&quot;&gt;儘管後來還是搞定了 ヾ(´︶`*)ﾉ&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;所以我就找上了非監督學習的 word2vec，為了銜接後續的資料處理，這邊採用的是基於 python 的主題模型函式庫 &lt;a href=&quot;https://radimrehurek.com/gensim/&quot;&gt;gensim&lt;/a&gt;。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，文章裡所有的程式碼都會傳上 &lt;a href=&quot;https://github.com/zake7749/word2vec_tutorial&quot;&gt;github&lt;/a&gt;，現在，就讓我們進入正題吧。&lt;/p&gt;
     

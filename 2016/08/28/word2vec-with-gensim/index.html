@@ -90,28 +90,28 @@
 
 <meta name="description" content="最近在嘗試幾種文本的分類方法，但卻一直苦於沒有結構化的中文語料，原本打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，試了一陣子後，我親身見識到理想與現實間的距離。
 
-儘管後來還是搞定了(；´ﾟωﾟ｀)
+儘管後來還是搞定了 ヾ(´︶`*)ﾉ
 
-所以我就找上了非監督學習的 word2vec，為了銜接後續的資料處理，這邊採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原">
+所以我就找上了非監督學習的 word2vec，為了銜接後續的資料處理，這邊採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學">
 <meta property="og:type" content="article">
 <meta property="og:title" content="以 gensim 訓練中文詞向量">
 <meta property="og:url" content="http://zake7749.github.io/2016/08/28/word2vec-with-gensim/index.html">
 <meta property="og:site_name" content="雷德麥的藏書閣">
 <meta property="og:description" content="最近在嘗試幾種文本的分類方法，但卻一直苦於沒有結構化的中文語料，原本打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，試了一陣子後，我親身見識到理想與現實間的距離。
 
-儘管後來還是搞定了(；´ﾟωﾟ｀)
+儘管後來還是搞定了 ヾ(´︶`*)ﾉ
 
-所以我就找上了非監督學習的 word2vec，為了銜接後續的資料處理，這邊採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原">
+所以我就找上了非監督學習的 word2vec，為了銜接後續的資料處理，這邊採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學">
 <meta property="og:image" content="http://i.imgur.com/VnjnW7S.jpg">
 <meta property="og:image" content="http://i.imgur.com/KR2ISOg.jpg">
-<meta property="og:updated_time" content="2016-10-21T12:33:07.572Z">
+<meta property="og:updated_time" content="2016-10-21T12:49:20.149Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="以 gensim 訓練中文詞向量">
 <meta name="twitter:description" content="最近在嘗試幾種文本的分類方法，但卻一直苦於沒有結構化的中文語料，原本打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，試了一陣子後，我親身見識到理想與現實間的距離。
 
-儘管後來還是搞定了(；´ﾟωﾟ｀)
+儘管後來還是搞定了 ヾ(´︶`*)ﾉ
 
-所以我就找上了非監督學習的 word2vec，為了銜接後續的資料處理，這邊採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原">
+所以我就找上了非監督學習的 word2vec，為了銜接後續的資料處理，這邊採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學">
 
 
 
@@ -315,7 +315,7 @@
       
         <p>最近在嘗試幾種文本的分類方法，但卻一直苦於沒有結構化的中文語料，原本打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，試了一陣子後，我親身見識到理想與現實間的距離。</p>
 <p><img src="http://i.imgur.com/VnjnW7S.jpg" alt="太麻煩的事我不會做"></p>
-<p class="img-meta"><a href="https://github.com/zake7749/PTT-Text-Mining" target="_blank" rel="external">儘管後來還是搞定了(；´ﾟωﾟ｀)</a></p>
+<p class="img-meta"><a href="https://github.com/zake7749/PTT-Text-Mining" target="_blank" rel="external">儘管後來還是搞定了 ヾ(´︶`*)ﾉ</a></p>
 
 <p>所以我就找上了非監督學習的 word2vec，為了銜接後續的資料處理，這邊採用的是基於 python 的主題模型函式庫 <a href="https://radimrehurek.com/gensim/" target="_blank" rel="external">gensim</a>。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，文章裡所有的程式碼都會傳上 <a href="https://github.com/zake7749/word2vec_tutorial" target="_blank" rel="external">github</a>，現在，就讓我們進入正題吧。</p>
 <a id="more"></a>
