@@ -88,24 +88,30 @@
 
 
 
-<meta name="description" content="最近在練習文本的聚類分析，不過苦於沒有中文資料，原本打算先爬文章，再標tag將它們分門別類，試了一陣子後，真是遺憾吶。
+<meta name="description" content="最近在嘗試幾種文本的分類方法，但卻一直苦於沒有結構化的中文語料，原本打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，試了一陣子後，我親身體會到理想跟現實的距離。
 
-所以就找上了非監督學習的 word2vec，為了銜接後續的資料處理，我採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，這篇文章裡所有的程式碼都會傳上 github，現在，就讓">
+儘管後來還是搞定了(；´ﾟωﾟ｀)
+
+所以我就找上了非監督學習的 word2vec，為了銜接後續的資料處理，這邊採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="以 gensim 訓練中文詞向量">
 <meta property="og:url" content="http://zake7749.github.io/2016/08/28/word2vec-with-gensim/index.html">
 <meta property="og:site_name" content="雷德麥的藏書閣">
-<meta property="og:description" content="最近在練習文本的聚類分析，不過苦於沒有中文資料，原本打算先爬文章，再標tag將它們分門別類，試了一陣子後，真是遺憾吶。
+<meta property="og:description" content="最近在嘗試幾種文本的分類方法，但卻一直苦於沒有結構化的中文語料，原本打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，試了一陣子後，我親身體會到理想跟現實的距離。
 
-所以就找上了非監督學習的 word2vec，為了銜接後續的資料處理，我採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，這篇文章裡所有的程式碼都會傳上 github，現在，就讓">
+儘管後來還是搞定了(；´ﾟωﾟ｀)
+
+所以我就找上了非監督學習的 word2vec，為了銜接後續的資料處理，這邊採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原理">
 <meta property="og:image" content="http://i.imgur.com/VnjnW7S.jpg">
 <meta property="og:image" content="http://i.imgur.com/KR2ISOg.jpg">
-<meta property="og:updated_time" content="2016-10-18T12:46:51.605Z">
+<meta property="og:updated_time" content="2016-10-21T12:15:57.878Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="以 gensim 訓練中文詞向量">
-<meta name="twitter:description" content="最近在練習文本的聚類分析，不過苦於沒有中文資料，原本打算先爬文章，再標tag將它們分門別類，試了一陣子後，真是遺憾吶。
+<meta name="twitter:description" content="最近在嘗試幾種文本的分類方法，但卻一直苦於沒有結構化的中文語料，原本打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，試了一陣子後，我親身體會到理想跟現實的距離。
 
-所以就找上了非監督學習的 word2vec，為了銜接後續的資料處理，我採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，這篇文章裡所有的程式碼都會傳上 github，現在，就讓">
+儘管後來還是搞定了(；´ﾟωﾟ｀)
+
+所以我就找上了非監督學習的 word2vec，為了銜接後續的資料處理，這邊採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原理">
 
 
 
@@ -307,9 +313,11 @@
       
 
       
-        <p>最近在練習文本的聚類分析，不過苦於沒有中文資料，原本打算先爬文章，再標tag將它們分門別類，試了一陣子後，真是遺憾吶。</p>
+        <p>最近在嘗試幾種文本的分類方法，但卻一直苦於沒有結構化的中文語料，原本打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，試了一陣子後，我親身體會到理想跟現實的距離。</p>
 <p><img src="http://i.imgur.com/VnjnW7S.jpg" alt="太麻煩的事我不會做"></p>
-<p>所以就找上了非監督學習的 word2vec，為了銜接後續的資料處理，我採用的是基於 python 的主題模型函式庫 <a href="https://radimrehurek.com/gensim/" target="_blank" rel="external">gensim</a>。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，這篇文章裡所有的程式碼都會傳上 <a href="https://github.com/zake7749/word2vec_tutorial" target="_blank" rel="external">github</a>，現在，就讓我們進入正題吧。</p>
+<p class="img-meta"><a href="https://github.com/zake7749/PTT-Text-Mining" target="_blank" rel="external">儘管後來還是搞定了(；´ﾟωﾟ｀)</a></p>
+
+<p>所以我就找上了非監督學習的 word2vec，為了銜接後續的資料處理，這邊採用的是基於 python 的主題模型函式庫 <a href="https://radimrehurek.com/gensim/" target="_blank" rel="external">gensim</a>。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，文章裡所有的程式碼都會傳上 <a href="https://github.com/zake7749/word2vec_tutorial" target="_blank" rel="external">github</a>，現在，就讓我們進入正題吧。</p>
 <a id="more"></a>
 <h2 id="u53D6_u5F97_u8A9E_u6599"><a href="#u53D6_u5F97_u8A9E_u6599" class="headerlink" title="取得語料"></a>取得語料</h2><p>要訓練詞向量，第一步當然是取得資料集。由於 word2vec 是基於非監督式學習，訓練集一定一定要越大越好，語料涵蓋的越全面，訓練出來的結果也會越漂亮。我所採用的是維基百科於<a href="https://dumps.wikimedia.org/zhwiki/20160820/zhwiki-20160820-pages-articles-multistream.xml.bz2" target="_blank" rel="external">2016/08/20的備份</a>，文章篇數約有 2822639 篇，如果需要更新的數據，可以前往<a href="https://zh.wikipedia.org/wiki/Wikipedia:%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8B%E8%BD%BD" target="_blank" rel="external">維基百科:資料庫下載</a>。</p>
 <p>在等待下載的這段時間，我們可以先把 gensim 配置好:<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 <span class="keyword">install</span> <span class="comment">--upgrade gensim</span></span><br></pre></td></tr></table></figure></p>
@@ -356,7 +364,7 @@
 <p>前100太多了，所以只把前幾個結果貼上來，我們也能調用<code>model.similarity(word2,word1)</code>來直接取得兩個詞的相似度：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">冰沙 刨冰</span><br><span class="line">計算 <span class="selector-tag">Cosine</span> 相似度</span><br><span class="line">0<span class="selector-class">.631961417455</span></span><br><span class="line"></span><br><span class="line">電腦 飛鏢</span><br><span class="line">計算 <span class="selector-tag">Cosine</span> 相似度</span><br><span class="line">0<span class="selector-class">.154503715708</span></span><br><span class="line"></span><br><span class="line">電腦 程式</span><br><span class="line">計算 <span class="selector-tag">Cosine</span> 相似度</span><br><span class="line">0<span class="selector-class">.5021829415</span></span><br><span class="line"></span><br><span class="line">衛生紙 漫畫</span><br><span class="line">計算 <span class="selector-tag">Cosine</span> 相似度</span><br><span class="line">0<span class="selector-class">.167776641495</span></span><br></pre></td></tr></table></figure></p>
 <p>能稍微區隔出詞與詞之間的主題，整體來說算是可以接受的了。</p>
 <h3 id="u66F4_u4E0A_u4E00_u5C64_u6A13"><a href="#u66F4_u4E0A_u4E00_u5C64_u6A13" class="headerlink" title="更上一層樓"></a>更上一層樓</h3><p>如何優化詞向量的表現？這其實有蠻多方法的，大方向是從應用的角度出發，我們能針對應用特化的語料進行再訓練，除此之外，斷詞器的選擇也很重要，它很大程度的決定什麼詞該在什麼地方出現，如果發現 <code>jieba</code> 有些力不能及的，不妨試著採用別的斷詞器，或是試著在 <code>jieba</code> 自訂辭典，調一下每個詞的權重。</p>
-<p>應用考慮好了，接著看看模型，我們可以調整 <code>model()</code> 的參數，比方窗口大小、維度、學習率，進一步還能比較 skip-gram 與 cbow 的效能差異，什麼，你說不知道 skip-gram 跟 cbow 是什麼？那又是另一個故事了，且看下回分解。</p>
+<p>應用考慮好了，接著看看模型，我們可以調整 <code>model()</code> 的參數，比方窗口大小、維度、學習率，進一步還能比較 skip-gram 與 cbow 的效能差異，什麼，你說不知道 skip-gram 跟 cbow 是什麼？且看下回分解。</p>
 
       
     </div>
