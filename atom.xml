@@ -121,7 +121,7 @@
     <link href="http://zake7749.github.io/2016/08/28/word2vec-with-gensim/"/>
     <id>http://zake7749.github.io/2016/08/28/word2vec-with-gensim/</id>
     <published>2016-08-27T16:56:23.000Z</published>
-    <updated>2016-10-21T15:29:26.243Z</updated>
+    <updated>2016-10-24T12:33:28.098Z</updated>
     
     <content type="html">&lt;p&gt;最近想嘗試幾種文本分類的算法，卻一直苦於沒有結構化的中文語料，原本是打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，可惜試了一陣子後，我見識到了理想和現實間的鴻溝。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/VnjnW7S.jpg&quot; alt=&quot;太麻煩的事我不會做&quot;&gt;&lt;/p&gt;
@@ -129,7 +129,7 @@
 
 &lt;p&gt;所以就找上了基於非監督學習的 word2vec，為了銜接後續的資料處理，這邊採用的是基於 python 的主題模型函式庫 &lt;a href=&quot;https://radimrehurek.com/gensim/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;gensim&lt;/a&gt;。這篇教學並不會談太多 word2vec 的數學原理，而是考慮如何輕鬆又直覺地訓練中文詞向量，文章裡所有的程式碼都會傳上 &lt;a href=&quot;https://github.com/zake7749/word2vec_tutorial&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;github&lt;/a&gt;，現在，就讓我們進入正題吧。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h2 id=&quot;u53D6_u5F97_u8A9E_u6599&quot;&gt;&lt;a href=&quot;#u53D6_u5F97_u8A9E_u6599&quot; class=&quot;headerlink&quot; title=&quot;取得語料&quot;&gt;&lt;/a&gt;取得語料&lt;/h2&gt;&lt;p&gt;要訓練詞向量，第一步當然是取得資料集。由於 word2vec 是基於非監督式學習，訓練集一定一定要越大越好，語料涵蓋的越全面，訓練出來的結果也會越漂亮。我所採用的是維基百科於&lt;a href=&quot;https://dumps.wikimedia.org/zhwiki/20160820/zhwiki-20160820-pages-articles-multistream.xml.bz2&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;2016/08/20的備份&lt;/a&gt;，文章篇數共有 2822639 篇，如果需要更近期的數據，可以前往&lt;a href=&quot;https://zh.wikipedia.org/wiki/Wikipedia:%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8B%E8%BD%BD&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;維基百科:資料庫下載&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id=&quot;u53D6_u5F97_u8A9E_u6599&quot;&gt;&lt;a href=&quot;#u53D6_u5F97_u8A9E_u6599&quot; class=&quot;headerlink&quot; title=&quot;取得語料&quot;&gt;&lt;/a&gt;取得語料&lt;/h2&gt;&lt;p&gt;要訓練詞向量，第一步當然是取得資料集。由於 word2vec 是基於非監督式學習，訓練集一定一定要越大越好，語料涵蓋的越全面，訓練出來的結果也會越漂亮。我所採用的是維基百科於&lt;a href=&quot;https://dumps.wikimedia.org/zhwiki/20160820/zhwiki-20160820-pages-articles.xml.bz2&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;2016/08/20的備份&lt;/a&gt;，文章篇數共有 2822639 篇，如果需要更近期的數據，可以前往&lt;a href=&quot;https://zh.wikipedia.org/wiki/Wikipedia:%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8B%E8%BD%BD&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;維基百科:資料庫下載&lt;/a&gt;，不過請特別注意一點，要挑選的是以 &lt;code&gt;pages-articles.xml.bz2&lt;/code&gt; 結尾的備份，而不是以 &lt;code&gt;pages-articles-multistream.xml.bz2&lt;/code&gt; 結尾的備份唷，不然會在清理上出現一些異常，無法正常解析文章。&lt;/p&gt;
 &lt;p&gt;在等待下載的這段時間，我們可以先把這次的主角&lt;code&gt;gensim&lt;/code&gt;配置好:&lt;/p&gt;
 &lt;figure class=&quot;highlight sql&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;pip3 &lt;span class=&quot;keyword&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;--upgrade gensim&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;維基百科下載好後，先別急著解壓縮，因為這是一份 xml 文件，裏頭佈滿了各式各樣的標籤，我們得先想辦法送走這群不速之客，不過也別太擔心，gensim 早已看穿了一切，藉由調用 &lt;a href=&quot;https://radimrehurek.com/gensim/corpora/wikicorpus.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;wikiCorpus&lt;/a&gt;，我們能很輕鬆的只取出文章的標題和內容：&lt;/p&gt;
