@@ -121,9 +121,9 @@
     <link href="http://zake7749.github.io/2016/08/28/word2vec-with-gensim/"/>
     <id>http://zake7749.github.io/2016/08/28/word2vec-with-gensim/</id>
     <published>2016-08-27T16:56:23.000Z</published>
-    <updated>2016-10-24T16:41:08.210Z</updated>
+    <updated>2016-10-24T16:47:39.180Z</updated>
     
-    <content type="html">&lt;p&gt;最近想嘗試幾種文本分類的算法，卻一直苦於沒有結構化的中文語料，原本是打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，可惜試了一陣子後，我見識到了理想和現實間的鴻溝。&lt;/p&gt;
+    <content type="html">&lt;p&gt;最近正在嘗試幾種文本分類的算法，卻一直苦於沒有結構化的中文語料，原本是打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，可惜試了一陣子後，我見識到了理想和現實間的鴻溝。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/VnjnW7S.jpg&quot; alt=&quot;太麻煩的事我不會做&quot;&gt;&lt;/p&gt;
 &lt;p class=&quot;img-meta&quot;&gt;&lt;a href=&quot;https://github.com/zake7749/PTT-Text-Mining&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;儘管後來還是搞定了&lt;/a&gt;&lt;/p&gt;
 
@@ -184,7 +184,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;最近想嘗試幾種文本分類的算法，卻一直苦於沒有結構化的中文語料，原本是打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，可惜試了一陣子後，我見識到了理想和現實間的鴻溝。&lt;/p&gt;
+      &lt;p&gt;最近正在嘗試幾種文本分類的算法，卻一直苦於沒有結構化的中文語料，原本是打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，可惜試了一陣子後，我見識到了理想和現實間的鴻溝。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/VnjnW7S.jpg&quot; alt=&quot;太麻煩的事我不會做&quot;&gt;&lt;/p&gt;
 &lt;p class=&quot;img-meta&quot;&gt;&lt;a href=&quot;https://github.com/zake7749/PTT-Text-Mining&quot;&gt;儘管後來還是搞定了&lt;/a&gt;&lt;/p&gt;
 
