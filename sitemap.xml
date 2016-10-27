@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://zake7749.github.io/2016/08/30/chatterbot-with-word2vec/</loc>
+    <lastmod>2016-10-27T15:13:43.005Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://zake7749.github.io/2016/08/28/word2vec-with-gensim/</loc>
     <lastmod>2016-10-26T15:44:21.514Z</lastmod>
   </url>
@@ -14,11 +19,6 @@
   <url>
     <loc>http://zake7749.github.io/2015/10/26/homework3/</loc>
     <lastmod>2016-10-21T12:31:36.638Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://zake7749.github.io/2016/08/30/chatterbot-with-word2vec/</loc>
-    <lastmod>2016-08-30T15:10:48.741Z</lastmod>
   </url>
   
   <url>
