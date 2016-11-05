@@ -104,7 +104,7 @@
 所以就找上了基於非監督學習的 word2vec，為了銜接後續的資料處理，這邊採用的是基於 python 的主題模型函式庫 gensim。這篇教學並不會談太多 word2vec 的數學原理，而是考">
 <meta property="og:image" content="http://i.imgur.com/VnjnW7S.jpg">
 <meta property="og:image" content="http://i.imgur.com/KR2ISOg.jpg">
-<meta property="og:updated_time" content="2016-10-26T15:44:21.514Z">
+<meta property="og:updated_time" content="2016-11-05T09:25:28.268Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="以 gensim 訓練中文詞向量">
 <meta name="twitter:description" content="最近正在嘗試幾種文本分類的算法，卻一直苦於沒有結構化的中文語料，原本是打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，可惜試了一陣子後，我見識到了理想和現實間的鴻溝。
@@ -193,6 +193,14 @@
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i>
               <span class="sidebar-title">特色標籤</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-about red-tooltip" href="https://zake7749.github.io/AboutMe/index.html" data-toggle="tooltip" title="關於作者">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i>
+              <span class="sidebar-title">關於作者</span>
             
           </a>
       
@@ -370,6 +378,7 @@
 <p>能稍微區隔出詞與詞之間的主題，整體來說算是可以接受的了。</p>
 <h3 id="u66F4_u4E0A_u4E00_u5C64_u6A13"><a href="#u66F4_u4E0A_u4E00_u5C64_u6A13" class="headerlink" title="更上一層樓"></a>更上一層樓</h3><p>如何優化詞向量的表現？這其實有蠻多方法的，大方向是從應用的角度出發，我們能針對應用特化的語料進行再訓練，除此之外，斷詞器的選擇也很重要，它很大程度的決定什麼詞該在什麼地方出現，如果發現 <code>jieba</code> 有些力不能及的，不妨試著採用別的斷詞器，或是試著在 <code>jieba</code> 自訂辭典，調一下每個詞的權重。</p>
 <p>應用考慮好了，接著看看模型，我們可以調整 <code>model()</code> 的參數，比方窗口大小、維度、學習率，進一步還能比較 skip-gram 與 cbow 的效能差異，什麼，你說不知道 skip-gram 跟 cbow 是什麼？且看下回分解。</p>
+<h2 id="u53C3_u8003_u8CC7_u6599"><a href="#u53C3_u8003_u8CC7_u6599" class="headerlink" title="參考資料"></a>參考資料</h2><p><a href="http://textminingonline.com/training-word2vec-model-on-english-wikipedia-by-gensim" target="_blank" rel="external">Training Word2Vec Model on English Wikipedia by Gensim</a></p>
 
       
     </div>
@@ -563,7 +572,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#u53D6_u5F97_u8A9E_u6599"><span class="nav-number">1.</span> <span class="nav-text">取得語料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u958B_u59CB_u65B7_u8A5E"><span class="nav-number">2.</span> <span class="nav-text">開始斷詞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Stopwords_and_Window"><span class="nav-number">2.1.</span> <span class="nav-text">Stopwords and Window</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Word2Vec"><span class="nav-number">3.</span> <span class="nav-text">Word2Vec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u8A13_u7DF4_u8A5E_u5411_u91CF"><span class="nav-number">4.</span> <span class="nav-text">訓練詞向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u8A5E_u5411_u91CF_u5BE6_u9A57"><span class="nav-number">5.</span> <span class="nav-text">詞向量實驗</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u66F4_u4E0A_u4E00_u5C64_u6A13"><span class="nav-number">5.1.</span> <span class="nav-text">更上一層樓</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#u53D6_u5F97_u8A9E_u6599"><span class="nav-number">1.</span> <span class="nav-text">取得語料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u958B_u59CB_u65B7_u8A5E"><span class="nav-number">2.</span> <span class="nav-text">開始斷詞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Stopwords_and_Window"><span class="nav-number">2.1.</span> <span class="nav-text">Stopwords and Window</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Word2Vec"><span class="nav-number">3.</span> <span class="nav-text">Word2Vec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u8A13_u7DF4_u8A5E_u5411_u91CF"><span class="nav-number">4.</span> <span class="nav-text">訓練詞向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u8A5E_u5411_u91CF_u5BE6_u9A57"><span class="nav-number">5.</span> <span class="nav-text">詞向量實驗</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u66F4_u4E0A_u4E00_u5C64_u6A13"><span class="nav-number">5.1.</span> <span class="nav-text">更上一層樓</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u53C3_u8003_u8CC7_u6599"><span class="nav-number">6.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
             
           </div>
         </section>

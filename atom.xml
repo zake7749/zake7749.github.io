@@ -121,7 +121,7 @@
     <link href="http://zake7749.github.io/2016/08/28/word2vec-with-gensim/"/>
     <id>http://zake7749.github.io/2016/08/28/word2vec-with-gensim/</id>
     <published>2016-08-27T16:56:23.000Z</published>
-    <updated>2016-10-26T15:44:21.514Z</updated>
+    <updated>2016-11-05T09:25:28.268Z</updated>
     
     <content type="html">&lt;p&gt;最近正在嘗試幾種文本分類的算法，卻一直苦於沒有結構化的中文語料，原本是打算先爬下大把大把的部落格文章，再依 tag 將它們分門別類，可惜試了一陣子後，我見識到了理想和現實間的鴻溝。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/VnjnW7S.jpg&quot; alt=&quot;太麻煩的事我不會做&quot;&gt;&lt;/p&gt;
@@ -180,6 +180,7 @@
 &lt;p&gt;能稍微區隔出詞與詞之間的主題，整體來說算是可以接受的了。&lt;/p&gt;
 &lt;h3 id=&quot;u66F4_u4E0A_u4E00_u5C64_u6A13&quot;&gt;&lt;a href=&quot;#u66F4_u4E0A_u4E00_u5C64_u6A13&quot; class=&quot;headerlink&quot; title=&quot;更上一層樓&quot;&gt;&lt;/a&gt;更上一層樓&lt;/h3&gt;&lt;p&gt;如何優化詞向量的表現？這其實有蠻多方法的，大方向是從應用的角度出發，我們能針對應用特化的語料進行再訓練，除此之外，斷詞器的選擇也很重要，它很大程度的決定什麼詞該在什麼地方出現，如果發現 &lt;code&gt;jieba&lt;/code&gt; 有些力不能及的，不妨試著採用別的斷詞器，或是試著在 &lt;code&gt;jieba&lt;/code&gt; 自訂辭典，調一下每個詞的權重。&lt;/p&gt;
 &lt;p&gt;應用考慮好了，接著看看模型，我們可以調整 &lt;code&gt;model()&lt;/code&gt; 的參數，比方窗口大小、維度、學習率，進一步還能比較 skip-gram 與 cbow 的效能差異，什麼，你說不知道 skip-gram 跟 cbow 是什麼？且看下回分解。&lt;/p&gt;
+&lt;h2 id=&quot;u53C3_u8003_u8CC7_u6599&quot;&gt;&lt;a href=&quot;#u53C3_u8003_u8CC7_u6599&quot; class=&quot;headerlink&quot; title=&quot;參考資料&quot;&gt;&lt;/a&gt;參考資料&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://textminingonline.com/training-word2vec-model-on-english-wikipedia-by-gensim&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Training Word2Vec Model on English Wikipedia by Gensim&lt;/a&gt;&lt;/p&gt;
 </content>
     
     <summary type="html">
