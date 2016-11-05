@@ -1,184 +1,325 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
 
-<!-- Head tag -->
+
+
+  
+
+
+<html class="theme-next mist use-motion">
 <head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!--Description-->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+
+  <meta name="google-site-verification" content="zFdqsZQCJwF_Ibxc_vjqqAf1qXYxoPrqGeYVUHD2J9M" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
     
-        <meta name="description" content="12345678910111213141516171819202122232425262728/*	What is the output of this program ?	猜猜看，這個程式的輸出是什麼？*/public class Problem &amp;#123;	public static void main(String[] args) &amp;#123;				Problem p = new Problem();		p.evaluation();	&amp;#125;		public boolean sayHello()&amp;#123;				System.out.println(&#34;Hello&#34;);		return true;	&amp;#125;		public void evaluation()&amp;#123;				boolean t = true;				if(t||sayHello())&amp;#123;			System.out.println(&#34;finish&#34;);		&amp;#125;	&amp;#125;&amp;#125;">
     
+  
 
-    <!--Author-->
+  
+
+  
+
+  
+
+  
+
+  
     
-        <meta name="author" content="Justin Yang">
     
-
-    <!--Open Graph Title-->
-    
-        <meta property="og:title" content="短路求值"/>
-    
-
-    <!--Open Graph Description-->
-    
-
-    <!--Open Graph Site Name-->
-    <meta property="og:site_name" content="雷德麥的藏書閣"/>
-
-    <!--Type page-->
-    
-        <meta property="og:type" content="article" />
-    
-
-    <!--Page Cover-->
-    
-
-        <meta name="twitter:card" content="summary" />
-    
-
-    <!-- Title -->
-    
-    <title>短路求值 - 雷德麥的藏書閣</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/style.css" type="text/css">
-
-    <!-- Custom Fonts -->
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <!-- Gallery -->
-    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
-
-    <!-- Google Analytics -->
-    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
 
 
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雷德麥的藏書閣" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="12345678910111213141516171819202122232425262728/*	What is the output of this program ?	猜猜看，這個程式的輸出是什麼？*/public class Problem &amp;#123;	public static void main(String[] args) &amp;#123;				Problem p = new Pro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="短路求值">
+<meta property="og:url" content="http://zake7749.github.io/2015/09/07/minimalEvaluation/index.html">
+<meta property="og:site_name" content="雷德麥的藏書閣">
+<meta property="og:description" content="12345678910111213141516171819202122232425262728/*	What is the output of this program ?	猜猜看，這個程式的輸出是什麼？*/public class Problem &amp;#123;	public static void main(String[] args) &amp;#123;				Problem p = new Pro">
+<meta property="og:updated_time" content="2015-09-12T08:49:56.220Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="短路求值">
+<meta name="twitter:description" content="12345678910111213141516171819202122232425262728/*	What is the output of this program ?	猜猜看，這個程式的輸出是什麼？*/public class Problem &amp;#123;	public static void main(String[] args) &amp;#123;				Problem p = new Pro">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://zake7749.github.io/2015/09/07/minimalEvaluation/"/>
+
+  <title> 短路求值 | 雷德麥的藏書閣 </title>
 </head>
 
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
 
-<body>
+  
 
-    <!-- Menu -->
-    <!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">原站點出了些狀況，過幾天恢復</a>
-        </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                
-                    <li>
-                        <a href="/">
-                            
-                                Home
-                            
-                        </a>
-                    </li>
-                
-                    <li>
-                        <a href="/archives">
-                            
-                                Archives
-                            
-                        </a>
-                    </li>
-                
-                    <li>
-                        <a href="https://github.com/klugjo/hexo-theme-clean-blog">
-                            
-                                <i class="fa fa-github fa-stack-2x"></i>
-                            
-                        </a>
-                    </li>
-                
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container -->
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      <a class="menu-item website-text-logo" href="/">
+        <b class="text-logo-eg">R</b><span class="text-logo-ch"><h1 class="site-title">雷德麥的藏書閣</h1></span>
+      </a>
+      
+        
+        <a class="menu-item menu-item-categories red-tooltip" href="/categories" data-toggle="tooltip" title="文章目錄">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i>
+              <span class="sidebar-title">文章目錄</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-archives red-tooltip" href="/archives" data-toggle="tooltip" title="文章歸檔">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i>
+              <span class="sidebar-title">文章歸檔</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-tags red-tooltip" href="/tags" data-toggle="tooltip" title="特色標籤">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i>
+              <span class="sidebar-title">特色標籤</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-about red-tooltip" href="https://zake7749.github.io/AboutMe/index.html" data-toggle="tooltip" title="關於作者">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i>
+              <span class="sidebar-title">關於作者</span>
+            
+          </a>
+      
+
+      
+    </ul>
+  
+
+  
 </nav>
+ </div>
+      <ul id="btm-menu" class="menu cus-menu">
+        <a id="cus-object-group" href="https://csienckugrade3.hackpad.com/" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="CS Notes">
+          <i class="menu-item-icon fa fa fa-object-group"></i>
+          <span class="sidebar-title">CS Note pads</span>
+        </a>
+        <a id="cus-map" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="關閉側邊欄">
+          <i class="menu-item-icon fa fa-map"></i>
+          <span class="sidebar-title">關閉側邊欄</span>
+        </a>
+        <a id="cus-lightbulb" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="施工中 ─=≡Σ(((っﾟДﾟ)っ">
+          <i class="menu-item-icon fa fa-lightbulb-o"></i>
+          <span class="sidebar-title">顯示模式</span>
+        </a>
+      </ul>
+    </header>
 
-    <!-- Main Content -->
-    <!-- Page Header -->
-<!-- Set your background image for this header in your post front-matter: cover -->
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
-<header class="intro-header" style="background-image: url('http://www.codeblocq.com/assets/projects/hexo-theme-clean-blog/img/home-bg.jpg')">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <h1>短路求值</h1>
-                    
-                    <span class="meta">
-                        <!-- Date and Author -->
-                        
-                        2015-09-07
-                    </span>
-                </div>
-            </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal  post-index-border" itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                短路求值
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2015-09-07T20:47:47+08:00" content="2015-09-07">
+              2015-09-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/程式語言/" itemprop="url" rel="index">
+                    <span itemprop="name">程式語言</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/程式語言/語言原理/" itemprop="url" rel="index">
+                    <span itemprop="name">語言原理</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/09/07/minimalEvaluation/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/07/minimalEvaluation/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
         </div>
-    </div>
-</header>
-
-<!-- Post Content -->
-<article>
-    <div class="container">
-        <div class="row">
-
-            <!-- Tags and categories -->
-           
-                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
-                    
-                        
+      </header>
+    
 
 
-<a href="/tags/Java/">#Java</a>
+    <div class="post-body" itemprop="articleBody">
 
+      
+      
 
-                    
-                </div>
-                <div class="col-lg-4 col-md-5 post-categories">
-                    
-                        
-
-<a href="/categories/程式語言/">程式語言</a>/ <a href="/categories/程式語言/語言原理/">語言原理</a>
-
-                    
-                </div>
-            
-
-            <!-- Gallery -->
-            
-
-            <!-- Post Main Content -->
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line">	What is the output of this program ?</span><br><span class="line">	猜猜看，這個程式的輸出是什麼？</span><br><span class="line">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Problem</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>) </span>&#123;</span><br><span class="line">		</span><br><span class="line">		Problem p = <span class="keyword">new</span> Problem();</span><br><span class="line">		p.evaluation();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> boolean <span class="title">sayHello</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"Hello"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">evaluation</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		</span><br><span class="line">		boolean t = <span class="keyword">true</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(t||sayHello())&#123;</span><br><span class="line">			System.<span class="keyword">out</span>.println(<span class="string">"finish"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+        <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line">	What is the output of this program ?</span><br><span class="line">	猜猜看，這個程式的輸出是什麼？</span><br><span class="line">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Problem</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>) </span>&#123;</span><br><span class="line">		</span><br><span class="line">		Problem p = <span class="keyword">new</span> Problem();</span><br><span class="line">		p.evaluation();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> boolean <span class="title">sayHello</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"Hello"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">evaluation</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		</span><br><span class="line">		boolean t = <span class="keyword">true</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(t||sayHello())&#123;</span><br><span class="line">			System.<span class="keyword">out</span>.println(<span class="string">"finish"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <h3 id="Answer"><a href="#Answer" class="headerlink" title="Answer"></a>Answer</h3><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">finish</span></span><br></pre></td></tr></table></figure>
 <p>很遺憾，他不會和你sayHello，不過只要我們做點小小的改動：</p>
@@ -200,66 +341,370 @@
 <p>即便obj真的為null，求值也在<code>obj!=null</code>就結束了，不會因執行了<code>obj.func</code>而跳出Exception。然而，在使用上也當務求謹慎，比如上述的例子，若調轉了求值順序便會擲出例外。</p>
 <h4 id="u70BA_u4EC0_u9EBC_u90A3_u4E9B_u6539_u52D5_u6703_u9020_u6210_u7D50_u679C_u4E0D_u540C_uFF1F"><a href="#u70BA_u4EC0_u9EBC_u90A3_u4E9B_u6539_u52D5_u6703_u9020_u6210_u7D50_u679C_u4E0D_u540C_uFF1F" class="headerlink" title="為什麼那些改動會造成結果不同？"></a>為什麼那些改動會造成結果不同？</h4><p>有短路求值，也自然有與之相對的嚴格求值(Eager evaluation)，其不論是否已知結果，都會很守本分的把運算式通通做完。在C++/Java，嚴格求值所用的運算子即為<code>|</code>與<code>&amp;</code>，所以即便早就知道結果了，程式仍舊會把<code>sayHello()</code>執行一遍。若有興趣其他語言的運算子是哪些，<a href="https://en.wikipedia.org/wiki/Short-circuit_evaluation" target="_blank" rel="external">可以看看wiki的這份表格。</a></p>
 
-
-                
-            </div>
-
-            <!-- Comments -->
-            
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    
-
-
-                </div>
-            
-        </div>
+      
     </div>
-</article>
 
-    <!-- Footer -->
-    <hr />
+    <div>
+      
+        
 
-<!-- Footer -->
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">
-                    
-
-                    
-
-                    
-
-                    
-
-                    
-
-                    
-                </ul>
-                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
-                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
-            </div>
-        </div>
+      
     </div>
-</footer>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/15/classical_cipher/" rel="next" title="古典密碼學">
+                <i class="fa fa-chevron-left"></i> 古典密碼學
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/22/insertionSort/" rel="prev" title="插入排序法">
+                插入排序法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
 
 
-    <!-- After footer scripts -->
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
     
-<!-- jQuery -->
-<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
-
-<!-- Bootstrap -->
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-<!-- Gallery -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
-
-<!-- Disqus Comments -->
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
 
 
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/1428482092251.gif"
+               alt="Justin Yang" />
+          <p class="site-author-name" itemprop="name">Justin Yang</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zake7749" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://plus.google.com/110210184472476277760" target="_blank" title="Google">
+                  
+                    <i class="fa fa-fw fa-google-plus"></i>
+                  
+                  Google
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Answer"><span class="nav-number">1.</span> <span class="nav-text">Answer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Output"><span class="nav-number">2.</span> <span class="nav-text">Output</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Answer-1"><span class="nav-number">3.</span> <span class="nav-text">Answer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u70BA_u4EC0_u9EBC_u6C92_u6709_u57F7_u884CsayHello_28_29_uFF1F"><span class="nav-number">3.1.</span> <span class="nav-text">為什麼沒有執行sayHello()？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u70BA_u4EC0_u9EBC_u90A3_u4E9B_u6539_u52D5_u6703_u9020_u6210_u7D50_u679C_u4E0D_u540C_uFF1F"><span class="nav-number">3.2.</span> <span class="nav-text">為什麼那些改動會造成結果不同？</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+          <div class="copyright" style="text-algin:center;">
+    
+    &copy; 
+    <span itemprop="copyrightYear">2016</span>
+    <span class="with-love">
+      <i class="fa fa-heart" style="color:rgb(255,160,180);"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Justin Yang</span>
+  </div>
+
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme modified from NexT
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+     .Mist
+    </a>
+  </div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div id="open-sidebar" class="open-sidebar close-this-one">
+      <i class="fa fa-map"></i>
+    </div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'zake7749';
+      var disqus_identifier = '2015/09/07/minimalEvaluation/';
+      var disqus_title = "短路求值";
+      var disqus_url = 'http://zake7749.github.io/2015/09/07/minimalEvaluation/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  <script type="text/javascript" src="/js/src/jquery.tipsy.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+  
+
+  
 
 </body>
-
 </html>
