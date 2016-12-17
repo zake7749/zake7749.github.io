@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/</loc>
+    <lastmod>2016-12-17T09:25:46.726Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://zake7749.github.io/2016/08/28/word2vec-with-gensim/</loc>
     <lastmod>2016-11-05T09:25:28.268Z</lastmod>
   </url>

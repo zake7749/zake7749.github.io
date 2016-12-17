@@ -1,0 +1,751 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+
+  <meta name="google-site-verification" content="zFdqsZQCJwF_Ibxc_vjqqAf1qXYxoPrqGeYVUHD2J9M" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="TF/IDF,Word Embedding,樸素貝葉斯分類,深度學習,聊天機器人," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雷德麥的藏書閣" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因而特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聊天機器人的開發思路">
+<meta property="og:url" content="http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/index.html">
+<meta property="og:site_name" content="雷德麥的藏書閣">
+<meta property="og:description" content="幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因而特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。">
+<meta property="og:image" content="http://i.imgur.com/N2QYDNl.png">
+<meta property="og:image" content="https://wikimedia.org/api/rest_v1/media/math/render/svg/43e5c609557364f7836b6b2f4cd8ea41deb86a96">
+<meta property="og:image" content="http://i.imgur.com/rhDWL38.jpg?1">
+<meta property="og:image" content="http://i.imgur.com/t2E7FfC.png">
+<meta property="og:updated_time" content="2016-12-17T09:25:46.726Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="聊天機器人的開發思路">
+<meta name="twitter:description" content="幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因而特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/"/>
+
+  <title> 聊天機器人的開發思路 | 雷德麥的藏書閣 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      <a class="menu-item website-text-logo" href="/">
+        <b class="text-logo-eg">R</b><span class="text-logo-ch"><h1 class="site-title">雷德麥的藏書閣</h1></span>
+      </a>
+      
+        
+        <a class="menu-item menu-item-categories red-tooltip" href="/categories" data-toggle="tooltip" title="文章目錄">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i>
+              <span class="sidebar-title">文章目錄</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-archives red-tooltip" href="/archives" data-toggle="tooltip" title="文章歸檔">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i>
+              <span class="sidebar-title">文章歸檔</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-tags red-tooltip" href="/tags" data-toggle="tooltip" title="特色標籤">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i>
+              <span class="sidebar-title">特色標籤</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-about red-tooltip" href="https://zake7749.github.io/AboutMe/index.html" data-toggle="tooltip" title="關於作者">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i>
+              <span class="sidebar-title">關於作者</span>
+            
+          </a>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+ </div>
+      <ul id="btm-menu" class="menu cus-menu">
+        <a id="cus-object-group" href="https://csienckugrade3.hackpad.com/" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="CS Notes">
+          <i class="menu-item-icon fa fa fa-object-group"></i>
+          <span class="sidebar-title">CS Note pads</span>
+        </a>
+        <a id="cus-map" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="關閉側邊欄">
+          <i class="menu-item-icon fa fa-map"></i>
+          <span class="sidebar-title">關閉側邊欄</span>
+        </a>
+        <a id="cus-lightbulb" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="施工中 ─=≡Σ(((っﾟДﾟ)っ">
+          <i class="menu-item-icon fa fa-lightbulb-o"></i>
+          <span class="sidebar-title">顯示模式</span>
+        </a>
+      </ul>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal  post-index-border" itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                聊天機器人的開發思路
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2016-12-17T10:19:56+08:00" content="2016-12-17">
+              2016-12-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/自然語言處理/" itemprop="url" rel="index">
+                    <span itemprop="name">自然語言處理</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/17/how-to-develop-chatbot/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/12/17/how-to-develop-chatbot/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因而特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。</p>
+<a id="more"></a>
+<h1 id="u5F9E_u6700_u57FA_u672C_u7684_u51FA_u767C"><a href="#u5F9E_u6700_u57FA_u672C_u7684_u51FA_u767C" class="headerlink" title="從最基本的出發"></a>從最基本的出發</h1><p>先讓我們談談怎麼開發一個聊天機器人吧，一般來說，在實務上大抵脫離不了這三種模型：</p>
+<ul>
+<li>樣板式模型 (Rule-based model)</li>
+<li>檢索式模型 (Retrieval-based model)</li>
+<li>生成式模型 (Generative model)</li>
+</ul>
+<p>接下來，我會先介紹一下各個模型的出發點與實作方式，此外，和往常一樣，這篇文章並不著重在深究每個算法的實現原理，而是會專注在應用層面，告訴大家怎麼用簡單的思維與套件來實現各種模型，也會偶而延伸一些自然語言處理和機器學習的基礎概念，算是綜合了我這半年來的學習歷程，願能幫助到有志於此的朋友們。</p>
+<h1 id="u6A23_u677F_u5F0F_u6A21_u578B"><a href="#u6A23_u677F_u5F0F_u6A21_u578B" class="headerlink" title="樣板式模型"></a>樣板式模型</h1><p>先從樣板式模型說起吧，因為它是最平易近人的，我們可以透過設計「規則」來讓機器人知道遇到什麼詞時，就該說什麼話，打個比方：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="string">"天氣"</span> <span class="keyword">in</span> user<span class="selector-class">.query</span>:</span><br><span class="line">	chatbot.say(<span class="string">"今天天氣真好"</span>)</span><br></pre></td></tr></table></figure>
+<p>簡單明瞭對吧？不過要設計這個就得勞心勞力的寫規則，還要考慮到規則間的優先順序。如果你對這方面有興趣，我推薦從<a href="http://www.alicebot.org/aiml.html" target="_blank" rel="external">AIML</a>入手，他以樣板語言的形式來紀錄規則，就像是：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version = "1.0" encoding = "UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aiml</span> <span class="attr">version</span> = "<span class="attr">1.0.1</span>" <span class="attr">encoding</span> = "<span class="attr">UTF-8</span>"?&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">category</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">pattern</span>&gt;</span> HELLO <span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">         WORLD !</span><br><span class="line">      <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">category</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aiml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>當你說 <code>HELLO</code>，機器人就說 <code>WORLD!</code>，除此之外，AIML 也提供了簡單的記憶語學習功能，官方文件寫得挺詳細的，我這邊就不重複造輪子了。除了 AIML 外，我在下一篇教學的「語意圖」中，也會提及另一種基於圖的走訪式比對，主要是在解決檢索式模型中比對搶佔的問題。</p>
+<h1 id="u6AA2_u7D22_u5F0F_u6A21_u578B"><a href="#u6AA2_u7D22_u5F0F_u6A21_u578B" class="headerlink" title="檢索式模型"></a>檢索式模型</h1><p>再來聊聊檢索式吧，其實這東西的原理跟搜尋引擎很像，但是搜尋引擎給我們的是「頁面」，檢索式模型告訴我們的則是「答案」，用學術上的語言來說，檢索式模型其實就是類似「問答系統」，我們維護了問題與答案的配對：</p>
+<p>$$<br>Questions = { q_1 , q_2 ,……, q_n }<br>$$</p>
+<p>$$<br>Answers = { a_1 , a_2 ,……, a_n }<br>$$</p>
+<p>再看看使用者的輸入和 <code>Questions</code> 中的哪一個 <code>q_k</code> 最接近，就把 <code>a_k</code> 裡的某個回覆丟給使用者。在這裡補充一下，正統的問答系統 <code>q_k</code> 與 <code>a_k</code> 是經過分析後算出，它背後可能藏著一個知識庫，透過歸類使用者的句型與知識庫推理來計算出最適合的答案。</p>
+<p>那麼你可能會好奇，先前我怎麼假設已經有建好的問答配對？能這麼做的原因是我們要開發的，並不是像華生那種能參加益智節目的超級電腦，而是一個只會面向特定領域的應用，會被問到的問題也就不是包山包海，聊天機器人只要記住一些「常見問答」就足夠了。</p>
+<p><img src="http://i.imgur.com/N2QYDNl.png" alt="IBM Waston"></p>
+<p class="img-meta">看看華生大顯神通</p>
+
+<p>話說回來了，這個模型的技術成分很顯然是「相似度」計算，我們要如何計算文本的相似度呢？</p>
+<h2 id="OKapi_BM25"><a href="#OKapi_BM25" class="headerlink" title="OKapi BM25"></a>OKapi BM25</h2><p>通常第一個浮出的想法是用「TF * IDF」來計算詞的權重，再取出同時出現在使用者問句與答案集裡的詞，計算出兩者的相似分數。</p>
+<p>不過這裡我要小做補充，儘管我們在做的是聊天機器人，TFIDF 的訓練語料應該仍要基於文章，因為聊天中針對的是「短句」，所以一個詞很難會出現一次以上，也就是 TF 總是等於 1，使得 TF * IDF 會被 IDF 寡佔。</p>
+<p>而你可能會問，有沒有東西能比 TFIDF 做得更好呢？有，答案是 <a href="https://en.wikipedia.org/wiki/Okapi_BM25" target="_blank" rel="external">OKapi BM25</a>，這是搜尋引擎的一種實作手段，不過既然都提到搜尋引擎了，就讓我再跑題一下吧，以前 Google 在搜尋引擎實作中是使用 PageRank，這個方法在自然語言處理上能調整成 TextRank，可用於從一串詞中挑選出核心的關鍵，在 github 上敲一下就能找出很多實作方式。</p>
+<p>現在我們拉回 BM25 吧，看了 wiki 的連結後，你可能會被那些繁雜的公式嚇到，實際上他想說的事情很簡單，我們將一個句子分成了很多個「詞」<code>qi</code>，每個詞都會一個「IDF」分數，「f(qi,D)」指的是在 <code>D</code> 這篇文檔中，<code>qi</code> 這個詞一共出現了幾次，撇開停用詞不談，顯然一個詞在文章裡出現次數越多，他就顯得越重要。</p>
+<p><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/43e5c609557364f7836b6b2f4cd8ea41deb86a96" alt="BM25"></p>
+<p>到目前為止都是 TFIDF 的概念，BM25 引入了 b 與 k1 這兩個基於經驗調整的參數，兩者中 b 又會顯得重要些，從分母的地方能看出來，b 越大，文章長度就會顯得越重要，那為什麼要將文章長度列入考慮呢？我們可以這麼想，一個文章越長，它包含 <code>qi</code> 的機率就會越高，這樣對短文本就不太公平了，或許前者是一段冗長又包山包海的廢文，後者則是一針見血的精闢見解，所以 BM25 引入 b ，就是為了要懲罰這種情形。</p>
+<p>嗯…好像太過偏向理論了，讓我們看點應用吧， BM25 在 <a href="https://github.com/isnowfy/snownlp" target="_blank" rel="external">SnowNLP</a> 中已經實作完了，可以直接調用，容我直接引用演示案例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> snownlp <span class="keyword">import</span> SnowNLP</span><br><span class="line">s = SnowNLP([[<span class="string">u'这篇'</span>, <span class="string">u'文章'</span>],</span><br><span class="line">             [<span class="string">u'那篇'</span>, <span class="string">u'论文'</span>],</span><br><span class="line">             [<span class="string">u'这个'</span>]])</span><br><span class="line">s.sim([<span class="string">u'文章'</span>])<span class="comment"># [0.3756070762985226, 0, 0]</span></span><br></pre></td></tr></table></figure></p>
+<p>最終傳回的是分數列表，結果是<code>[u&#39;这篇&#39;, u&#39;文章&#39;]</code>獲得最高分，如果想參考 BM25 的實作方式，可以看看<a href="https://github.com/isnowfy/snownlp/blob/master/snownlp/sim/bm25.py" target="_blank" rel="external">SnowNLP是怎麼做的</a>。</p>
+<h2 id="u7DE8_u8F2F_u8DDD_u96E2"><a href="#u7DE8_u8F2F_u8DDD_u96E2" class="headerlink" title="編輯距離"></a>編輯距離</h2><p>什麼是編輯距離，我們能想成句子 A 要變成句子 B 要「最短」改幾個字，好比說：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">我要成為海賊王</span><br><span class="line">我要成為火影</span><br><span class="line"></span><br><span class="line"><span class="section">改一個字</span><br><span class="line">---</span></span><br><span class="line">我要成為海賊王</span><br><span class="line">我要成為海火影</span><br><span class="line"></span><br><span class="line"><span class="section">改兩個字</span><br><span class="line">---</span></span><br><span class="line">我要成為海賊王</span><br><span class="line">我要成為海賊影</span><br><span class="line"></span><br><span class="line"><span class="section">改三個字</span><br><span class="line">---</span></span><br><span class="line">我要成為海賊王</span><br><span class="line">我要成為海賊王</span><br></pre></td></tr></table></figure>
+<p>那這兩個句子的編輯距離就是 3 ，我們會發現編輯距離越短，某種程度上「句型」會越相似(雖然主題就不一定了)，也會發現這其實是個動態規劃問題，正因如此，我們就直接從應用層出發吧(?)</p>
+<p><img src="http://i.imgur.com/rhDWL38.jpg?1" alt="燃燒你的小宇宙吧"></p>
+<p class="img-meta">抱歉了，我最討厭打表格了</p>
+
+<p>在此推薦<a href="https://github.com/seatgeek/fuzzywuzzy" target="_blank" rel="external">fuzzywuzzy</a>，這是在 python 上基於萊文斯坦距離的實作，使用上非常直觀：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fuzzywuzzy <span class="keyword">import</span> fuzz</span><br><span class="line">score = fuzz.ratio(<span class="string">"this is a test"</span>, <span class="string">"this is a test!"</span>)</span><br><span class="line"><span class="comment"># score = 97</span></span><br></pre></td></tr></table></figure>
+<p>話又說回來了，剛剛不是說到這相似評估好像沒辦法涉及語意，沒錯，最基本的編輯距離是沒辦法，但如果把距離的定義從「字變成別的字」換成「詞變成別的詞的相似度差異」就又是另一回事了。</p>
+<h2 id="u8AAA_u597D_u7684_u6A5F_u5668_u5B78_u7FD2_u5462_uFF1F"><a href="#u8AAA_u597D_u7684_u6A5F_u5668_u5B78_u7FD2_u5462_uFF1F" class="headerlink" title="說好的機器學習呢？"></a>說好的機器學習呢？</h2><p>最近跟教授聊天，他們都覺得我已經脫離機器學習，一步一步往自然語言處理去了，我也不知道為什麼會給人這種感覺啊╰(〒皿〒)╯，明明就 NLP 我才算是個半調子才是，機器學習與我精神常存！</p>
+<p>言歸正傳，你可能已經發現了，檢索式模型能看成是種文本分類問題，以經典的新聞分類來看：</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">訓練集(文本、標籤):</span><br><span class="line"></span><br><span class="line">(<span class="string">"小熊續留賽揚強投？ 明年1月與艾瑞塔談延長合約"</span>,<span class="string">"體育"</span>)</span><br><span class="line">(<span class="string">"韓推古裝劇花郎小鮮肉演員吸睛"</span>,<span class="string">"娛樂"</span>)</span><br><span class="line"><span class="attr">...</span><span class="attr">...</span></span><br></pre></td></tr></table></figure>
+<p>當用戶說「今天洋基隊的比分是多少」，我們的聊天機器人就知道用戶是在講體育賽事，用技術的語言來說，用戶的「意圖」是問體育賽事，這個句子還有「洋基隊」、「今天」、「比分」這三個特徵，所以我們能這麼做：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">query = "今天洋基隊的比分是多少"</span><br><span class="line"></span><br><span class="line">class = classifier.classify(query)</span><br><span class="line"></span><br><span class="line">handler = get_task_handler(class) # 把管體育的抓出來</span><br><span class="line">features = handler.extract_features(query) # 抽取出可能的特徵response = handler.get_response(features) # 透過特徵產生回應</span><br><span class="line"></span><br><span class="line">chatbot.say(response)</span><br></pre></td></tr></table></figure>
+<p>明白了運作流程後，顯然能看出技術成分有兩處：「分類」與「特徵抽取」，我先來談談分類吧，特徵抽取請參見後續的「實體識別」。</p>
+<h3 id="u6A38_u7D20_u8C9D_u8449_u65AF"><a href="#u6A38_u7D20_u8C9D_u8449_u65AF" class="headerlink" title="樸素貝葉斯"></a>樸素貝葉斯</h3><p>文本分類的方法很多，其中最直觀的莫過於樸素貝葉斯 (Naive bayes) 分類了，我覺得這算是條件機率的應用，我們透過 「Given」 某些詞來計算這串詞是某個類別的機率，比如說我們現在有兩個類別 <code>A</code>、<code>B</code>，使用者的輸入是：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Naive</span> bayes</span><br></pre></td></tr></table></figure>
+<p>我們就會去計算：</p>
+<p>$$<br>P_a = P(class A \ | \ Naive \ bayes \ in \ the \ query)<br>$$</p>
+<p>$$<br>P_b = P(class B \ | \ Naive \ bayes \ in \ the \ query)<br>$$</p>
+<p>如果 <code>Pa &gt; Pb</code> 就是 A 類別，反之為 B 類別，你可能會好奇這怎麼辦的到，簡單來說的話，我們會在訓練時去求得：</p>
+<p>$$<br>P(Naive \ bayes \ in \ the \ query \ | \ class A)<br>$$</p>
+<p>$$<br>P(Naive \ bayes \ in \ the \ query \ | \ class B)<br>$$<br>所以能夠過條件機率的公式反過來推算，想要更進一步的了解，我向各位推薦這篇<a href="http://pansci.asia/archives/66830" target="_blank" rel="external">妙趣橫生的文章</a>。而關於樸素貝葉斯的直接應用，可以採用 <a href="https://github.com/sloria/TextBlob" target="_blank" rel="external">TextBlob</a>這個簡單的套件，它專門為了分類用法寫了一篇<a href="https://github.com/sloria/TextBlob/blob/dev/docs/classifiers.rst" target="_blank" rel="external">教學</a>，我在此就不班門弄斧了。</p>
+<h3 id="u8A5E_u7684_u8868_u793A_u6CD5"><a href="#u8A5E_u7684_u8868_u793A_u6CD5" class="headerlink" title="詞的表示法"></a>詞的表示法</h3><p>對了，我剛剛疏忽了一點，機器學習中很注重「資料的表示法」，那麼我們該怎麼表示「一個句子」呢？很簡單，套用詞袋模型就成了：</p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">s1 = This <span class="keyword">is</span> my life</span><br><span class="line">s2 = This <span class="keyword">is</span> my book</span><br><span class="line"></span><br><span class="line">1.用集合表示上面兩個句子(this,<span class="keyword">is</span>,my,life,book)</span><br><span class="line">2.賦予每個詞一個 id (<span class="comment">[this,1]</span>,<span class="comment">[is,2]</span>,<span class="comment">[my,3]</span>,<span class="comment">[life,4]</span>,<span class="comment">[book,5]</span>)</span><br><span class="line"></span><br><span class="line">3.從而產生一個陣列</span><br><span class="line"> This   <span class="keyword">is</span>    my   life  book</span><br><span class="line"><span class="comment">[flag, flag, flag, flag, flag]</span></span><br><span class="line"></span><br><span class="line">4.現在我們就能將語句向量化，1表示有出現這個詞，0表示沒出現</span><br><span class="line">s1 = <span class="comment">[1,1,1,1,0]</span></span><br><span class="line">s2 = <span class="comment">[1,1,1,0,1]</span></span><br></pre></td></tr></table></figure>
+<p>如此一來，一個句子就變成陣列，更多基於監督式學習的方法都能助我們一臂之力。但是詞袋有一個缺點，就是「每個詞都是語意獨立的」，彼此的相似度不是 1 就是 0，因而誕生出了以 Word2Vec 這個將詞袋降維的技巧，要學習如何使用 Word2Vec，可以參見我之前寫的一篇<a href="http://zake7749.github.io/2016/08/28/word2vec-with-gensim/">教學</a>。</p>
+<h3 id="u6DF1_u5EA6_u5B78_u7FD2"><a href="#u6DF1_u5EA6_u5B78_u7FD2" class="headerlink" title="深度學習"></a>深度學習</h3><p>這時你可能就會問了，有詞向量，那有沒有句向量，答案是有的，好比說把句子中所有的詞加總起來就會是個句向量，但印象中這東西的效能會是 lower bound ，正統的句向量實作與使用可以參見<a href="https://github.com/klb3713/sentence2vec" target="_blank" rel="external">sentence2vec</a>，這是依照 word2vec 作者 Tomas Mikolov 新發表的論文實作出來的。我們有了句向量後，就只要計算兩個句子的 cosine 相似度，便可以得知哪個問答配對會是我們需要的，哈哈，還記得嗎，我們正在討論聊天機器人的「檢索式模型」。</p>
+<p>而在我們將詞袋密集化後，就能走入更「深」一點的應用，好比說透過堆疊句子中的詞向量，就能產生出一張「語句圖片」，這就變成了卷積神經網路的專精領域 - 圖像識別問題，可藉此推測句子會屬於哪個可能類別，這也是目前我正在學習的部分，怕是法用簡單的文字道破箇中奧妙，若有興趣不妨在 Google 敲上 <code>CNN NLP</code>，或是看看史丹佛大學的深度學習與自然語言處理公開課。</p>
+<h2 id="u751F_u6210_u5F0F_u6A21_u578B"><a href="#u751F_u6210_u5F0F_u6A21_u578B" class="headerlink" title="生成式模型"></a>生成式模型</h2><p>這個東西的技術含量超級高，無論是資料前處理還是模型架構應該都是最麻煩的，但我個人認為生成式模型並不偏向特定領域的聊天，比較像是在實現一般的生活對話，並不太符合這篇的主題，為了避免這篇文章太過冗長，這裡就簡介一些基本思維，並提供學習方向後便點到為止，改天再專文來聊聊 Sequence to Sequence with Attention 吧。</p>
+<p>自 google 的論文發表後，用 <code>Sequence to Sequence</code> 來實現聊天機器人就成為一股熱潮，Github 上有不少像 <a href="https://github.com/Conchylicultor/DeepQA" target="_blank" rel="external">DeepQA</a> 看起來高完成度的應用。<code>Sequence to Sequence</code> 的基本概念是串接兩個 RNN/LSTM，一個當作編碼器，把句子轉換成隱含表示式，另一個當作解碼器，將記憶與目前的輸入做某種處理後再輸出，不過這只是最直觀的方式，其實解碼器還有很多種作法，如果想了解細節與效能上的差異，<a href="http://jacoxu.com/?p=1852" target="_blank" rel="external">我推薦這篇文章</a>。</p>
+<p><img src="http://i.imgur.com/t2E7FfC.png" alt="Sequence to Sequence"></p>
+<p class="img-meta">所謂的序列生成，就是把前一刻的輸出當成下一刻的輸入</p>
+
+<p>這其實就是另類的機器翻譯手段，在 TensorFlow 的機器翻譯篇裡便有搭建 Sequence to Sequence 模型的完整教學，就不在此贅述細節了。</p>
+<h1 id="u7A0D_u4F5C_u6B47_u606F"><a href="#u7A0D_u4F5C_u6B47_u606F" class="headerlink" title="稍作歇息"></a>稍作歇息</h1><p>原本還想談談多輪式對話的實作手段，不過這篇幅似乎會太長了點，就待明天再另外為實體識別、語意分析與自學習技術撰文吧。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/TF-IDF/" rel="tag">#TF/IDF</a>
+          
+            <a href="/tags/Word-Embedding/" rel="tag">#Word Embedding</a>
+          
+            <a href="/tags/樸素貝葉斯分類/" rel="tag">#樸素貝葉斯分類</a>
+          
+            <a href="/tags/深度學習/" rel="tag">#深度學習</a>
+          
+            <a href="/tags/聊天機器人/" rel="tag">#聊天機器人</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/30/chatterbot-with-word2vec/" rel="next" title="基於詞向量的主題匹配">
+                <i class="fa fa-chevron-left"></i> 基於詞向量的主題匹配
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/1428482092251.gif"
+               alt="Justin Yang" />
+          <p class="site-author-name" itemprop="name">Justin Yang</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zake7749" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://plus.google.com/110210184472476277760" target="_blank" title="Google">
+                  
+                    <i class="fa fa-fw fa-google-plus"></i>
+                  
+                  Google
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u5F9E_u6700_u57FA_u672C_u7684_u51FA_u767C"><span class="nav-number">1.</span> <span class="nav-text">從最基本的出發</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u6A23_u677F_u5F0F_u6A21_u578B"><span class="nav-number">2.</span> <span class="nav-text">樣板式模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u6AA2_u7D22_u5F0F_u6A21_u578B"><span class="nav-number">3.</span> <span class="nav-text">檢索式模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OKapi_BM25"><span class="nav-number">3.1.</span> <span class="nav-text">OKapi BM25</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u7DE8_u8F2F_u8DDD_u96E2"><span class="nav-number">3.2.</span> <span class="nav-text">編輯距離</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u8AAA_u597D_u7684_u6A5F_u5668_u5B78_u7FD2_u5462_uFF1F"><span class="nav-number">3.3.</span> <span class="nav-text">說好的機器學習呢？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u6A38_u7D20_u8C9D_u8449_u65AF"><span class="nav-number">3.3.1.</span> <span class="nav-text">樸素貝葉斯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u8A5E_u7684_u8868_u793A_u6CD5"><span class="nav-number">3.3.2.</span> <span class="nav-text">詞的表示法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6DF1_u5EA6_u5B78_u7FD2"><span class="nav-number">3.3.3.</span> <span class="nav-text">深度學習</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u751F_u6210_u5F0F_u6A21_u578B"><span class="nav-number">3.4.</span> <span class="nav-text">生成式模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u7A0D_u4F5C_u6B47_u606F"><span class="nav-number">4.</span> <span class="nav-text">稍作歇息</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+          <div class="copyright" style="text-algin:center;">
+    
+    &copy; 
+    <span itemprop="copyrightYear">2016</span>
+    <span class="with-love">
+      <i class="fa fa-heart" style="color:rgb(255,160,180);"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Justin Yang</span>
+  </div>
+
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme modified from NexT
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+     .Mist
+    </a>
+  </div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div id="open-sidebar" class="open-sidebar close-this-one">
+      <i class="fa fa-map"></i>
+    </div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'zake7749';
+      var disqus_identifier = '2016/12/17/how-to-develop-chatbot/';
+      var disqus_title = "聊天機器人的開發思路";
+      var disqus_url = 'http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  <script type="text/javascript" src="/js/src/jquery.tipsy.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+  
+
+  
+
+</body>
+</html>
