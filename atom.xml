@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zake7749.github.io/"/>
-  <updated>2016-12-18T13:51:26.040Z</updated>
+  <updated>2016-12-18T14:26:13.099Z</updated>
   <id>http://zake7749.github.io/</id>
   
   <author>
@@ -20,10 +20,10 @@
     <link href="http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/"/>
     <id>http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/</id>
     <published>2016-12-17T02:19:56.000Z</published>
-    <updated>2016-12-18T13:51:26.040Z</updated>
+    <updated>2016-12-18T14:26:13.099Z</updated>
     
     <content type="html">&lt;p&gt;幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;&quot; alt=&quot;對話式商務&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/Hx8oKWU.jpg&quot; alt=&quot;對話式商務&quot;&gt;&lt;/p&gt;
 &lt;p class=&quot;img-meta&quot;&gt;歡迎進入對話式商務的思考領域&lt;/p&gt;
 
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -71,7 +71,7 @@
 &lt;p&gt;當用戶說「今天洋基隊的比分是多少」，我們的聊天機器人就知道用戶是在講體育賽事，用技術的語言來說，用戶的「意圖」是問體育賽事，這個句子還有「洋基隊」、「今天」、「比分」這三個特徵，所以我們能這麼做：&lt;/p&gt;
 &lt;figure class=&quot;highlight haskell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;title&quot;&gt;query&lt;/span&gt; = &lt;span class=&quot;string&quot;&gt;&quot;今天洋基隊的比分是多少&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; = classifier.classify(&lt;span class=&quot;title&quot;&gt;query&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;handler = get_task_handler(&lt;span class=&quot;title&quot;&gt;class&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;features = handler.extract_features(&lt;span class=&quot;title&quot;&gt;query&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;response = handler.get_response(&lt;span class=&quot;title&quot;&gt;features&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;chatbot.say(&lt;span class=&quot;title&quot;&gt;response&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;明白了運作流程後，顯然能看出技術成分有兩處：「分類」與「特徵抽取」，我先來談談分類吧，特徵抽取請參見後續的「實體識別」。&lt;/p&gt;
-&lt;h3 id=&quot;u6A38_u7D20_u8C9D_u8449_u65AF_u5206_u985E&quot;&gt;&lt;a href=&quot;#u6A38_u7D20_u8C9D_u8449_u65AF_u5206_u985E&quot; class=&quot;headerlink&quot; title=&quot;樸素貝葉斯分類&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#&quot;&gt;樸素貝葉斯分類&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;文本分類的方法很多，其中最直觀的莫過於樸素貝葉斯 (Naive bayes) 分類了，我覺得這算是條件機率的應用，我們透過 「Given」 某些詞來計算這串詞是某個類別的機率，比如說我們現在有兩個類別 &lt;code&gt;A&lt;/code&gt;、&lt;code&gt;B&lt;/code&gt;，使用者的輸入是：&lt;/p&gt;
+&lt;h3 id=&quot;u6A38_u7D20_u8C9D_u8449_u65AF_u5206_u985E&quot;&gt;&lt;a href=&quot;#u6A38_u7D20_u8C9D_u8449_u65AF_u5206_u985E&quot; class=&quot;headerlink&quot; title=&quot;樸素貝葉斯分類&quot;&gt;&lt;/a&gt;樸素貝葉斯分類&lt;/h3&gt;&lt;p&gt;文本分類的方法很多，其中最直觀的莫過於樸素貝葉斯 (Naive bayes) 分類了，我覺得這算是條件機率的應用，我們透過 「Given」 某些詞來計算這串詞是某個類別的機率，比如說我們現在有兩個類別 &lt;code&gt;A&lt;/code&gt;、&lt;code&gt;B&lt;/code&gt;，使用者的輸入是：&lt;/p&gt;
 &lt;figure class=&quot;highlight nginx&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;Naive&lt;/span&gt; bayes&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;我們就會去計算：&lt;/p&gt;
 &lt;p&gt;$$&lt;br&gt;P_a = P(class A \ | \ Naive \ bayes \ in \ the \ query)&lt;br&gt;$$&lt;/p&gt;
@@ -118,37 +118,40 @@
 &lt;p&gt;一言以蔽之，就是從 root 一直往下走到葉節點，每個節點都代表著某種語意訊息，&lt;br&gt;我們不斷的從子節點中，挑選出與句子語義詞最相關的語意節點，最終就能得出一條語意路徑，我們便能從語意路徑中，認知出這句話的涵義，像「這附近有什麼好吃的」經過走訪後，我們得出了一條路徑，就得出了想「找賣飯的餐廳」這個意圖。&lt;/p&gt;
 &lt;figure class=&quot;highlight elixir&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;（意圖是）飲食　-&amp;gt; （是想吃）食物　-&amp;gt;  (想吃)飯　-&amp;gt; (因為附近跟地點有關，所以想找)　餐廳&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;你或許會感到疑問，為什麼是「食物」接下來是往「飯」走而不是往「麵」走，這其實與模型、語料、客層三者相關，在後續的自學習篇章中，我會對這點稍做補充。除此之外，你可能會這樣質疑我：「你又知道能走到餐廳，是因為『餐廳』匹配到了『附近』，也可能是因為『餐廳』匹配到了『好吃』啊」，問的好，實際上我對語意圖定義了兩種運算行為：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;找尋進入點：「比如說這附近有什麼好吃的」，我們從「好吃」這個詞對應到了進入點「飲食」，可以想做因為你提到了好吃，所以我們認為有飲食相關的意圖&lt;br&gt;*　詞拆解：像是「好吃」一直在變色，這個是想找出系統內與「好吃」最相關的概念是什麼，結果是「飯」。&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;其一為找尋進入點，「比如說這附近有什麼好吃的」，我們從「好吃」這個詞對應到了進入點「飲食」，可以想做因為你提到了好吃，所以我們認為有飲食相關的意圖。&lt;br&gt;其二為詞義解析，像是「好吃」一直在變色，這個是想找出系統內與「好吃」最相關的概念是什麼，結果是「飯」。&lt;/p&gt;
 &lt;p&gt;當一個詞完成了詞拆解後，這個詞就算處理完了，也「不會」再次被語意圖視為進入點，我想這也是蠻直觀的，總不能一直重複進去同一個點，這樣要其他的詞如何是好吶！&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/SfBj34M.jpg&quot; alt=&quot;方堂鏡&quot;&gt;&lt;/p&gt;
 &lt;p class=&quot;img-meta&quot;&gt;不想被打得話，就別在同個點進進出出的&lt;/p&gt;
 
-&lt;p&gt;我剛剛沒說的是，我們要怎麼去找尋進入點與還原詞？其實這方法很多種，最簡單的，&lt;br&gt;我們能建立一個同義詞集合，去匹配看看這些東西有沒有出現在使用者語句裡，再進階一些能以詞向量的角度出發，這還能另外抓出一些隱含語意，詳情請參見以往寫的&lt;a href=&quot;http://zake7749.github.io/2016/08/30/chatterbot-with-word2vec/&quot;&gt;基於詞向量的主題匹配&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;我剛剛沒說的是，我們要怎麼去找尋進入點與做詞義解析？換言之，那張圖到底是個怎麼樣的走法？其實這方法很多種，最簡單的，我們能建立一個同義詞集合，去匹配看看這些東西有沒有出現在使用者語句裡，再進階一些能以詞向量的角度出發，這還能另外抓出一些隱含語意，詳情請參見以往寫的&lt;a href=&quot;http://zake7749.github.io/2016/08/30/chatterbot-with-word2vec/&quot;&gt;基於詞向量的主題匹配&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;總而言之，我們在分析完一句話的語意之後，就能得到了一條「語意路徑」，這條路徑能概念性的說明我們話中的涵義，如果我們為每條路徑給予一個&lt;code&gt;id&lt;/code&gt;，再將 &lt;code&gt;id&lt;/code&gt; 分發給某個特定模組，由模組去「映射」出一個「詢問特徵集合」，我們不是就有籌碼，能去進行多輪式對話了呢？&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/0wD6sln.png&quot; alt=&quot;多輪式對話&quot;&gt;&lt;/p&gt;
 &lt;p class=&quot;img-meta&quot;&gt;只要記住目前知道什麼，以及還要問些什麼，多輪式對話的架構就浮現了&lt;/p&gt;
 
 &lt;p&gt;在未滿足需求之前，我們的機器人就一直問一直問一直問，直到需求滿足為止，這就是最為簡單得多輪式對話架構。&lt;/p&gt;
-&lt;h2 id=&quot;u4F8B_u5916_u8655_u7406&quot;&gt;&lt;a href=&quot;#u4F8B_u5916_u8655_u7406&quot; class=&quot;headerlink&quot; title=&quot;例外處理&quot;&gt;&lt;/a&gt;例外處理&lt;/h2&gt;&lt;p&gt;當我報告這個想法時，有被詢問到一個問題，如果中間使用者反過來問問題怎麼辦？比方說我在向對方推薦酒類時，對方突然問了一句：「什麼是 smooth」。&lt;/p&gt;
+&lt;h2 id=&quot;u4F8B_u5916_u8655_u7406&quot;&gt;&lt;a href=&quot;#u4F8B_u5916_u8655_u7406&quot; class=&quot;headerlink&quot; title=&quot;例外處理&quot;&gt;&lt;/a&gt;例外處理&lt;/h2&gt;&lt;p&gt;當我報告這個想法時，有被詢問到一個問題，如果中間使用者反過來問問題怎麼辦？比方說機器人在向對方推薦酒類時，對方突然問了一句：「什麼是 smooth」。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/7r00mCa.jpg&quot; alt=&quot;red-wine&quot;&gt;&lt;/p&gt;
 &lt;p class=&quot;img-meta&quot;&gt;別在留言欄問我什麼是 smooth，我沒有品酒的習慣。&lt;/p&gt;
 
 
-&lt;p&gt;我當時沒有想到解決的方法，不過現在回想起來，答案似乎意外的簡單，出現了預料之外的情形，做「例外處理」不就行了嗎？&lt;/p&gt;
+&lt;p&gt;我當時沒有想到解決的方法，不過現在回想起來，答案似乎意外的簡單，出現了預料之外的情形，這不就是「例外」嗎？那做「例外處理」不就行了嗎？&lt;/p&gt;
 &lt;p&gt;而所謂的「例外」，就是我們沒辦法從目前回應中抽出預期的「答案」(假設實體識別沒問題)。給予我這想法的是半年前在做 Waston 訂購 API 的測試時，如果我說的話跟 Pizza 摸不著邊，Waston 就會很無奈的說「我不太明白你想做什麼，我能做的就只有幫你訂 Pizza」&lt;/p&gt;
-&lt;p&gt;話說回來了，發生例外時該怎麼辦呢？一個模型不夠，那用兩個模型不就成了。上述問題的解法其實很直觀，當使用者問說：「什麼是 smooth ?」時，因為我們抽取不到任何與答案相關的訊息，所以我們可以從匹配模型轉移到「檢索式模型」，用來從既定 FAQ 裡找出答案告訴使用者，完成例外處理後，再從檢索式模型轉回匹配模型，繼續之前的多輪式對話。&lt;/p&gt;
+&lt;p&gt;話說回來了，發生例外時該怎麼辦呢？一個模型不夠，那用兩個模型不就成了。上述問題的解法其實挺直觀的，當使用者問說：「什麼是 smooth ?」時，因為我們抽取不到任何與答案相關的訊息，所以我們可以從匹配模型轉移到「檢索式模型」，用來從既定 FAQ 裡找出答案告訴使用者，完成例外處理後，再從檢索式模型轉回匹配模型，繼續之前的多輪式對話。&lt;/p&gt;
 &lt;h1 id=&quot;u81EA_u5B78_u7FD2&quot;&gt;&lt;a href=&quot;#u81EA_u5B78_u7FD2&quot; class=&quot;headerlink&quot; title=&quot;自學習&quot;&gt;&lt;/a&gt;自學習&lt;/h1&gt;&lt;p&gt;說穿了，如果不是泛型聊天機器人，面向特定領域的聊天機器人通常與「推薦系統」類似，它之所以回答你的問題，其實也就是想讓你老實地「把錢掏出來」，既然如此，讓系統能在與使用者對話的過程中，「越來越認識這名使用者」，就會顯得極其重要，這就是所謂的自學習。&lt;/p&gt;
 &lt;p&gt;「你認為聊天機器人該怎麼做到自學習？」&lt;/p&gt;
 &lt;p&gt;其實被問到這個問題時我驚訝了一下，因為這是我專題已經棄了蠻久的坑，因為時間啊、課業啊、推甄啊，還有很多很多原因就被我埋藏在記憶的深處了，現在終於又重見天日了。&lt;/p&gt;
-&lt;h2 id=&quot;u5411_u91CF_u6B0A_u91CD_u8ABF_u6574&quot;&gt;&lt;a href=&quot;#u5411_u91CF_u6B0A_u91CD_u8ABF_u6574&quot; class=&quot;headerlink&quot; title=&quot;向量權重調整&quot;&gt;&lt;/a&gt;向量權重調整&lt;/h2&gt;&lt;p&gt;當初選擇用詞向量做開發基底，就是為了線上學習而鋪的伏筆，在剛剛路徑的走訪中，我的假設是 &lt;code&gt;sim(&amp;#39;好吃&amp;#39;,&amp;#39;飯&amp;#39;) &amp;gt; sim(&amp;#39;好吃&amp;#39;,&amp;#39;麵&amp;#39;)&lt;/code&gt;，但實際上，若系統中的使用者常常提到麵或與麵相關的概念好吃的話，&lt;code&gt;sim(&amp;#39;好吃&amp;#39;,&amp;#39;麵&amp;#39;)&lt;/code&gt;便會產生變化，到達某一個程度後，能超過&lt;code&gt;sim(&amp;#39;好吃&amp;#39;,&amp;#39;飯&amp;#39;)&lt;/code&gt;，改為以推薦麵食為主，這某種程度上，就好像我們的系統在學習一般。&lt;/p&gt;
-&lt;h2 id=&quot;u884C_u70BA_u8A18_u61B6&quot;&gt;&lt;a href=&quot;#u884C_u70BA_u8A18_u61B6&quot; class=&quot;headerlink&quot; title=&quot;行為記憶&quot;&gt;&lt;/a&gt;行為記憶&lt;/h2&gt;</content>
+&lt;h2 id=&quot;u5411_u91CF_u6B0A_u91CD_u8ABF_u6574&quot;&gt;&lt;a href=&quot;#u5411_u91CF_u6B0A_u91CD_u8ABF_u6574&quot; class=&quot;headerlink&quot; title=&quot;向量權重調整&quot;&gt;&lt;/a&gt;向量權重調整&lt;/h2&gt;&lt;p&gt;當初選擇用詞向量做語意圖的開發基底，就是為了線上學習而鋪的伏筆，在剛剛路徑的走訪中，我的假設是 &lt;code&gt;sim(&amp;#39;好吃&amp;#39;,&amp;#39;飯&amp;#39;) &amp;gt; sim(&amp;#39;好吃&amp;#39;,&amp;#39;麵&amp;#39;)&lt;/code&gt;，但實際上，若系統中的使用者常常提到麵或與麵相關的概念好吃的話，&lt;code&gt;sim(&amp;#39;好吃&amp;#39;,&amp;#39;麵&amp;#39;)&lt;/code&gt;便會產生變化，到達某一個程度後，能超過&lt;code&gt;sim(&amp;#39;好吃&amp;#39;,&amp;#39;飯&amp;#39;)&lt;/code&gt;，改為以推薦麵食為主，這某種程度上，就好像我們的系統在學習一般。&lt;/p&gt;
+&lt;h2 id=&quot;u884C_u70BA_u8A18_u61B6&quot;&gt;&lt;a href=&quot;#u884C_u70BA_u8A18_u61B6&quot; class=&quot;headerlink&quot; title=&quot;行為記憶&quot;&gt;&lt;/a&gt;行為記憶&lt;/h2&gt;&lt;p&gt;之前曾經說過，自然語言處理最困難的就是多樣性，我們永遠都不會知道，下一秒使用者會突然說出什麼新花樣，既然如此，不妨試著把問題限縮在我們的業務範圍內吧！好比說像這樣：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/rLIntyA.gif&quot; alt=&quot;MESSENGER-BOT&quot;&gt;&lt;/p&gt;
+&lt;p&gt;透過浮出按鈕，幫助使用者做決定，往好處想，它能夠限縮涵蓋範圍，也不用讓使用者自己打字，還算是挺貼心的，不過我想這不只如此而已。&lt;/p&gt;
+&lt;p&gt;我以前在玩 OpenAI 時，很喜歡不去管資料的合適程度，就把強化學習套在各式各樣的議題上，這個想法在聽了李宏毅教授的課後已經改善許多，不過我仍有點印象，當時看過一個很有趣的應用，就是用強化學習來實現推薦系統，方法似乎是透過反覆的提供按鈕，來看看用戶的反應如何。&lt;/p&gt;
+&lt;p&gt;確實呢，按按鈕這個動作不僅僅是把資料傳送給後端而已，更重要的是它反應出了使用者的行為，以上面那個例子來說，我們有 &lt;code&gt;Action&lt;/code&gt;、&lt;code&gt;Comedy&lt;/code&gt;、&lt;code&gt;Drama&lt;/code&gt;、&lt;code&gt;Document&lt;/code&gt; 這四個按鈕，透過結果，我們能知道使用者更喜歡喜劇片，更精確的講，是跟其他三者比起來，更喜歡喜劇片。也就是說，我們能夠為每個多輪式對話設計需求按鈕，再記錄每名用戶的偏好行為，以此評估使用者可能會更喜歡什麼。至於具體的分析方式，這就偏向推薦系統的實作了，在這邊就點到為止吧。&lt;/p&gt;
+</content>
     
     <summary type="html">
     
       &lt;p&gt;幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;&quot; alt=&quot;對話式商務&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/Hx8oKWU.jpg&quot; alt=&quot;對話式商務&quot;&gt;&lt;/p&gt;
 &lt;p class=&quot;img-meta&quot;&gt;歡迎進入對話式商務的思考領域&lt;/p&gt;
     
     </summary>
