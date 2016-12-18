@@ -70,7 +70,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="TF/IDF,Word Embedding,樸素貝葉斯分類,深度學習,聊天機器人," />
+  <meta name="keywords" content="BM25,Word Embedding,樸素貝葉斯分類,深度學習,聊天機器人,語句相似度,語意分析," />
 
 
 
@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://i.imgur.com/0wD6sln.png">
 <meta property="og:image" content="http://i.imgur.com/7r00mCa.jpg">
 <meta property="og:image" content="http://i.imgur.com/rLIntyA.gif">
-<meta property="og:updated_time" content="2016-12-18T14:42:01.774Z">
+<meta property="og:updated_time" content="2016-12-18T16:01:26.642Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊天機器人的開發思路">
 <meta name="twitter:description" content="幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。">
@@ -320,28 +320,27 @@
       
         <p>幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。</p>
 <a id="more"></a>
-<h1 id="u5F9E_u6700_u57FA_u672C_u7684_u51FA_u767C"><a href="#u5F9E_u6700_u57FA_u672C_u7684_u51FA_u767C" class="headerlink" title="從最基本的出發"></a>從最基本的出發</h1><p>嗯…這篇文章真是超級長的，長到都快看不見右邊的捲軸了，但又因彼此環環相扣而不可切割。雖然網站會彈出文章目錄，還是容我先做個小簡介：本文能分成兩大部分，第一部分是介紹聊天機器人的各種模型，第二部分從「商務式聊天機器人」開始，旨在深入到聊天機器人於商務上的應用與架構。</p>
-<p>OK，就從第一部分開始吧，我們先來談談怎麼開發一個聊天機器人，一般來說，在實務上大抵脫離不了這三種模型：</p>
+<h1 id="u5F9E_u6700_u57FA_u672C_u7684_u51FA_u767C"><a href="#u5F9E_u6700_u57FA_u672C_u7684_u51FA_u767C" class="headerlink" title="從最基本的出發"></a>從最基本的出發</h1><p>在切入聊天機器人的商務應用之前，我們先來談談怎麼開發一個聊天機器人吧！一般來說，實作上大抵脫離不了這三種模型：</p>
 <ul>
 <li>樣板式模型 (Rule-based model)</li>
 <li>檢索式模型 (Retrieval-based model)</li>
 <li>生成式模型 (Generative model)</li>
 </ul>
-<p>接下來，我會先介紹一下各個模型的出發點與實作方式，此外，和往常一樣，這篇文章並不著重在深究每個算法的實現原理，而是會專注在應用層面，告訴大家怎麼用簡單的思維與套件來實現各種模型，也會偶而延伸一些自然語言處理和機器學習的基礎概念，算是綜合了我這半年來的學習歷程，願能幫助到有志於此的朋友們。</p>
+<p>接下來，我會先介紹一下各個模型的出發點與實作方式，和往常一樣，這篇教學並不著重在深究每個算法的實現原理，而是會專注在應用層面，告訴大家怎麼用簡單的思維與套件來實現各種模型，也會偶而延伸一些自然語言處理和機器學習的基礎概念，算是綜合了我這半年來的學習歷程，願能幫助到有志於此的朋友們。</p>
 <h1 id="u6A23_u677F_u5F0F_u6A21_u578B"><a href="#u6A23_u677F_u5F0F_u6A21_u578B" class="headerlink" title="樣板式模型"></a>樣板式模型</h1><p>先從樣板式模型說起吧，因為它是最平易近人的，我們可以透過設計「規則」來讓機器人知道遇到什麼詞時，就該說什麼話，打個比方：</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="string">"天氣"</span> <span class="keyword">in</span> user<span class="selector-class">.query</span>:</span><br><span class="line">	chatbot.say(<span class="string">"今天天氣真好"</span>)</span><br></pre></td></tr></table></figure>
 <p>簡單明瞭對吧？不過要設計這個就得勞心勞力的寫規則，還要考慮到規則間的優先順序。如果你對這方面有興趣，我推薦從<a href="http://www.alicebot.org/aiml.html" target="_blank" rel="external">AIML</a>入手，他以樣板語言的形式來紀錄規則，就像是：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version = "1.0" encoding = "UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aiml</span> <span class="attr">version</span> = "<span class="attr">1.0.1</span>" <span class="attr">encoding</span> = "<span class="attr">UTF-8</span>"?&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">category</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">pattern</span>&gt;</span> HELLO <span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">         WORLD !</span><br><span class="line">      <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">category</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aiml</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>當你說 <code>HELLO</code>，機器人就說 <code>WORLD!</code>，除此之外，AIML 也提供了簡單的記憶語學習功能，官方文件寫得挺詳細的，我這邊就不重複造輪子了。除了 AIML 外，我在「語意圖」中，也會提及另一種基於圖的走訪式比對，主要是在解決樣板式模型中比對搶佔的問題。</p>
-<h1 id="u6AA2_u7D22_u5F0F_u6A21_u578B"><a href="#u6AA2_u7D22_u5F0F_u6A21_u578B" class="headerlink" title="檢索式模型"></a>檢索式模型</h1><p>再來聊聊檢索式模型吧，其實這東西的原理跟搜尋引擎很像，但是搜尋引擎給我們的是「頁面」，檢索式模型告訴我們的則是「答案」，用學術上的語言來說，檢索式模型其實就是類似「問答系統」，我們維護了問題與答案的配對：</p>
+<p>當你說 <code>HELLO</code>，機器人就說 <code>WORLD!</code>，除此之外，AIML 也提供了簡單的記憶語學習功能，官方文件寫得挺詳細的，我這邊就不重複造輪子了。除了 AIML 外，我在<a href="http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/#u8A9E_u610F_u5716">語意圖</a>中，也會提及另一種基於圖的走訪式比對，主要是在解決樣板式模型中比對搶佔的問題。</p>
+<h1 id="u6AA2_u7D22_u5F0F_u6A21_u578B"><a href="#u6AA2_u7D22_u5F0F_u6A21_u578B" class="headerlink" title="檢索式模型"></a>檢索式模型</h1><p>再來聊聊檢索式模型吧，其實這東西的原理跟搜尋引擎很像，但是搜尋引擎給我們的是「頁面」，檢索式模型告訴我們的則是「答案」，用學術上的語言來說，檢索式模型其實就是類似問答系統，我們會維護問題與答案的配對：</p>
 <p>$$<br>Questions = { q_1 , q_2 ,……, q_n }<br>$$</p>
 <p>$$<br>Answers = { a_1 , a_2 ,……, a_n }<br>$$</p>
-<p>再看看使用者的輸入和 <code>Questions</code> 中的哪一個 <code>q_k</code> 最接近，就把 <code>a_k</code> 裡的某個回覆丟給使用者。在這裡補充一下，正統的問答系統 <code>q_k</code> 與 <code>a_k</code> 是經過分析後算出，它背後可能藏著一個知識庫，透過歸類使用者的句型與知識庫推理來計算出最適合的答案。</p>
-<p>那麼你可能會好奇，先前我怎麼假設已經有建好的問答配對？能這麼做的原因是我們要開發的，並不是像華生那種能參加益智節目的超級電腦，而是一個只會面向特定領域的應用，會被問到的問題也就不是包山包海，聊天機器人只要記住一些「常見問答」就足夠了。</p>
+<p>再看看使用者的輸入和 <code>Questions</code> 中的哪一個 <code>q_k</code> 最接近，就把 <code>a_k</code> 裡的回覆丟給使用者。在這裡補充一下，正統的問答系統 <code>q_k</code> 與 <code>a_k</code> 是經過分析後算出，它背後可能藏著一個知識庫，透過歸類使用者的句型與知識庫推理來計算出最適合的答案。</p>
+<p>那麼你可能會好奇，先前我怎麼假設已經有建好的問答配對？能這麼做的原因是我們要開發的，並不是像 Watson 那種能參加益智節目的超級電腦，而是一個只會面向特定領域的應用，會被問到的問題也就不是包山包海，聊天機器人只要記住一些「常見問答」就足夠了。</p>
 <p><img src="http://i.imgur.com/N2QYDNl.png" alt="IBM Waston"></p>
-<p class="img-meta">看看華生大顯神通</p>
+<p class="img-meta">看看 Watson 大顯神通</p>
 
-<p>話說回來了，這個模型的技術成分很顯然是「相似度」計算，我們要如何計算文本的相似度呢？</p>
+<p>話說回來了，這個模型的技術成分很顯然是「相似度」計算，那麼，我們該如何計算語句的相似度呢？</p>
 <h2 id="OKapi_BM25"><a href="#OKapi_BM25" class="headerlink" title="OKapi BM25"></a>OKapi BM25</h2><p>通常第一個浮出的想法是用「TF * IDF」來計算詞的權重，再取出同時出現在使用者問句與問題集裡的詞，計算出兩者的相似分數。</p>
 <p>而你可能會問，有沒有東西能比 TFIDF 做得更好呢？有，答案是 <a href="https://en.wikipedia.org/wiki/Okapi_BM25" target="_blank" rel="external">OKapi BM25</a>，這是搜尋引擎的一種實作手段，不過既然都提到搜尋引擎了，就讓我再跑題一下吧，以前 Google 在搜尋引擎實作中是使用 PageRank，這個方法在自然語言處理上能調整成 TextRank，可用於從一串詞中挑選出核心的關鍵詞，算是有別於 TF/IDF 另一種尋找主題的方式。</p>
 <p>現在我們拉回 BM25 吧，看了 Wiki 的連結後，你可能會被那些繁雜的公式嚇到，實際上他想說的事情很簡單，我們將一個句子分成了很多個「詞」<code>qi</code>，每個詞都會一個「IDF」分數，「f(qi,D)」指的是在 <code>D</code> 這篇文檔中，<code>qi</code> 這個詞一共出現了幾次，撇開停用詞不談，顯然一個詞在文章裡出現次數越多，他就顯得越重要。</p>
@@ -358,8 +357,7 @@
 <p>在此推薦<a href="https://github.com/seatgeek/fuzzywuzzy" target="_blank" rel="external">fuzzywuzzy</a>，這是在 python 上基於萊文斯坦距離的實作，使用上非常直觀：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fuzzywuzzy <span class="keyword">import</span> fuzz</span><br><span class="line">score = fuzz.ratio(<span class="string">"this is a test"</span>, <span class="string">"this is a test!"</span>)</span><br><span class="line"><span class="comment"># score = 97</span></span><br></pre></td></tr></table></figure>
 <p>話又說回來了，剛剛不是說到這相似評估好像沒辦法涉及語意，沒錯，最基本的編輯距離是沒辦法，但如果把距離的定義從「字變成別的字」換成「詞變成別的詞的相似度差異」就又是另一回事了。</p>
-<h2 id="u8AAA_u597D_u7684_u6A5F_u5668_u5B78_u7FD2_u5462_uFF1F"><a href="#u8AAA_u597D_u7684_u6A5F_u5668_u5B78_u7FD2_u5462_uFF1F" class="headerlink" title="說好的機器學習呢？"></a>說好的機器學習呢？</h2><p>最近跟教授聊天，他們都覺得我已經脫離機器學習，一步一步往自然語言處理去了，我也不知道為什麼會給人這種感覺啊╰(〒皿〒)╯，明明就 NLP 我才算是個半調子才是。</p>
-<p>言歸正傳，你可能已經發現了，檢索式模型能看成是種文本分類問題，以經典的新聞分類來看：</p>
+<h2 id="u8AAA_u597D_u7684_u6A5F_u5668_u5B78_u7FD2_u5462_uFF1F"><a href="#u8AAA_u597D_u7684_u6A5F_u5668_u5B78_u7FD2_u5462_uFF1F" class="headerlink" title="說好的機器學習呢？"></a>說好的機器學習呢？</h2><p>你可能已經發現了，檢索式模型能看成是種文本分類問題，以經典的新聞分類來看：</p>
 <figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">訓練集(文本、標籤):</span><br><span class="line"></span><br><span class="line">(<span class="string">"小熊續留賽揚強投？ 明年1月與艾瑞塔談延長合約"</span>,<span class="string">"體育"</span>)</span><br><span class="line">(<span class="string">"韓推古裝劇花郎小鮮肉演員吸睛"</span>,<span class="string">"娛樂"</span>)</span><br><span class="line"><span class="attr">...</span><span class="attr">...</span></span><br></pre></td></tr></table></figure>
 <p>當用戶說「今天洋基隊的比分是多少」，我們的聊天機器人就知道用戶是在講體育賽事，用技術的語言來說，用戶的「意圖」是問體育賽事，這個句子還有「洋基隊」、「今天」、「比分」這三個特徵，所以我們能這麼做：</p>
 <figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">query</span> = <span class="string">"今天洋基隊的比分是多少"</span></span><br><span class="line"><span class="class"></span><br><span class="line"><span class="keyword">class</span> = classifier.classify(<span class="title">query</span>)</span><br><span class="line"></span><br><span class="line">handler = get_task_handler(<span class="title">class</span>)</span><br><span class="line">features = handler.extract_features(<span class="title">query</span>)</span><br><span class="line">response = handler.get_response(<span class="title">features</span>)</span><br><span class="line"></span><br><span class="line">chatbot.say(<span class="title">response</span>)</span></span><br></pre></td></tr></table></figure>
@@ -394,11 +392,11 @@
 <h1 id="u591A_u8F2A_u5F0F_u5C0D_u8A71"><a href="#u591A_u8F2A_u5F0F_u5C0D_u8A71" class="headerlink" title="多輪式對話"></a>多輪式對話</h1><p>所謂的多輪式對話，或者有人說是對話情境，指的就是聊天機器人能對之前的談話有所「記憶」，並接續之前的服務，比如說：</p>
 <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">User</span> <span class="title">:幫我找間飯店</span><br><span class="line">Bot</span>  :想找哪裡的飯店呢？</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="keyword">User</span> <span class="title">:臺南的吧，會在十二月二十五號入住</span><br><span class="line">Bot</span>  :好的，向您推薦台南大飯店，要透過 Agoda 進行訂房服務嗎？</span><br></pre></td></tr></table></figure>
 <p>這是個很有趣的問題，聊天機器人不能將每句對話都視作獨立的。接下來所有的篇幅我都會用來談論 Specified domain 的聊天機器人，並用簡單又直觀的方法來設計一個實現多輪式對話的架構。</p>
-<h1 id="u8A9E_u610F_u5206_u6790"><a href="#u8A9E_u610F_u5206_u6790" class="headerlink" title="語意分析"></a>語意分析</h1><p>在正式切入多輪式對話前，我們得先認識「語意」分析在做什麼。語義分析其實蠻多人在做的，而且也存在 Wit.ai、luis、微軟的認知服務等很成熟的應用，它們的大方向通常是讓使用者編修一些句子，並標記句子裡的意圖(intent)與實體(entity)，再透過後訓練調整問答模型。比如說：</p>
+<h1 id="u8A9E_u610F_u5206_u6790"><a href="#u8A9E_u610F_u5206_u6790" class="headerlink" title="語意分析"></a>語意分析</h1><p>在正式切入多輪式對話前，我們得先認識「語意」分析在做什麼。語意分析其實蠻多人在做的，而且也存在 Wit.ai、luis、微軟的認知服務等很成熟的應用，它們的大方向通常是讓使用者編修一些句子，並標記句子裡的意圖(intent)與實體(entity)，再透過後訓練調整問答模型。比如說：</p>
 <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Training <span class="keyword">se</span><span class="variable">t:</span></span><br><span class="line">我想要購買一瓶紅酒</span><br></pre></td></tr></table></figure>
 <p>我們可以定義這句話的意圖是「購買物品」，其中的實體為「紅酒」與「一瓶」，當使用者輸入一句新的對話後，系統就會以訓練集去評比，有沒有種似曾相似的感覺？沒錯，這跟我們先前在樸素貝葉斯分類中看過得相當相似，我們的目的在於將一句「對話」，通過使用者定義好的意圖，來分配至某一個「情境」。這看起來是種監督式學習，顯而易見的，隨著標記的實體量與句型越來越多，聊天機器人就會越來越厲害。</p>
 <p>遺憾的是，我們看不到人家的後端是在怎麼搞，或許是基於某種 NN 的預測、或許是 LDA 的變型去做分類，也或許是以 WordNet 切入，從一個句型的架構著手，在語法與語意兩方面都進行處理，決定出最可能的主題是什麼。</p>
-<p>當然啦，這些都只是個假設，也許背後只是一堆繁複的規則也說不定呢。既然我們無法摸清別人在搞什麼花樣，那麼就自己試著做做語義分析吧，先別走太高端的技術，讓我們一步一腳印，從最簡單的部分著手。</p>
+<p>當然啦，這些都只是個假設，也許背後只是一堆繁複的規則也說不定呢。既然我們無法摸清別人在搞什麼花樣，那麼就自己試著做做語意分析吧，先別走太高端的技術，讓我們一步一腳印，從最簡單的部分著手。</p>
 <h1 id="u8A9E_u610F_u5716"><a href="#u8A9E_u610F_u5716" class="headerlink" title="語意圖"></a>語意圖</h1><p>這是我在專題中進行分析的一個技巧，你說什麼是語意圖？沒聽過也是挺正常的，其實這是我在報告中自己定義出的一個名詞，只是因為教授也沒說什麼，所以就這樣定下來了(･ω･ )……</p>
 <p>類似的概念我在<a href="http://zake7749.github.io/2016/08/30/chatterbot-with-word2vec/">基於詞向量的主題匹配</a>有提過了，將其抽象化後就成為了語意圖，長的會是這個樣子：</p>
 <p><img src="http://i.imgur.com/K8vIoV7.png" alt="語意圖概觀"></p>
@@ -408,7 +406,7 @@
 <p><img src="http://i.imgur.com/qzpjXBm.gif" alt="語意圖分析"></p>
 <p class="img-meta">我們能這樣分析一句話</p>
 
-<p>一言以蔽之，就是從 root 一直往下走到葉節點，每個節點都代表著某種語意訊息，<br>我們不斷的從子節點中，挑選出與句子語義詞最相關的語意節點，最終就能得出一條語意路徑，我們便能從語意路徑中，認知出這句話的涵義，像「這附近有什麼好吃的」經過走訪後，我們得出了一條路徑，就得出了想「找賣飯的餐廳」這個意圖。</p>
+<p>一言以蔽之，就是從 root 一直往下走到葉節點，每個節點都代表著某種語意訊息，<br>我們不斷的從子節點中，挑選出與句子最相關的語意節點，最終就能得出一條語意路徑，我們便能從語意路徑中，認知出這句話的涵義，像「這附近有什麼好吃的」經過走訪後，我們得出了一條路徑，就得出了想「找賣飯的餐廳」這個意圖。</p>
 <figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">（意圖是）飲食　-&gt; （是想吃）食物　-&gt;  (想吃)飯　-&gt; (因為附近跟地點有關，所以想找)　餐廳</span><br></pre></td></tr></table></figure>
 <p>你或許會感到疑問，為什麼是「食物」接下來是往「飯」走而不是往「麵」走，這其實與模型、語料、客層三者相關，在後續的自學習篇章中，我會對這點稍做補充。除此之外，你可能會這樣質疑我：「你又知道能走到餐廳，是因為『餐廳』匹配到了『附近』，也可能是因為『餐廳』匹配到了『好吃』啊」，問的好，實際上我對語意圖定義了兩種運算行為：</p>
 <p>其一為找尋進入點，「比如說這附近有什麼好吃的」，我們從「好吃」這個詞對應到了進入點「飲食」，可以想做因為你提到了好吃，所以我們認為有飲食相關的意圖。</p>
@@ -417,8 +415,9 @@
 <p><img src="http://i.imgur.com/SfBj34M.jpg" alt="方堂鏡"></p>
 <p class="img-meta">不想被打得話，就別在同個點進進出出的</p>
 
-<p>我剛剛沒說的是，我們要怎麼去找尋進入點與做詞義解析？換言之，那張圖到底是個怎麼樣的走法？其實這方法很多種，最簡單的，我們能建立一個同義詞集合，去匹配看看這些東西有沒有出現在使用者語句裡，再進階一些能以詞向量的角度出發，這還能另外抓出一些隱含語意，詳情請參見以往寫的<a href="http://zake7749.github.io/2016/08/30/chatterbot-with-word2vec/">基於詞向量的主題匹配</a>。</p>
-<p>總而言之，我們在分析完一句話的語意之後，就能得到了一條「語意路徑」，這條路徑能概念性的說明我們話中的涵義，如果我們為每條路徑給予一個<code>id</code>，再依這個<code>id</code>去找出對應「欲詢問特徵的集合」，如此一來，我們不是就有籌碼，能去設計一個多輪式對話了呢？</p>
+<p>我剛剛沒說的是，我們要怎麼去找尋進入點與做詞義解析？換言之，那張圖到底是個怎麼樣的走法？其實這實現方法非常多種，因為每個語意節點本質上就是個打分器，只要有辦法讀入一個詞組，輸出一個分數，那就是一個合格的語意節點，換句話說，語意圖也容許不同評估方式的節點存在，以最大化迎合匹配的需求。</p>
+<p>最簡單的，我們能建立一個同義詞集合，去匹配看看這些東西有沒有出現在使用者語句裡，如果有就給 1 分，沒有就給 0 分。或者說我們也能以詞向量的角度出發，這還能另外抓出一些隱含語意，詳情請參見以往寫的<a href="http://zake7749.github.io/2016/08/30/chatterbot-with-word2vec/">基於詞向量的主題匹配</a>。</p>
+<p>總而言之，我們在分析完一句話的語意之後，就能得到了一條「語意路徑」，這條路徑能概念性的說明我們話中的涵義。若我們為每條路徑給予一個<code>id</code>，再依這個<code>id</code>去找出對應「欲詢問特徵的集合」，這麼一來，我們就有辦法去設計多輪式對話情境了。</p>
 <p><img src="http://i.imgur.com/0wD6sln.png" alt="多輪式對話"></p>
 <p class="img-meta">只要記住目前知道什麼，以及還要問些什麼，多輪式對話的架構就浮現了</p>
 
@@ -427,10 +426,9 @@
 <p><img src="http://i.imgur.com/7r00mCa.jpg" alt="red-wine"></p>
 <p class="img-meta">別在留言欄問我什麼是 smooth，我沒有品酒的習慣。</p>
 
-
 <p>我當時沒有想到解決的方法，不過現在回想起來，答案似乎意外的簡單，出現了預料之外的情形，這不就是「例外」嗎？那做「例外處理」不就行了嗎？</p>
-<p>而所謂的「例外」，就是我們沒辦法從目前回應中抽出預期的「答案」(假設實體識別沒問題)。給予我這想法的是半年前在做 Waston 訂購 API 的測試時，如果我說的話跟 Pizza 摸不著邊，Waston 就會很無奈的說「我不太明白你想做什麼，我能做的就只有幫你訂 Pizza」</p>
-<p>話說回來了，發生例外時該怎麼辦呢？一個模型不夠，那用兩個模型不就成了。上述問題的解法其實挺直觀的，當使用者問說：「什麼是 smooth ?」時，因為我們抽取不到任何與答案相關的訊息，所以我們可以從匹配模型轉移到「檢索式模型」，用來從既定 FAQ 裡找出答案告訴使用者，完成例外處理後，再從檢索式模型轉回匹配模型，繼續之前的多輪式對話。</p>
+<p>而所謂的「例外」，就是我們沒辦法從目前回應中抽出預期的「答案」(假設實體識別沒問題)。我之所以會有這個想法，是因為半年前在做 Watson 訂購披薩的 API 測試時，發現如果我說的話跟披薩摸不著邊，Watson 就會很無奈的說「我不太明白你想做什麼，我能做的就只有幫你訂披薩。」</p>
+<p>話又說回來了，發生例外時該怎麼辦呢？一個模型不夠，那用兩個模型不就成了。上述問題的解法其實挺直觀的，當使用者問說：「什麼是 smooth ?」時，因為我們抽取不到任何與答案相關的訊息，所以我們可以從匹配模型轉移到「檢索式模型」，用來從既定 FAQ 裡找出答案告訴使用者，完成例外處理後，再從檢索式模型轉回匹配模型，繼續之前的多輪式對話。</p>
 <h1 id="u81EA_u5B78_u7FD2"><a href="#u81EA_u5B78_u7FD2" class="headerlink" title="自學習"></a>自學習</h1><p>說穿了，如果不是泛型聊天機器人，面向特定領域的聊天機器人通常與推薦系統類似，它之所以回答你的問題，其實也就是想讓你老實地把錢掏出來，既然如此，讓系統能在與使用者對話的過程中，「越來越認識這名使用者」，就會顯得極其重要，這就是所謂的自學習。</p>
 <p>「你認為聊天機器人該怎麼做到自學習？」</p>
 <p>其實被問到這個問題時我驚訝了一下，因為這是我專題已經棄了蠻久的坑，因為時間啊、課業啊、推甄啊，還有很多很多原因就被我埋藏在記憶的深處了，現在終於又重見天日了。</p>
@@ -462,7 +460,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/TF-IDF/" rel="tag">#TF/IDF</a>
+            <a href="/tags/BM25/" rel="tag">#BM25</a>
           
             <a href="/tags/Word-Embedding/" rel="tag">#Word Embedding</a>
           
@@ -471,6 +469,10 @@
             <a href="/tags/深度學習/" rel="tag">#深度學習</a>
           
             <a href="/tags/聊天機器人/" rel="tag">#聊天機器人</a>
+          
+            <a href="/tags/語句相似度/" rel="tag">#語句相似度</a>
+          
+            <a href="/tags/語意分析/" rel="tag">#語意分析</a>
           
         </div>
       
@@ -577,7 +579,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">標籤</span>
               </a>
             </div>
