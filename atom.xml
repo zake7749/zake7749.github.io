@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zake7749.github.io/"/>
-  <updated>2016-12-18T14:36:01.746Z</updated>
+  <updated>2016-12-18T14:42:01.774Z</updated>
   <id>http://zake7749.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/"/>
     <id>http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/</id>
     <published>2016-12-17T02:19:56.000Z</published>
-    <updated>2016-12-18T14:36:01.746Z</updated>
+    <updated>2016-12-18T14:42:01.774Z</updated>
     
     <content type="html">&lt;p&gt;幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -97,7 +97,7 @@
 &lt;p&gt;除了客服應用外，我認為 Specified domain 還有一個更有價值的議題 -「多輪式對話」&lt;/p&gt;
 &lt;h1 id=&quot;u591A_u8F2A_u5F0F_u5C0D_u8A71&quot;&gt;&lt;a href=&quot;#u591A_u8F2A_u5F0F_u5C0D_u8A71&quot; class=&quot;headerlink&quot; title=&quot;多輪式對話&quot;&gt;&lt;/a&gt;多輪式對話&lt;/h1&gt;&lt;p&gt;所謂的多輪式對話，或者有人說是對話情境，指的就是聊天機器人能對之前的談話有所「記憶」，並接續之前的服務，比如說：&lt;/p&gt;
 &lt;figure class=&quot;highlight crmsh&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;:幫我找間飯店&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Bot&lt;/span&gt;  :想找哪裡的飯店呢？&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;---&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;:臺南的吧，會在十二月二十五號入住&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Bot&lt;/span&gt;  :好的，向您推薦台南大飯店，要透過 Agoda 進行訂房服務嗎？&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;這是個很有趣的問題，聊天機器人不能將每句對話都視作獨立的，接下來所有的篇幅我都會用來談論 Specified domain 的聊天機器人，並用簡單又直觀的方法來設計一個實現多輪式對話的架構。&lt;/p&gt;
+&lt;p&gt;這是個很有趣的問題，聊天機器人不能將每句對話都視作獨立的。接下來所有的篇幅我都會用來談論 Specified domain 的聊天機器人，並用簡單又直觀的方法來設計一個實現多輪式對話的架構。&lt;/p&gt;
 &lt;h1 id=&quot;u8A9E_u610F_u5206_u6790&quot;&gt;&lt;a href=&quot;#u8A9E_u610F_u5206_u6790&quot; class=&quot;headerlink&quot; title=&quot;語意分析&quot;&gt;&lt;/a&gt;語意分析&lt;/h1&gt;&lt;p&gt;在正式切入多輪式對話前，我們得先認識「語意」分析在做什麼。語義分析其實蠻多人在做的，而且也存在 Wit.ai、luis、微軟的認知服務等很成熟的應用，它們的大方向通常是讓使用者編修一些句子，並標記句子裡的意圖(intent)與實體(entity)，再透過後訓練調整問答模型。比如說：&lt;/p&gt;
 &lt;figure class=&quot;highlight vim&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Training &lt;span class=&quot;keyword&quot;&gt;se&lt;/span&gt;&lt;span class=&quot;variable&quot;&gt;t:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;我想要購買一瓶紅酒&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;我們可以定義這句話的意圖是「購買物品」，其中的實體為「紅酒」與「一瓶」，當使用者輸入一句新的對話後，系統就會以訓練集去評比，有沒有種似曾相似的感覺？沒錯，這跟我們先前在樸素貝葉斯分類中看過得相當相似，我們的目的在於將一句「對話」，通過使用者定義好的意圖，來分配至某一個「情境」。這看起來是種監督式學習，顯而易見的，隨著標記的實體量與句型越來越多，聊天機器人就會越來越厲害。&lt;/p&gt;
@@ -115,17 +115,18 @@
 &lt;p&gt;一言以蔽之，就是從 root 一直往下走到葉節點，每個節點都代表著某種語意訊息，&lt;br&gt;我們不斷的從子節點中，挑選出與句子語義詞最相關的語意節點，最終就能得出一條語意路徑，我們便能從語意路徑中，認知出這句話的涵義，像「這附近有什麼好吃的」經過走訪後，我們得出了一條路徑，就得出了想「找賣飯的餐廳」這個意圖。&lt;/p&gt;
 &lt;figure class=&quot;highlight elixir&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;（意圖是）飲食　-&amp;gt; （是想吃）食物　-&amp;gt;  (想吃)飯　-&amp;gt; (因為附近跟地點有關，所以想找)　餐廳&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;你或許會感到疑問，為什麼是「食物」接下來是往「飯」走而不是往「麵」走，這其實與模型、語料、客層三者相關，在後續的自學習篇章中，我會對這點稍做補充。除此之外，你可能會這樣質疑我：「你又知道能走到餐廳，是因為『餐廳』匹配到了『附近』，也可能是因為『餐廳』匹配到了『好吃』啊」，問的好，實際上我對語意圖定義了兩種運算行為：&lt;/p&gt;
-&lt;p&gt;其一為找尋進入點，「比如說這附近有什麼好吃的」，我們從「好吃」這個詞對應到了進入點「飲食」，可以想做因為你提到了好吃，所以我們認為有飲食相關的意圖。&lt;br&gt;其二為詞義解析，像是「好吃」一直在變色，這個是想找出系統內與「好吃」最相關的概念是什麼，結果是「飯」。&lt;/p&gt;
-&lt;p&gt;當一個詞完成了詞拆解後，這個詞就算處理完了，也「不會」再次被語意圖視為進入點，我想這也是蠻直觀的，總不能一直重複進去同一個點，這樣要其他的詞如何是好吶！&lt;/p&gt;
+&lt;p&gt;其一為找尋進入點，「比如說這附近有什麼好吃的」，我們從「好吃」這個詞對應到了進入點「飲食」，可以想做因為你提到了好吃，所以我們認為有飲食相關的意圖。&lt;/p&gt;
+&lt;p&gt;其二為詞義解析，像是「好吃」一直在變色，這個是想找出系統內與「好吃」最相關的概念是什麼，結果是「飯」。&lt;/p&gt;
+&lt;p&gt;當一個詞完成了詞義解析後，這個詞就算處理完了，也「不會」再次被語意圖視為進入點，我想這也是蠻直觀的，總不能一直重複進去同一個點，這樣要其他的詞如何是好吶！&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/SfBj34M.jpg&quot; alt=&quot;方堂鏡&quot;&gt;&lt;/p&gt;
 &lt;p class=&quot;img-meta&quot;&gt;不想被打得話，就別在同個點進進出出的&lt;/p&gt;
 
 &lt;p&gt;我剛剛沒說的是，我們要怎麼去找尋進入點與做詞義解析？換言之，那張圖到底是個怎麼樣的走法？其實這方法很多種，最簡單的，我們能建立一個同義詞集合，去匹配看看這些東西有沒有出現在使用者語句裡，再進階一些能以詞向量的角度出發，這還能另外抓出一些隱含語意，詳情請參見以往寫的&lt;a href=&quot;http://zake7749.github.io/2016/08/30/chatterbot-with-word2vec/&quot;&gt;基於詞向量的主題匹配&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;總而言之，我們在分析完一句話的語意之後，就能得到了一條「語意路徑」，這條路徑能概念性的說明我們話中的涵義，如果我們為每條路徑給予一個&lt;code&gt;id&lt;/code&gt;，再將 &lt;code&gt;id&lt;/code&gt; 分發給某個特定模組，由模組去「映射」出一個「詢問特徵集合」，我們不是就有籌碼，能去進行多輪式對話了呢？&lt;/p&gt;
+&lt;p&gt;總而言之，我們在分析完一句話的語意之後，就能得到了一條「語意路徑」，這條路徑能概念性的說明我們話中的涵義，如果我們為每條路徑給予一個&lt;code&gt;id&lt;/code&gt;，再依這個&lt;code&gt;id&lt;/code&gt;去找出對應「欲詢問特徵的集合」，如此一來，我們不是就有籌碼，能去設計一個多輪式對話了呢？&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/0wD6sln.png&quot; alt=&quot;多輪式對話&quot;&gt;&lt;/p&gt;
 &lt;p class=&quot;img-meta&quot;&gt;只要記住目前知道什麼，以及還要問些什麼，多輪式對話的架構就浮現了&lt;/p&gt;
 
-&lt;p&gt;在未滿足所有需求之前，我們的機器人就依照缺損的需求，一直問一直問一直問下去，直到需求滿足為止，這就是最為簡單的多輪式對話架構。&lt;/p&gt;
+&lt;p&gt;在未滿足所有需求之前，我們的機器人就依照缺損的需求，一直問、一直問、一直問下去，直到需求滿足為止，這就是最為簡單的多輪式對話架構。&lt;/p&gt;
 &lt;h2 id=&quot;u4F8B_u5916_u8655_u7406&quot;&gt;&lt;a href=&quot;#u4F8B_u5916_u8655_u7406&quot; class=&quot;headerlink&quot; title=&quot;例外處理&quot;&gt;&lt;/a&gt;例外處理&lt;/h2&gt;&lt;p&gt;當我報告這個想法時，有被詢問到一個問題，如果中間使用者反過來問問題怎麼辦？比方說機器人在向對方推薦酒類時，對方突然問了一句：「什麼是 smooth」。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/7r00mCa.jpg&quot; alt=&quot;red-wine&quot;&gt;&lt;/p&gt;
 &lt;p class=&quot;img-meta&quot;&gt;別在留言欄問我什麼是 smooth，我沒有品酒的習慣。&lt;/p&gt;
