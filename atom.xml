@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zake7749.github.io/"/>
-  <updated>2016-12-19T13:57:10.190Z</updated>
+  <updated>2016-12-19T14:02:50.940Z</updated>
   <id>http://zake7749.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/"/>
     <id>http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/</id>
     <published>2016-12-17T02:19:56.000Z</published>
-    <updated>2016-12-19T13:57:10.190Z</updated>
+    <updated>2016-12-19T14:02:50.940Z</updated>
     
     <content type="html">&lt;p&gt;幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -112,7 +112,7 @@
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/qzpjXBm.gif&quot; alt=&quot;語意圖分析&quot;&gt;&lt;/p&gt;
 &lt;p class=&quot;img-meta&quot;&gt;我們能這樣分析一句話&lt;/p&gt;
 
-&lt;p&gt;一言以蔽之，就是從 root 一直往下走到葉節點，每個節點都代表著某種語意訊息，&lt;br&gt;我們不斷的從子節點中，挑選出與句子最相關的語意節點，最終就能得出一條語意路徑，我們便能從語意路徑中，認知出這句話的涵義，像「這附近有什麼好吃的」經過走訪後，我們得出了一條路徑，就得出了想「找賣飯的餐廳」這個意圖。&lt;/p&gt;
+&lt;p&gt;一言以蔽之，就是從 root 一直往下走到葉節點，每個節點都代表著某種語意訊息，我們不斷的從子節點中，挑選出與句子最相關的語意節點，這最終就形成了一條語意路徑。我們便能從這條路徑認知出這句話的含義，像「這附近有什麼好吃的」經過走訪後，就得出了想「找賣飯的餐廳」這個意圖。&lt;/p&gt;
 &lt;figure class=&quot;highlight elixir&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;（意圖是）飲食　-&amp;gt; （是想吃）食物　-&amp;gt;  (想吃)飯　-&amp;gt; (因為附近跟地點有關，所以想找)　餐廳&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;你或許會感到疑問，為什麼是「食物」接下來是往「飯」走而不是往「麵」走，這其實與模型、語料、客層三者相關，在後續的自學習篇章中，我會對這點稍做補充。除此之外，你可能會這樣質疑我：「你又知道能走到餐廳，是因為『餐廳』匹配到了『附近』，也可能是因為『餐廳』匹配到了『好吃』啊」，問的好，實際上我對語意圖定義了兩種運算行為：&lt;/p&gt;
 &lt;p&gt;其一為找尋進入點，「比如說這附近有什麼好吃的」，我們從「好吃」這個詞對應到了進入點「飲食」，可以想做因為你提到了好吃，所以我們認為有飲食相關的意圖。&lt;/p&gt;
