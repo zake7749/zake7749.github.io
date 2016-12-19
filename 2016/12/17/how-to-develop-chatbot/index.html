@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://i.imgur.com/0wD6sln.png">
 <meta property="og:image" content="http://i.imgur.com/7r00mCa.jpg">
 <meta property="og:image" content="http://i.imgur.com/rLIntyA.gif">
-<meta property="og:updated_time" content="2016-12-19T03:52:38.260Z">
+<meta property="og:updated_time" content="2016-12-19T04:16:20.785Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊天機器人的開發思路">
 <meta name="twitter:description" content="幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。">
@@ -369,34 +369,35 @@
 <p>$$<br>P_b = P(class B \ | \ Naive \ bayes \ in \ the \ query)<br>$$</p>
 <p>如果 <code>Pa &gt; Pb</code> 就是 A 類別，反之為 B 類別，你可能會好奇這怎麼辦的到，簡單來說的話，我們會在訓練時去求得：</p>
 <p>$$<br>P(Naive \ bayes \ in \ the \ query \ | \ class A)<br>$$</p>
-<p>$$<br>P(Naive \ bayes \ in \ the \ query \ | \ class B)<br>$$<br>所以能夠過條件機率的公式反過來推算，想要更進一步的了解，我向各位推薦 Udacity 的機器學習課程，以及從這篇<a href="http://pansci.asia/archives/66830" target="_blank" rel="external">妙趣橫生的文章</a>來複習一下機率的相關概念。而關於樸素貝葉斯的直接應用，可以直接採用 <a href="https://github.com/sloria/TextBlob" target="_blank" rel="external">TextBlob</a>這個簡單的套件，它專門為了分類用法寫了一篇<a href="https://github.com/sloria/TextBlob/blob/dev/docs/classifiers.rst" target="_blank" rel="external">教學</a>，我在此就不班門弄斧了。</p>
+<p>$$<br>P(Naive \ bayes \ in \ the \ query \ | \ class B)<br>$$<br>所以能夠過條件機率的公式反過來推算，想要更進一步的了解，我向各位推薦 Udacity 的機器學習課程，以及從這篇<a href="http://pansci.asia/archives/66830" target="_blank" rel="external">妙趣橫生的文章</a>來複習一下機率的相關概念。而關於樸素貝葉斯的直接應用，可以直接採用 <a href="https://github.com/sloria/TextBlob" target="_blank" rel="external">TextBlob</a>這個簡單的套件，它專門為了分類器的用法寫了一篇完整的<a href="https://github.com/sloria/TextBlob/blob/dev/docs/classifiers.rst" target="_blank" rel="external">教學</a>，若有興趣不妨參考一下吧。</p>
 <h3 id="u8A5E_u7684_u8868_u793A_u6CD5"><a href="#u8A5E_u7684_u8868_u793A_u6CD5" class="headerlink" title="詞的表示法"></a>詞的表示法</h3><p>對了，我剛剛疏忽了一點，機器學習中很注重「資料的表示法」，那麼我們該怎麼表示「一個句子」呢？很簡單，套用詞袋模型就成了：</p>
 <figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">s1 = This <span class="keyword">is</span> my life</span><br><span class="line">s2 = This <span class="keyword">is</span> my book</span><br><span class="line"></span><br><span class="line">1.用集合表示上面兩個句子(this,<span class="keyword">is</span>,my,life,book)</span><br><span class="line">2.賦予每個詞一個 id (<span class="comment">[this,1]</span>,<span class="comment">[is,2]</span>,<span class="comment">[my,3]</span>,<span class="comment">[life,4]</span>,<span class="comment">[book,5]</span>)</span><br><span class="line"></span><br><span class="line">3.從而產生一個陣列</span><br><span class="line"> This   <span class="keyword">is</span>    my   life  book</span><br><span class="line"><span class="comment">[flag, flag, flag, flag, flag]</span></span><br><span class="line"></span><br><span class="line">4.現在我們就能將語句向量化，1表示有出現這個詞，0表示沒出現</span><br><span class="line">s1 = <span class="comment">[1,1,1,1,0]</span></span><br><span class="line">s2 = <span class="comment">[1,1,1,0,1]</span></span><br></pre></td></tr></table></figure>
 <p>如此一來，一個句子就變成陣列，更多基於監督式學習的方法都能助我們一臂之力。</p>
-<h3 id="u6DF1_u5EA6_u5B78_u7FD2"><a href="#u6DF1_u5EA6_u5B78_u7FD2" class="headerlink" title="深度學習"></a>深度學習</h3><p>但是詞袋模型有一個很明顯的缺點，就是「每個詞都是語意獨立的」，彼此的相似度不是 1 就是 0。為解決這個問題，誕生出了 word2vec 這個將詞袋降維的技巧，要學習如何使用 word2vec，可以參見我之前寫的一篇<a href="http://zake7749.github.io/2016/08/28/word2vec-with-gensim/">教學</a>。</p>
-<p>這時你可能就會問了，有詞向量，那有沒有句向量，答案是有的，好比說把句子中所有的詞加總起來就會是個句向量，但印象中這東西的效能會是 lower bound ，正統的句向量實作與使用可以參見<a href="https://github.com/klb3713/sentence2vec" target="_blank" rel="external">sentence2vec</a>，這是依照 word2vec 作者 Tomas Mikolov 新發表的論文實作出來的。我們有了句向量後，就只要計算兩個句子的 cosine 相似度，便可以得知哪個問答配對會是我們需要的，哈哈，還記得嗎，我們正在討論聊天機器人的「檢索式模型」。</p>
-<p>而在我們將詞袋密集化後，就能走入更「深」一點的應用，好比說透過堆疊句子中的詞向量，就能產生出一張「語句圖片」，這就變成了卷積神經網路的專精領域 - 圖像識別問題，可藉此推測句子會屬於哪個可能類別，這也是目前我正在學習的部分，怕是無法用簡單的文字道破箇中奧妙，若有興趣不妨在 Google 敲上 <code>CNN NLP</code>，或是看看史丹佛大學的深度學習與自然語言處理公開課。</p>
-<h1 id="u751F_u6210_u5F0F_u6A21_u578B"><a href="#u751F_u6210_u5F0F_u6A21_u578B" class="headerlink" title="生成式模型"></a>生成式模型</h1><p>這個東西的技術含量超級高，無論是資料前處理還是模型架構應該都是最麻煩的，但我個人認為生成式模型並不偏向特定領域的聊天，比較像是在實現一般的生活對話，並不太符合這篇的主題，為了避免這篇文章太過冗長，這裡就簡介一些基本思維，並提供學習方向後便點到為止，改天再專文來聊聊 Sequence to Sequence with Attention 吧。</p>
+<h3 id="u6DF1_u5EA6_u5B78_u7FD2"><a href="#u6DF1_u5EA6_u5B78_u7FD2" class="headerlink" title="深度學習"></a>深度學習</h3><p>但是詞袋模型有一個很明顯的缺點，因為我們給每個詞都分配出了一個不同的<code>id</code>，這造成每個詞都是「語意獨立」的，彼此的相似度不是 1 就是 0。為解決這個問題，誕生出了 word2vec 這個將詞袋降維的技巧，要學習如何使用 word2vec，可以參見我之前寫的一篇<a href="http://zake7749.github.io/2016/08/28/word2vec-with-gensim/">教學</a>。</p>
+<p>這時你可能就會問了，有詞向量，那有沒有句向量，答案是有的，好比說把句子中所有的詞加總起來就會是個句向量，但印象中這東西的效能會是 lower bound ，正統的句向量實作可以參考<a href="https://github.com/klb3713/sentence2vec" target="_blank" rel="external">sentence2vec</a>，這是依照 word2vec 作者 Tomas Mikolov 新發表的論文實作出來的。在我們有了句向量後，就只要計算兩個句子的 cosine 相似度，便可以得知哪些問答配對會是我們需要的，哈哈，還記得嗎，我們正在討論聊天機器人的「檢索式模型」。</p>
+<p>而在我們將詞袋密集化後，就能走入更「深」一點的應用，好比說透過堆疊句子中的詞向量，就能產生出一張「語句圖片」，這就變成了卷積神經網路的專精領域 - 圖像識別問題，可藉此推測句子會屬於哪個可能類別，這也是目前我正在學習的部分，怕是無法用簡單的文字道破箇中奧妙，若有興趣不妨在 Google 找找 <code>CNN NLP</code>，或是看看史丹佛大學的深度學習與自然語言處理公開課。</p>
+<h1 id="u751F_u6210_u5F0F_u6A21_u578B"><a href="#u751F_u6210_u5F0F_u6A21_u578B" class="headerlink" title="生成式模型"></a>生成式模型</h1><p>這個東西的技術含量超級高，無論是資料前處理還是模型架構應該都是最麻煩的，但我個人認為生成式模型並不偏向特定領域的聊天，比較像是在實現一般的生活對話，因此不太符合這篇的主題，為了避免這篇文章太過冗長，這裡就簡介一些基本思維，並提供學習方向後便點到為止，改天再專文來聊聊 Sequence to Sequence with Attention 吧。</p>
 <p>自 google 的論文發表後，用 <code>Sequence to Sequence</code> 來實現聊天機器人就成為一股熱潮，Github 上有不少像 <a href="https://github.com/Conchylicultor/DeepQA" target="_blank" rel="external">DeepQA</a> 看起來高完成度的應用。<code>Sequence to Sequence</code> 的基本概念是串接兩個 RNN/LSTM，一個當作編碼器，把句子轉換成隱含表示式，另一個當作解碼器，將記憶與目前的輸入做某種處理後再輸出，不過這只是最直觀的方式，其實解碼器還有很多種作法，如果想了解細節與效能上的差異，<a href="http://jacoxu.com/?p=1852" target="_blank" rel="external">我推薦這篇文章</a>。</p>
 <p><img src="http://i.imgur.com/t2E7FfC.png" alt="Sequence to Sequence"></p>
-<p class="img-meta">所謂的序列生成，就是把前一刻的輸出當成下一刻的輸入</p>
+<p class="img-meta">所謂的序列生成，就是把<strong>前一刻的輸出當成下一刻的輸入</strong></p>
 
-<p>這其實就是另類的機器翻譯手段，在 TensorFlow 的機器翻譯篇裡便有搭建 Sequence to Sequence 模型的完整教學，就不在此贅述細節了。</p>
-<h1 id="u5546_u52D9_u5F0F_u804A_u5929_u6A5F_u5668_u4EBA"><a href="#u5546_u52D9_u5F0F_u804A_u5929_u6A5F_u5668_u4EBA" class="headerlink" title="商務式聊天機器人"></a>商務式聊天機器人</h1><p>具備一些基本認識後，讓我們開始向「錢」看齊吧，現行的聊天機器人應用能切分成兩大類，一類是在整合其他應用，好比說 <code>Siri</code> 或 <code>微軟小冰</code>，它能替你問天氣、查股票、找餐廳等等，若換個角度來看，它就是幫你把氣象資料、股票資料、以及 Google Map 等等資訊給整合起來，讓用戶能用「同個介面」拜訪「不同應用」，就自然語言的定義來看也就是偏向 General domain 的聊天機器人。</p>
-<p>至於第二類就是相對第一類而言，Specified domain 的聊天機器人囉！如果將 General domain 整合多個應用這個思維稱為「寬」的話，Specified domain 則是偏向往特定領域「深入」，好比之前說的客服機器人，我以能回覆保險訊息的聊天機器人舉例吧，它顯然要具備與保險相關的知識才能實現，好比我們問：</p>
+<p>這其實就是另類的機器翻譯手段，在 TensorFlow 機器翻譯篇裡便有搭建 Sequence to Sequence 模型的完整教學，就不在此贅述細節了。</p>
+<h1 id="u5546_u52D9_u5F0F_u804A_u5929_u6A5F_u5668_u4EBA"><a href="#u5546_u52D9_u5F0F_u804A_u5929_u6A5F_u5668_u4EBA" class="headerlink" title="商務式聊天機器人"></a>商務式聊天機器人</h1><p>具備一些基本認識後，讓我們開始向「錢」看齊吧，現行的聊天機器人應用能切分成兩大類，一類是在整合其他應用，好比說 <code>Siri</code> 或 <code>微軟小冰</code>，它能替你問天氣、查股票、找餐廳等等，若換個角度來看，它就是幫你把氣象資料、股票資料、以及 Google Map 等等資訊給整合起來，讓用戶能用「同個介面」拜訪「不同應用」，就自然語言的定義來看也就是偏向通用領域(General domain)的聊天機器人。</p>
+<p>至於第二類就是相對第一類而言，特定領域(Specified domain)的聊天機器人囉！如果將整合多個應用這個思維稱為「寬」的話，特定領域則是偏向深入特定領域，好比之前說的客服機器人，以能回覆保險訊息的聊天機器人舉例吧，它顯然要具備與保險相關的知識才能實現，好比我們問：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">哪個保險會適合我？</span><br><span class="line">XXX 保險有什麼好處嗎？</span><br></pre></td></tr></table></figure>
 <p>顯然，無論是要認識顧客並以此推薦服務，或是了解自家公司的產品等等，這些都是在對「保險」這個議題深入處理。</p>
 <p><img src="http://i.imgur.com/OEYUfCZ.jpg?1" alt="LineBot"></p>
 <p class="img-meta">搞定語意與任務處理後，我們就能將其發佈於 Line/Messenger 上</p>
 
-<p>除了客服應用外，我認為 Specified domain 還有一個更有價值的議題 -「多輪式對話」</p>
+<p>除了客服應用外，我認為特定領域的聊天機器人還有一個更有價值的議題 -「多輪式對話」</p>
 <h1 id="u591A_u8F2A_u5F0F_u5C0D_u8A71"><a href="#u591A_u8F2A_u5F0F_u5C0D_u8A71" class="headerlink" title="多輪式對話"></a>多輪式對話</h1><p>所謂的多輪式對話，或者有人說是對話情境，指的就是聊天機器人能對之前的談話有所「記憶」，並接續之前的服務，比如說：</p>
 <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">User</span> <span class="title">:幫我找間飯店</span><br><span class="line">Bot</span>  :想找哪裡的飯店呢？</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="keyword">User</span> <span class="title">:臺南的吧，會在十二月二十五號入住</span><br><span class="line">Bot</span>  :好的，向您推薦台南大飯店，要透過 Agoda 進行訂房服務嗎？</span><br></pre></td></tr></table></figure>
 <p>這是個很有趣的問題，聊天機器人不能將每句對話都視作獨立的。接下來所有的篇幅我都會用來談論 Specified domain 的聊天機器人，並用簡單又直觀的方法來設計一個實現多輪式對話的架構。</p>
-<h1 id="u8A9E_u610F_u5206_u6790"><a href="#u8A9E_u610F_u5206_u6790" class="headerlink" title="語意分析"></a>語意分析</h1><p>在正式切入多輪式對話前，我們得先認識「語意」分析在做什麼。語意分析其實蠻多人在做的，而且也存在 Wit.ai、luis、微軟的認知服務等很成熟的應用，它們的大方向通常是讓使用者編修一些句子，並標記句子裡的意圖(intent)與實體(entity)，再透過後訓練調整問答模型。比如說：</p>
+<h1 id="u8A9E_u610F_u5206_u6790"><a href="#u8A9E_u610F_u5206_u6790" class="headerlink" title="語意分析"></a>語意分析</h1><p>在正式切入多輪式對話前，我們得先明白語意分析是在變什麼花樣。語意分析其實蠻多人在做的，而且也存在 Wit.ai、luis、微軟的認知服務等很成熟的應用，它們的大方向通常是讓使用者編修一些句子，並標記句子裡的意圖(intent)與實體(entity)，再透過後訓練調整問答模型。比如說：</p>
 <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Training <span class="keyword">se</span><span class="variable">t:</span></span><br><span class="line">我想要購買一瓶紅酒</span><br></pre></td></tr></table></figure>
-<p>我們可以定義這句話的意圖是「購買物品」，其中的實體為「紅酒」與「一瓶」，當使用者輸入一句新的對話後，系統就會以訓練集去評比，有沒有種似曾相似的感覺？沒錯，這跟我們先前在樸素貝葉斯分類中看過得相當相似，我們的目的在於將一句「對話」，通過使用者定義好的意圖，來分配至某一個「情境」。這看起來是種監督式學習，顯而易見的，隨著標記的實體量與句型越來越多，聊天機器人就會越來越厲害。</p>
-<p>遺憾的是，我們看不到人家的後端是在怎麼搞，或許是基於某種 NN 的預測、或許是 LDA 的變型去做分類，也或許是以 WordNet 切入，從一個句型的架構著手，在語法與語意兩方面都進行處理，決定出最可能的主題是什麼。</p>
+<p>我們可以定義這句話的意圖是「購買物品」，其中的實體為「紅酒」與「一瓶」讓系統從訓練集來認識我們的需求，完成模型的訓練後，每當使用者輸入一句新的對話，系統就會去評比可能的意圖是什麼。</p>
+<p>看到這裡，有沒有種似曾相似的感覺？沒錯，這跟我們先前在樸素貝葉斯分類中看過得相當相似，我們的目的在於將一句「對話」，通過使用者定義好的意圖，來分配至某一個「情境」。這看起來是種監督式學習，顯而易見的，隨著標記的實體量與句型越來越多，聊天機器人就會越來越厲害。</p>
+<p>遺憾的是，我們看不到人家的後端是在怎麼搞，或許是基於某種神經網路的預測、或許是 LDA 的變型去做分類，也或許是以 WordNet 切入，從一個句型的架構著手，在語法與語意兩方面都進行處理，決定出最可能的主題是什麼。</p>
 <p>當然啦，這些都只是個假設，也許背後只是一堆繁複的規則也說不定呢。既然我們無法摸清別人在搞什麼花樣，那麼就自己試著做做語意分析吧，先別走太高端的技術，讓我們一步一腳印，從最簡單的部分著手。</p>
 <h1 id="u8A9E_u610F_u5716"><a href="#u8A9E_u610F_u5716" class="headerlink" title="語意圖"></a>語意圖</h1><p>這是我在專題中進行分析的一個技巧，你說什麼是語意圖？沒聽過也是挺正常的，其實這是我在報告中自己定義出的一個名詞，只是因為教授也沒說什麼，所以就這樣定下來了(･ω･ )…</p>
 <p>類似的概念我在<a href="http://zake7749.github.io/2016/08/30/chatterbot-with-word2vec/">基於詞向量的主題匹配</a>有提過了，將其抽象化後就成為了語意圖，長的會是這個樣子：</p>
@@ -413,7 +414,7 @@
 <p>其一為找尋進入點，「比如說這附近有什麼好吃的」，我們從「好吃」這個詞對應到了進入點「飲食」，可以想做因為你提到了好吃，所以我們認為有飲食相關的意圖。</p>
 <p>其二為詞義解析，像是「好吃」一直在變色，這個是想找出系統內與「好吃」最相關的概念是什麼，結果是「飯」。</p>
 <p>當一個詞完成了詞義解析後，這個詞就算處理完了，也「不會」再次被語意圖視為進入點，我想這也是蠻直觀的，總不能一直重複進去同一個點，這樣要其他的詞如何是好吶！</p>
-<p><img src="http://i.imgur.com/SfBj34M.jpg" alt="方堂鏡"></p>
+<p><img src="http://i.imgur.com/SfBj34M.jpg" alt="方唐鏡"></p>
 <p class="img-meta">不想被打的話，就別在同個點進進出出的</p>
 
 <p>我剛剛沒說的是，我們要怎麼去找尋進入點與做詞義解析？換言之，那張圖到底是個怎麼樣的走法？其實這實現方法非常多種，因為每個語意節點本質上就是個打分器，只要有辦法讀入一個詞組，輸出一個分數，那就是一個合格的語意節點，換句話說，語意圖也容許不同評估方式的節點存在，以最大化迎合匹配的需求。</p>
@@ -423,14 +424,17 @@
 <p class="img-meta">只要記住目前知道什麼，以及還要問些什麼，多輪式對話的架構就浮現了</p>
 
 <p>在未滿足所有需求之前，我們的機器人就依照缺損的需求，一直問、一直問、一直問下去，直到需求滿足為止，這就是最為簡單的多輪式對話架構。</p>
-<h2 id="u4F8B_u5916_u8655_u7406"><a href="#u4F8B_u5916_u8655_u7406" class="headerlink" title="例外處理"></a>例外處理</h2><p>當我報告這個想法時，有被詢問到一個問題，如果中間使用者反過來問問題怎麼辦？比方說機器人在向對方推薦酒類時，對方突然問了一句：「什麼是 smooth」。</p>
+<h2 id="u4F8B_u5916_u8655_u7406"><a href="#u4F8B_u5916_u8655_u7406" class="headerlink" title="例外處理"></a>例外處理</h2><p>當我報告這個想法時，有被詢問到一個問題：「如果在多輪式對話中，使用者並沒有依照我們預期般行動該怎麼辦？」</p>
+<p>比方說機器人在向對方推薦酒類時，機器人會簡單的陳述一下每種酒的口感，這時使用者從中見到了一個不太確定意思的單字，而向機器人反問了一句：「什麼是 smooth？」這顯然會出現某種問題，因為我們預期收到的是使用者想喝的是什麼酒，但是現在卻收到了一個「詢問」。</p>
 <p><img src="http://i.imgur.com/7r00mCa.jpg" alt="red-wine"></p>
-<p class="img-meta">別在留言欄問我什麼是 smooth，我沒有品酒的習慣。</p>
+<p class="img-meta">也請別問我什麼是 smooth，我沒有品酒的習慣。</p>
 
-<p>我當時沒有想到解決的方法，不過現在回想起來，答案似乎意外的簡單，出現了預料之外的情形，這不就是「例外」嗎？那做「例外處理」不就行了嗎？</p>
-<p>而所謂的「例外」，就是我們沒辦法從目前回應中抽出預期的「答案」(假設實體識別沒問題)。我之所以會有這個想法，是因為半年前在做 Watson 訂購披薩的 API 測試時，發現如果我說的話跟披薩摸不著邊，Watson 就會很無奈的說「我不太明白你想做什麼，我能做的就只有幫你訂披薩。」</p>
-<p>話又說回來了，發生例外時該怎麼辦呢？一個模型不夠，那用兩個模型不就成了。上述問題的解法其實挺直觀的，當使用者問說：「什麼是 smooth ?」時，因為我們抽取不到任何與答案相關的訊息，所以我們可以從匹配模型轉移到「檢索式模型」，用來從既定 FAQ 裡找出答案告訴使用者，完成例外處理後，再從檢索式模型轉回匹配模型，繼續之前的多輪式對話。</p>
-<h1 id="u81EA_u5B78_u7FD2"><a href="#u81EA_u5B78_u7FD2" class="headerlink" title="自學習"></a>自學習</h1><p>說穿了，如果不是泛型聊天機器人，面向特定領域的聊天機器人通常與推薦系統類似，它之所以回答你的問題，其實也就是想讓你老實地把錢掏出來，既然如此，讓系統能在與使用者對話的過程中，「越來越認識這名使用者」，就會顯得極其重要，這就是所謂的自學習。</p>
+<p>我當時沒有想到解決的方法，不過現在回想起來，答案似乎意外的簡單，出現了預料之外的情形，這不就是「例外」嗎？要解決例外，那做「例外處理」不就行了嗎？</p>
+<p>而所謂的例外，就是我們沒辦法從目前回應中抽出預期的「答案」(假設實體識別沒問題)。我之所以會有這個想法，是因為半年前在做 Watson 訂購披薩的 API 測試時，發現如果我說的話跟披薩摸不著邊，Watson 就會很無奈的說「我不太明白你想做什麼，我能做的就只有幫你訂披薩。」</p>
+<p>話又說回來了，發生例外時該怎麼辦呢？</p>
+<p>上述問題的解法其實挺生活化的，我們如果遇到一個不會的問題，去問問其他人會不會不就好了嗎？套用到聊天機器人上，如果一個模型不夠，那用兩個模型不就成了。</p>
+<p>當使用者問說：「什麼是 smooth ?」時，因為我們抽取不到任何與答案相關的訊息，所以我們可以從匹配模型轉移到了「檢索式模型」，用來從既定 FAQ 裡找出答案告訴使用者。當例外處理結束後，再從檢索式模型轉回匹配模型，繼續之前的多輪式對話。</p>
+<h1 id="u81EA_u5B78_u7FD2"><a href="#u81EA_u5B78_u7FD2" class="headerlink" title="自學習"></a>自學習</h1><p>說穿了，面向特定領域的聊天機器人通常與推薦系統類似，它之所以回答你的問題，其實也就是想讓你老實地把錢掏出來，既然如此，讓系統能在與使用者對話的過程中，「越來越認識這名使用者」，就會顯得極其重要，這就是所謂的自學習。</p>
 <p>「你認為聊天機器人該怎麼做到自學習？」</p>
 <p>其實被問到這個問題時我驚訝了一下，因為這是我專題已經棄了蠻久的坑，因為時間啊、課業啊、推甄啊，還有很多很多原因就被我埋藏在記憶的深處了，現在終於又重見天日了。</p>
 <h2 id="u5411_u91CF_u6B0A_u91CD_u8ABF_u6574"><a href="#u5411_u91CF_u6B0A_u91CD_u8ABF_u6574" class="headerlink" title="向量權重調整"></a>向量權重調整</h2><p>當初選擇用詞向量做語意圖的開發基底，就是為了線上學習而鋪的伏筆，在剛剛路徑的走訪中，我的假設是 <code>sim(&#39;好吃&#39;,&#39;飯&#39;) &gt; sim(&#39;好吃&#39;,&#39;麵&#39;)</code>，但實際上，若系統中的使用者常常提到麵或與麵相關的概念好吃的話，<code>sim(&#39;好吃&#39;,&#39;麵&#39;)</code>便會產生變化，到達某一個程度後，能超過<code>sim(&#39;好吃&#39;,&#39;飯&#39;)</code>，改為以推薦麵食為主，這某種程度上，就好像我們的系統在學習一般。</p>
