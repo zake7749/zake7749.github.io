@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://i.imgur.com/0wD6sln.png">
 <meta property="og:image" content="http://i.imgur.com/7r00mCa.jpg">
 <meta property="og:image" content="http://i.imgur.com/rLIntyA.gif">
-<meta property="og:updated_time" content="2016-12-19T14:02:50.940Z">
+<meta property="og:updated_time" content="2016-12-19T14:44:24.781Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊天機器人的開發思路">
 <meta name="twitter:description" content="幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。">
@@ -194,7 +194,7 @@
           </a>
       
         
-        <a class="menu-item menu-item-about red-tooltip" href="https://zake7749.github.io/AboutMe/index.html" data-toggle="tooltip" title="關於作者">
+        <a class="menu-item menu-item-about red-tooltip" href="/AboutMe/index.html" data-toggle="tooltip" title="關於作者">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i>
               <span class="sidebar-title">關於作者</span>
@@ -418,7 +418,7 @@
 <p class="img-meta">不想被打的話，就別在同個點進進出出的</p>
 
 <p>我剛剛沒說的是，我們要怎麼去找尋進入點與做詞義解析？換言之，那張圖到底是個怎麼樣的走法？其實這實現方法非常多種，因為每個語意節點本質上就是個打分器，只要有辦法讀入一個詞組，輸出一個分數，那就是一個合格的語意節點，換句話說，語意圖也容許不同評估方式的節點存在，以最大化迎合匹配的需求。</p>
-<p>最簡單的，我們能建立一個同義詞集合，去匹配看看這些東西有沒有出現在使用者語句裡，如果有就給 1 分，沒有就給 0 分。我們也能以詞向量的角度出發，這還能另外抓出一些隱含語意，詳情請參見以往寫的<a href="http://zake7749.github.io/2016/08/30/chatterbot-with-word2vec/">基於詞向量的主題匹配</a>。我們甚至能用把語意節點設計為一個分類器，結果輸出一個信心值，父節點會走向信心值最高的子結點，某種意義上，這很像是一個手動搞出來的決策森林或神經網路模型，同樣都會一層一層的，嘗試抽取出階段性的語意特徵。</p>
+<p>最簡單的，我們能建立一個同義詞集合，去匹配看看這些東西有沒有出現在使用者語句裡，如果有就給 1 分，沒有就給 0 分。我們也能從詞向量的角度出發，這還能另外抓出一些隱含語意，詳情請參見以往寫的<a href="http://zake7749.github.io/2016/08/30/chatterbot-with-word2vec/">基於詞向量的主題匹配</a>。我們甚至能用把語意節點設計為一個分類器，結果輸出一個信心值，父節點會走向信心值最高的子結點，某種意義上，這很像是一個手動搞出來的決策森林或神經網路模型，同樣都會一層一層的，嘗試抽取出階段性的語意特徵。</p>
 <p>總而言之，我們在分析完一句話的語意之後，就能得到了一條「語意路徑」，這條路徑能概念性的說明我們話中的涵義。若我們為每條路徑給予一個<code>id</code>，再依這個<code>id</code>去找出對應「欲詢問特徵的集合」，這麼一來，我們就有辦法去設計多輪式對話情境了。</p>
 <p><img src="http://i.imgur.com/0wD6sln.png" alt="多輪式對話"></p>
 <p class="img-meta">只要記住目前知道什麼，以及還要問些什麼，多輪式對話的架構就浮現了</p>
