@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zake7749.github.io/"/>
-  <updated>2016-12-19T14:44:24.781Z</updated>
+  <updated>2017-01-21T15:12:43.813Z</updated>
   <id>http://zake7749.github.io/</id>
   
   <author>
@@ -20,9 +20,12 @@
     <link href="http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/"/>
     <id>http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/</id>
     <published>2016-12-17T02:19:56.000Z</published>
-    <updated>2016-12-19T14:44:24.781Z</updated>
+    <updated>2017-01-21T15:12:43.813Z</updated>
     
     <content type="html">&lt;p&gt;幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/wuyGeT1.png&quot; alt=&quot;my-chatbot&quot;&gt;&lt;/p&gt;
+&lt;p class=&quot;img-meta&quot;&gt;聊天機器人「眠寶」的雛形，目前仍在開發中&lt;/p&gt;
+
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;h1 id=&quot;u5F9E_u6700_u57FA_u672C_u7684_u51FA_u767C&quot;&gt;&lt;a href=&quot;#u5F9E_u6700_u57FA_u672C_u7684_u51FA_u767C&quot; class=&quot;headerlink&quot; title=&quot;從最基本的出發&quot;&gt;&lt;/a&gt;從最基本的出發&lt;/h1&gt;&lt;p&gt;在切入聊天機器人的商務應用之前，我們先來談談怎麼開發一個聊天機器人吧！一般來說，實作上大抵脫離不了這三種模型：&lt;/p&gt;
 &lt;ul&gt;
@@ -152,6 +155,8 @@
     <summary type="html">
     
       &lt;p&gt;幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://i.imgur.com/wuyGeT1.png&quot; alt=&quot;my-chatbot&quot;&gt;&lt;/p&gt;
+&lt;p class=&quot;img-meta&quot;&gt;聊天機器人「眠寶」的雛形，目前仍在開發中&lt;/p&gt;
     
     </summary>
     

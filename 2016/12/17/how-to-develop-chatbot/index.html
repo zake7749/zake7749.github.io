@@ -88,12 +88,17 @@
 
 
 
-<meta name="description" content="幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。">
+<meta name="description" content="幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。
+
+聊天機器人「眠寶」的雛形，目前仍在開發中">
 <meta property="og:type" content="article">
 <meta property="og:title" content="聊天機器人的開發思路">
 <meta property="og:url" content="http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/index.html">
 <meta property="og:site_name" content="雷德麥的藏書閣">
-<meta property="og:description" content="幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。">
+<meta property="og:description" content="幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。
+
+聊天機器人「眠寶」的雛形，目前仍在開發中">
+<meta property="og:image" content="http://i.imgur.com/wuyGeT1.png">
 <meta property="og:image" content="http://i.imgur.com/N2QYDNl.png">
 <meta property="og:image" content="https://wikimedia.org/api/rest_v1/media/math/render/svg/43e5c609557364f7836b6b2f4cd8ea41deb86a96">
 <meta property="og:image" content="http://i.imgur.com/rhDWL38.jpg?1">
@@ -105,10 +110,12 @@
 <meta property="og:image" content="http://i.imgur.com/0wD6sln.png">
 <meta property="og:image" content="http://i.imgur.com/7r00mCa.jpg">
 <meta property="og:image" content="http://i.imgur.com/rLIntyA.gif">
-<meta property="og:updated_time" content="2016-12-19T14:44:24.781Z">
+<meta property="og:updated_time" content="2017-01-21T15:12:43.813Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊天機器人的開發思路">
-<meta name="twitter:description" content="幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。">
+<meta name="twitter:description" content="幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。
+
+聊天機器人「眠寶」的雛形，目前仍在開發中">
 
 
 
@@ -319,6 +326,9 @@
 
       
         <p>幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。</p>
+<p><img src="http://i.imgur.com/wuyGeT1.png" alt="my-chatbot"></p>
+<p class="img-meta">聊天機器人「眠寶」的雛形，目前仍在開發中</p>
+
 <a id="more"></a>
 <h1 id="u5F9E_u6700_u57FA_u672C_u7684_u51FA_u767C"><a href="#u5F9E_u6700_u57FA_u672C_u7684_u51FA_u767C" class="headerlink" title="從最基本的出發"></a>從最基本的出發</h1><p>在切入聊天機器人的商務應用之前，我們先來談談怎麼開發一個聊天機器人吧！一般來說，實作上大抵脫離不了這三種模型：</p>
 <ul>
@@ -659,7 +669,7 @@
           <div class="copyright" style="text-algin:center;">
     
     &copy; 
-    <span itemprop="copyrightYear">2016</span>
+    <span itemprop="copyrightYear">2017</span>
     <span class="with-love">
       <i class="fa fa-heart" style="color:rgb(255,160,180);"></i>
     </span>
