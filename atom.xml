@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zake7749.github.io/"/>
-  <updated>2017-01-21T15:12:43.813Z</updated>
+  <updated>2017-01-27T15:01:04.636Z</updated>
   <id>http://zake7749.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/"/>
     <id>http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/</id>
     <published>2016-12-17T02:19:56.000Z</published>
-    <updated>2017-01-21T15:12:43.813Z</updated>
+    <updated>2017-01-27T15:01:04.636Z</updated>
     
     <content type="html">&lt;p&gt;幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/wuyGeT1.png&quot; alt=&quot;my-chatbot&quot;&gt;&lt;/p&gt;
@@ -147,9 +147,7 @@
 &lt;h2 id=&quot;u5411_u91CF_u6B0A_u91CD_u8ABF_u6574&quot;&gt;&lt;a href=&quot;#u5411_u91CF_u6B0A_u91CD_u8ABF_u6574&quot; class=&quot;headerlink&quot; title=&quot;向量權重調整&quot;&gt;&lt;/a&gt;向量權重調整&lt;/h2&gt;&lt;p&gt;當初選擇用詞向量做語意圖的開發基底，就是為了線上學習而鋪的伏筆，在剛剛路徑的走訪中，我的假設是 &lt;code&gt;sim(&amp;#39;好吃&amp;#39;,&amp;#39;飯&amp;#39;) &amp;gt; sim(&amp;#39;好吃&amp;#39;,&amp;#39;麵&amp;#39;)&lt;/code&gt;，但實際上，若系統中的使用者常常提到麵或與麵相關的概念好吃的話，&lt;code&gt;sim(&amp;#39;好吃&amp;#39;,&amp;#39;麵&amp;#39;)&lt;/code&gt;便會產生變化，到達某一個程度後，能超過&lt;code&gt;sim(&amp;#39;好吃&amp;#39;,&amp;#39;飯&amp;#39;)&lt;/code&gt;，改為以推薦麵食為主，這某種程度上，就好像我們的系統在學習一般。&lt;/p&gt;
 &lt;h2 id=&quot;u884C_u70BA_u8A18_u61B6&quot;&gt;&lt;a href=&quot;#u884C_u70BA_u8A18_u61B6&quot; class=&quot;headerlink&quot; title=&quot;行為記憶&quot;&gt;&lt;/a&gt;行為記憶&lt;/h2&gt;&lt;p&gt;之前曾經說過，自然語言處理最困難的就是多樣性，我們永遠都不會知道，下一秒使用者會突然說出什麼新花樣，既然如此，不妨試著把問題限縮在我們的業務範圍內吧！好比說像這樣：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/rLIntyA.gif&quot; alt=&quot;MESSENGER-BOT&quot;&gt;&lt;/p&gt;
-&lt;p&gt;透過浮出按鈕，幫助使用者做決定，往好處想，它能夠限縮涵蓋範圍，也不用讓使用者自己打字，還算是挺貼心的，不過我想這不只如此而已。&lt;/p&gt;
-&lt;p&gt;我以前在玩 OpenAI 時，很喜歡不去管資料的合適程度，就把強化學習套在各式各樣的議題上，這個想法在聽了李宏毅教授的課後已經改善許多，不過我仍有點印象，當時看過一個很有趣的應用，就是用強化學習來實現推薦系統，方法似乎是透過反覆的提供按鈕，來看看用戶的反應如何。&lt;/p&gt;
-&lt;p&gt;確實呢，按按鈕這個動作不僅僅是把資料傳送給後端而已，更重要的是它反應出了使用者的行為，以上面那個例子來說，我們有 &lt;code&gt;Action&lt;/code&gt;、&lt;code&gt;Comedy&lt;/code&gt;、&lt;code&gt;Drama&lt;/code&gt;、&lt;code&gt;Document&lt;/code&gt; 這四個按鈕，透過結果，我們能知道使用者更喜歡喜劇片，更精確的講，是跟其他三者比起來，更喜歡喜劇片。也就是說，我們能夠為每個多輪式對話設計需求按鈕，再記錄每名用戶的偏好行為，以此評估使用者可能會更喜歡什麼。至於具體的分析方式，這就偏向推薦系統的實作了，在這邊就點到為止吧。&lt;/p&gt;
+&lt;p&gt;透過浮出按鈕，幫助使用者做決定，往好處想，它能夠限縮涵蓋範圍，也不用讓使用者自己打字，還算是挺貼心的，不過我想這不只如此而已，按按鈕這個動作不僅僅是把資料傳送給後端而已，更重要的是它反應出了使用者的行為，以上面那個例子來說，我們有 &lt;code&gt;Action&lt;/code&gt;、&lt;code&gt;Comedy&lt;/code&gt;、&lt;code&gt;Drama&lt;/code&gt;、&lt;code&gt;Document&lt;/code&gt; 這四個按鈕，透過結果，我們能知道使用者更喜歡喜劇片，更精確的講，是跟其他三者比起來，更喜歡喜劇片。也就是說，我們能夠為每個多輪式對話設計需求按鈕，再記錄每名用戶的偏好行為，以此評估使用者可能會更喜歡什麼。至於具體的分析方式，這就偏向推薦系統的實作了，在這邊就點到為止吧。&lt;/p&gt;
 </content>
     
     <summary type="html">
