@@ -110,7 +110,7 @@
 <meta property="og:image" content="http://i.imgur.com/0wD6sln.png">
 <meta property="og:image" content="http://i.imgur.com/7r00mCa.jpg">
 <meta property="og:image" content="http://i.imgur.com/rLIntyA.gif">
-<meta property="og:updated_time" content="2017-01-27T15:01:04.636Z">
+<meta property="og:updated_time" content="2017-04-18T14:55:13.292Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊天機器人的開發思路">
 <meta name="twitter:description" content="幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。
@@ -385,8 +385,8 @@
 <p>如此一來，一個句子就變成陣列，更多基於監督式學習的方法都能助我們一臂之力。</p>
 <h3 id="u6DF1_u5EA6_u5B78_u7FD2"><a href="#u6DF1_u5EA6_u5B78_u7FD2" class="headerlink" title="深度學習"></a>深度學習</h3><p>但是詞袋模型有一個很明顯的缺點，因為我們給每個詞都分配出了一個不同的<code>id</code>，這造成每個詞都是「語意獨立」的，彼此的相似度不是 1 就是 0。為解決這個問題，誕生出了 word2vec 這個將詞袋降維的技巧，要學習如何使用 word2vec，可以參見我之前寫的一篇<a href="http://zake7749.github.io/2016/08/28/word2vec-with-gensim/">教學</a>。</p>
 <p>這時你可能就會問了，有詞向量，那有沒有句向量，答案是有的，好比說把句子中所有的詞加總起來就會是個句向量，但印象中這東西的效能會是 lower bound ，正統的句向量實作可以參考<a href="https://github.com/klb3713/sentence2vec" target="_blank" rel="external">sentence2vec</a>，這是依照 word2vec 作者 Tomas Mikolov 新發表的論文實作出來的。在我們有了句向量後，就只要計算兩個句子的 cosine 相似度，便可以得知哪些問答配對會是我們需要的，哈哈，還記得嗎，我們正在討論聊天機器人的「檢索式模型」。</p>
-<p>而在我們將詞袋密集化後，就能走入更「深」一點的應用，好比說透過堆疊句子中的詞向量，就能產生出一張「語句圖片」，這就變成了卷積神經網路的專精領域 - 圖像識別問題，可藉此推測句子會屬於哪個可能類別，這也是目前我正在學習的部分，怕是無法用簡單的文字道破箇中奧妙，若有興趣不妨在 Google 找找 <code>CNN NLP</code>，或是看看史丹佛大學的深度學習與自然語言處理公開課。</p>
-<h1 id="u751F_u6210_u5F0F_u6A21_u578B"><a href="#u751F_u6210_u5F0F_u6A21_u578B" class="headerlink" title="生成式模型"></a>生成式模型</h1><p>這個東西的技術含量超級高，無論是資料前處理還是模型架構應該都是最麻煩的，但我個人認為生成式模型並不偏向特定領域的聊天，比較像是在實現一般的生活對話，因此不太符合這篇的主題，為了避免這篇文章太過冗長，這裡就簡介一些基本思維，並提供學習方向後便點到為止，改天再專文來聊聊 Sequence to Sequence with Attention 吧。</p>
+<p>而在我們將詞袋密集化後，就能走入更「深」一點的應用，好比說可以將他們塞進 LSTM ，除了做分類外，也能夠用來幫助我們解決序列標註的問題。又好比說把詞向量一個一個堆疊起來，便能得到一張語句「圖片」 ，我們就可以將捲積層應用上去，因為我們能彈性地去學權重，捲積層中的 Filters 就好像是強化版的 N-Grams 一樣，最後將捲積出的 Feature maps 串接起來，丟入神經網路，也能用來推測句子會屬於哪個類別。若對這方面有更深的興趣，不妨在 Google 敲敲 <code>CNN NLP</code>，或是看看史丹佛大學的深度學習與自然語言處理公開課。</p>
+<h1 id="u751F_u6210_u5F0F_u6A21_u578B"><a href="#u751F_u6210_u5F0F_u6A21_u578B" class="headerlink" title="生成式模型"></a>生成式模型</h1><p>這個東西的技術含量比較高吶，無論是資料前處理還是模型架構應該都是最麻煩的，但我個人認為生成式模型並不偏向特定領域的聊天，比較像是在實現一般的生活對話，因此不太符合這篇的主題，為了避免這篇文章太過冗長，這裡就簡介一些基本思維，並提供學習方向後便點到為止，改天再專文來聊聊 Sequence to Sequence with Attention model 吧。</p>
 <p>自 google 的論文發表後，用 <code>Sequence to Sequence</code> 來實現聊天機器人就成為一股熱潮，Github 上有不少像 <a href="https://github.com/Conchylicultor/DeepQA" target="_blank" rel="external">DeepQA</a> 看起來高完成度的應用。<code>Sequence to Sequence</code> 的基本概念是串接兩個 RNN/LSTM，一個當作編碼器，把句子轉換成隱含表示式，另一個當作解碼器，將記憶與目前的輸入做某種處理後再輸出，不過這只是最直觀的方式，其實解碼器還有很多種作法，如果想了解細節與效能上的差異，<a href="http://jacoxu.com/?p=1852" target="_blank" rel="external">我推薦這篇文章</a>。</p>
 <p><img src="http://i.imgur.com/t2E7FfC.png" alt="Sequence to Sequence"></p>
 <p class="img-meta">所謂的序列生成，就是把<strong>前一刻的輸出當成下一刻的輸入</strong></p>
@@ -397,7 +397,7 @@
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">哪個保險會適合我？</span><br><span class="line">XXX 保險有什麼好處嗎？</span><br></pre></td></tr></table></figure>
 <p>顯然，無論是要認識顧客並以此推薦服務，或是了解自家公司的產品等等，這些都是在對「保險」這個議題深入處理。</p>
 <p><img src="http://i.imgur.com/OEYUfCZ.jpg?1" alt="LineBot"></p>
-<p class="img-meta">搞定語意與任務處理後，我們就能將其發佈於 Line/Messenger 上</p>
+<p class="img-meta"><a href="https://github.com/zake7749/Line-Chatbot" target="_blank" rel="external">搞定語意與任務處理後，我們就能將其發佈於 Line/Messenger 上</a></p>
 
 <p>除了客服應用外，我認為特定領域的聊天機器人還有一個更有價值的議題 -「多輪式對話」</p>
 <h1 id="u591A_u8F2A_u5F0F_u5C0D_u8A71"><a href="#u591A_u8F2A_u5F0F_u5C0D_u8A71" class="headerlink" title="多輪式對話"></a>多輪式對話</h1><p>所謂的多輪式對話，或者有人說是對話情境，指的就是聊天機器人能對之前的談話有所「記憶」，並接續之前的服務，比如說：</p>
