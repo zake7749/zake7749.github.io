@@ -259,7 +259,7 @@
     <link href="http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/"/>
     <id>http://zake7749.github.io/2016/12/17/how-to-develop-chatbot/</id>
     <published>2016-12-17T02:19:56.000Z</published>
-    <updated>2017-04-18T14:55:13.292Z</updated>
+    <updated>2017-10-30T12:40:00.325Z</updated>
     
     <content type="html">&lt;p&gt;幾天前，我收到了一份來自 San Jose 的 intern 邀請，對方正致力於用深度學習的相關技術，來開發商務用途的對話式介面，因此特別著重在「潛在語意分析」與「自學習」這兩個議題上，這剛好和我目前的研究方向挺類似的，而與對方攀談了不少開發與改進的方向，趁著現在記憶還算清楚，趕緊把這些想法記錄下來。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/wuyGeT1.png&quot; alt=&quot;my-chatbot&quot;&gt;&lt;/p&gt;
@@ -325,7 +325,7 @@
 &lt;h1 id=&quot;u751F_u6210_u5F0F_u6A21_u578B&quot;&gt;&lt;a href=&quot;#u751F_u6210_u5F0F_u6A21_u578B&quot; class=&quot;headerlink&quot; title=&quot;生成式模型&quot;&gt;&lt;/a&gt;生成式模型&lt;/h1&gt;&lt;p&gt;這個東西的技術含量比較高吶，無論是資料前處理還是模型架構應該都是最麻煩的，但我個人認為生成式模型並不偏向特定領域的聊天，比較像是在實現一般的生活對話，因此不太符合這篇的主題，為了避免這篇文章太過冗長，這裡就簡介一些基本思維，並提供學習方向後便點到為止，改天再專文來聊聊 Sequence to Sequence with Attention model 吧。&lt;/p&gt;
 &lt;p&gt;自 google 的論文發表後，用 &lt;code&gt;Sequence to Sequence&lt;/code&gt; 來實現聊天機器人就成為一股熱潮，Github 上有不少像 &lt;a href=&quot;https://github.com/Conchylicultor/DeepQA&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DeepQA&lt;/a&gt; 看起來高完成度的應用。&lt;code&gt;Sequence to Sequence&lt;/code&gt; 的基本概念是串接兩個 RNN/LSTM，一個當作編碼器，把句子轉換成隱含表示式，另一個當作解碼器，將記憶與目前的輸入做某種處理後再輸出，不過這只是最直觀的方式，其實解碼器還有很多種作法，如果想了解細節與效能上的差異，&lt;a href=&quot;http://jacoxu.com/?p=1852&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;我推薦這篇文章&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://i.imgur.com/t2E7FfC.png&quot; alt=&quot;Sequence to Sequence&quot;&gt;&lt;/p&gt;
-&lt;p class=&quot;img-meta&quot;&gt;所謂的序列生成，就是把&lt;strong&gt;前一刻的輸出當成下一刻的輸入&lt;/strong&gt;&lt;/p&gt;
+&lt;p class=&quot;img-meta&quot;&gt;&lt;a href=&quot;https://zake7749.github.io/2017/09/28/Sequence-to-Sequence-tutorial/&quot;&gt;所謂的序列生成，就是把&lt;strong&gt;前一刻的輸出當成下一刻的輸入&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;這其實就是另類的機器翻譯手段，在 TensorFlow 機器翻譯篇裡便有搭建 Sequence to Sequence 模型的完整教學，就不在此贅述細節了。&lt;/p&gt;
 &lt;h1 id=&quot;u5546_u52D9_u5F0F_u804A_u5929_u6A5F_u5668_u4EBA&quot;&gt;&lt;a href=&quot;#u5546_u52D9_u5F0F_u804A_u5929_u6A5F_u5668_u4EBA&quot; class=&quot;headerlink&quot; title=&quot;商務式聊天機器人&quot;&gt;&lt;/a&gt;商務式聊天機器人&lt;/h1&gt;&lt;p&gt;具備一些基本認識後，讓我們開始向「錢」看齊吧，現行的聊天機器人應用能切分成兩大類，一類是在整合其他應用，好比說 &lt;code&gt;Siri&lt;/code&gt; 或 &lt;code&gt;微軟小冰&lt;/code&gt;，它能替你問天氣、查股票、找餐廳等等，若換個角度來看，它就是幫你把氣象資料、股票資料、以及 Google Map 等等資訊給整合起來，讓用戶能用「同個介面」拜訪「不同應用」，就自然語言的定義來看也就是偏向通用領域(General domain)的聊天機器人。&lt;/p&gt;
