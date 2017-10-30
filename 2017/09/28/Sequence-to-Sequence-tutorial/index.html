@@ -1,0 +1,903 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+
+  <meta name="google-site-verification" content="zFdqsZQCJwF_Ibxc_vjqqAf1qXYxoPrqGeYVUHD2J9M" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Autoencoder,RNN,Sequence to Sequence,對話生成,手把手的序列生成實務,教學,機器學習,深度學習," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雷德麥的藏書閣" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="說起「創作」這檔事，我一直相信是機器走向元學習的必經之路。相較於傳統的分類與回歸，無中生有所要跨越的門檻又更上一層，特別是要創作出繪畫、文章等結構性資料更是難上加難，不過相當有趣的是，這兩項生成式技術在 2014 年均有革命性的突破，對抗式生成網路 (GAN) 能在一輪輪的過招後生成以假亂真的圖片，而 Sequence to Sequence 則扮起了網路詩人，將水光山色拓印在短短幾行的小品之間。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="從零開始的 Sequence to Sequence">
+<meta property="og:url" content="http://zake7749.github.io/2017/09/28/Sequence-to-Sequence-tutorial/index.html">
+<meta property="og:site_name" content="雷德麥的藏書閣">
+<meta property="og:description" content="說起「創作」這檔事，我一直相信是機器走向元學習的必經之路。相較於傳統的分類與回歸，無中生有所要跨越的門檻又更上一層，特別是要創作出繪畫、文章等結構性資料更是難上加難，不過相當有趣的是，這兩項生成式技術在 2014 年均有革命性的突破，對抗式生成網路 (GAN) 能在一輪輪的過招後生成以假亂真的圖片，而 Sequence to Sequence 則扮起了網路詩人，將水光山色拓印在短短幾行的小品之間。">
+<meta property="og:image" content="https://i.imgur.com/yVnmiKu.jpg">
+<meta property="og:image" content="https://i.imgur.com/Cz4HiV0.jpg">
+<meta property="og:image" content="https://i.imgur.com/U12Wwp5.png">
+<meta property="og:image" content="https://i.imgur.com/2fYxgpK.png">
+<meta property="og:image" content="https://i.imgur.com/SIv9DdV.png">
+<meta property="og:image" content="https://i.imgur.com/98vnBOI.jpg">
+<meta property="og:image" content="https://i.imgur.com/t2E7FfC.png">
+<meta property="og:image" content="https://i.imgur.com/r5YfgFB.png?1">
+<meta property="og:image" content="https://i.imgur.com/Do4EMaQ.png">
+<meta property="og:image" content="https://i.imgur.com/UFBaz8i.png">
+<meta property="og:image" content="https://i.imgur.com/uDzaG9J.jpg">
+<meta property="og:image" content="https://i.imgur.com/l5kT2nW.png">
+<meta property="og:image" content="https://i.imgur.com/QDdOrTN.png">
+<meta property="og:image" content="https://i.imgur.com/7YJR9Ot.jpg">
+<meta property="og:image" content="https://i.imgur.com/AwIJsvn.jpg">
+<meta property="og:updated_time" content="2017-10-30T12:08:21.459Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="從零開始的 Sequence to Sequence">
+<meta name="twitter:description" content="說起「創作」這檔事，我一直相信是機器走向元學習的必經之路。相較於傳統的分類與回歸，無中生有所要跨越的門檻又更上一層，特別是要創作出繪畫、文章等結構性資料更是難上加難，不過相當有趣的是，這兩項生成式技術在 2014 年均有革命性的突破，對抗式生成網路 (GAN) 能在一輪輪的過招後生成以假亂真的圖片，而 Sequence to Sequence 則扮起了網路詩人，將水光山色拓印在短短幾行的小品之間。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://zake7749.github.io/2017/09/28/Sequence-to-Sequence-tutorial/"/>
+
+  <title> 從零開始的 Sequence to Sequence | 雷德麥的藏書閣 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      <a class="menu-item website-text-logo" href="/">
+        <b class="text-logo-eg">R</b><span class="text-logo-ch"><h1 class="site-title">雷德麥的藏書閣</h1></span>
+      </a>
+      
+        
+        <a class="menu-item menu-item-categories red-tooltip" href="/categories" data-toggle="tooltip" title="文章目錄">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i>
+              <span class="sidebar-title">文章目錄</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-archives red-tooltip" href="/archives" data-toggle="tooltip" title="文章歸檔">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i>
+              <span class="sidebar-title">文章歸檔</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-tags red-tooltip" href="/tags" data-toggle="tooltip" title="特色標籤">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i>
+              <span class="sidebar-title">特色標籤</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-about red-tooltip" href="/AboutMe/index.html" data-toggle="tooltip" title="關於作者">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i>
+              <span class="sidebar-title">關於作者</span>
+            
+          </a>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+ </div>
+      <ul id="btm-menu" class="menu cus-menu">
+        <a id="cus-object-group" href="https://csienckugrade3.hackpad.com/" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="CS Notes">
+          <i class="menu-item-icon fa fa fa-object-group"></i>
+          <span class="sidebar-title">CS Note pads</span>
+        </a>
+        <a id="cus-map" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="關閉側邊欄">
+          <i class="menu-item-icon fa fa-map"></i>
+          <span class="sidebar-title">關閉側邊欄</span>
+        </a>
+        <a id="cus-lightbulb" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="施工中 ─=≡Σ(((っﾟДﾟ)っ">
+          <i class="menu-item-icon fa fa-lightbulb-o"></i>
+          <span class="sidebar-title">顯示模式</span>
+        </a>
+      </ul>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal  post-index-border" itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                從零開始的 Sequence to Sequence
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2017-09-28T21:56:47+08:00" content="2017-09-28">
+              2017-09-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/深度學習/" itemprop="url" rel="index">
+                    <span itemprop="name">深度學習</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/09/28/Sequence-to-Sequence-tutorial/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/09/28/Sequence-to-Sequence-tutorial/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>說起「創作」這檔事，我一直相信是機器走向元學習的必經之路。相較於傳統的分類與回歸，無中生有所要跨越的門檻又更上一層，特別是要創作出繪畫、文章等結構性資料更是難上加難，不過相當有趣的是，這兩項生成式技術在 2014 年均有革命性的突破，對抗式生成網路 (GAN) 能在一輪輪的過招後生成以假亂真的圖片，而 Sequence to Sequence 則扮起了網路詩人，將水光山色拓印在短短幾行的小品之間。</p>
+<p><img src="https://i.imgur.com/yVnmiKu.jpg" alt="陽光失了玻璃窗"></p>
+<p class="img-meta">《陽光失了玻璃窗》，一個饒富深意的名字</p>
+
+<a id="more"></a>
+<p>Sequence to Sequence 是近幾年蓬勃發展的生成式模型 ，它精彩地解決了 RNN 無法處理不定長配對的困境，並於機器寫作、人機對話等主題上嶄露頭角，可以說 Sequence to Sequence 是個相當具啟發性的模型。現在，就讓我們從零開始，與 Sequence to Sequence 進行一場深度邂逅吧。</p>
+<h1 id="u5FEB_u901F_u56DE_u9867_RNN"><a href="#u5FEB_u901F_u56DE_u9867_RNN" class="headerlink" title="快速回顧 RNN"></a>快速回顧 RNN</h1><p>在深入 Sequence to Sequence 的細節之前，我想先和各位介紹一位老朋友 ── RNN (Recurrent neural network)，就是它一手搭建起了最初的 Sequence to Sequence 模型。是故要走入 Sequence to Sequence 的前生今世，我們必須先從 RNN　出發。如果你與這位老友已相當熟識了，不妨直接跳到 Sequence to Sequence ，這對後續的教學並不會構成太大的影響。</p>
+<p>言歸正傳，RNN 到底是個什麼玩意兒? 就讓我先從傳統的類神經網路切入吧。</p>
+<p>傳統上，我們假設神經網路的每個輸入是相互獨立的，意即對於輸入 $I_i, I_j$ 而言，$I_i$ 取什麼值，並不會影響 $I_j$ 取什麼值，因為 $I_i$ 與 $I_j$ 一點關係也沒有。但這個假設有個很大的缺點，就是在處理序列 (Sequence) 時不太管用，因為序列內的元素長幼有序、先後有別，這種順序性導致了輸入間彼此相依，打個比方吧，股票走勢就是種典型的數值序列：</p>
+<table>
+<thead>
+<tr>
+<th>9：00</th>
+<th>10：00</th>
+<th>11:00</th>
+<th>12:00</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>123</td>
+<td>128</td>
+<td>132</td>
+<td>136</td>
+</tr>
+</tbody>
+</table>
+<p>如果有人問：「不知道下午一點是會漲還是會跌」，我們多半會回答：「當然會漲，因為九點在漲，十點在漲，十一點也在漲」。先姑且不論這麼武斷會不會讓我們賠錢，當我們想預測十二點的股市指數時，不是選擇隨手丟枚骰子，而是選擇參考以前的股市指數時，就說明了十二點的指數與十二點前的股票指數具有相依性。</p>
+<p>再以文字序列舉個例子，比如說同樣都是用到了「不」、「歡」、「喜」這三個字，但「喜歡不?」是一個男孩切切於心的期盼，而「不喜歡。」則是女孩流水無情的漠然。這兩組序列有相同的構成，卻因順序，而讓彼此的結局殊如雲泥。</p>
+<p><img src="https://i.imgur.com/Cz4HiV0.jpg" alt=""></p>
+<p class="img-meta">所以說，保留序列的順序性還是挺重要的吶</p>
+
+<p>為了能將「順序」這個信息融入神經網路，RNN 就這麼誕生了，它的式子並不複雜：</p>
+<p>$$<br>ht = \sigma(W_hx_t + U_hh_{t-1} + b_h)<br>$$</p>
+<p>先理解一下每個符號的意思：</p>
+<ul>
+<li>$h_t$ : RNN 在第 $t$ 個時間點的輸出，如果對時間點這個字眼感到茫然，不妨理解為 RNN 讀到序列中第 $t$ 個元素時的輸出吧</li>
+<li>$x_t$ : RNN 在第 $t$ 個時間點的輸入</li>
+<li>$h_{t-1}$: RNN 在第 $t-1$ 個時間點的輸出</li>
+<li>$W_h, U_h, b_h$: 是 RNN 的參數，我們要微調的目標</li>
+<li>$\sigma$ : 神經元的激活函數</li>
+</ul>
+<p>你會發現 RNN 其實只是兩個神經網路 $W_hx_t$ 和 $U_hh_{t-1}$ 的串接，不過這兩個網路的目的可是大不相同，從物理意義上來看：</p>
+<ul>
+<li>$W_h$ 是在控制當前時間點的輸入 $x_t$ 如何影響當前時間點的輸出 $h_t$</li>
+<li>$U_h$ 則是控制前一個時間點的輸出 $h_{t-1}$ 如何影響對當前時間點的輸出 $h_t$</li>
+</ul>
+<p>我們能自這兩者間窺探出 RNN 的核心精神，對於一組序列 $x_1,x_2,…..,x_{n-1},x_{n}$</p>
+<ul>
+<li>在第 $k$ 個時間點時，我們有 $h_{k-1}$ 保留了 $x_1,x_2,…..,x_{k-1}$ 的資訊，佐以當前時間點的輸入 $x_k$ 得出了 $h_k$。</li>
+<li>現在我們到了第 $k+1$ 個時間點，有 $h_k$ 保留了 $x_1,x_2,…..,x_k$ 的資訊，佐以當前時間點的輸入 $x_{k+1}$ 得出 $h_{t+1}$。</li>
+<li>如此反覆迭代，直到走至第  $n$ 個時間點便結束。</li>
+</ul>
+<p>以一個比較打嘴砲的說法，我們能將 $h_k$ 當成記憶，而迭代就是在傳遞模型的記憶，這個過程能用簡單的程式碼來形象化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x_inputs = [...]</span><br><span class="line">hidden = h0</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> x_inputs:</span><br><span class="line">    hidden = rnn(x, hidden)</span><br></pre></td></tr></table></figure>
+<p>我們也能把 RNN 的結構畫成一張圖，橫向的箭頭便是建構輸入順序的關鍵。</p>
+<p><img src="https://i.imgur.com/U12Wwp5.png" alt="RNN"></p>
+<p>此外，根據上面這張圖，我們能將 RNN 的輸入與輸出關係更細分為兩種情形，為什麼會是兩種呢？</p>
+<p>假設我們給 RNN 餵進一個長度 <code>N</code> 的序列 <code>x1, x2, ..., xn</code>，RNN 會吐出與長度等長的序列 <code>y1, y2, ..., yn</code>，但對於吐出的序列 <code>y1 ~ yn</code>，我們真的會用到所有的輸出嗎?答案應該是不一定，對不同的應用，我們採用的輸出個數也會不同。</p>
+<p>如果要把全部的輸出都拿來用，便是很典型的序列標注問題，比如說我們想標注一句話裡每個詞的詞性或實體，就會希望每一個輸入都能被標上一個 tag：<br><img src="https://i.imgur.com/2fYxgpK.png" alt="sequence labeling"></p>
+<p class="img-meta">我們能用 RNN 來標注一句話的詞性</p>
+
+<p>如果只把部分輸出拿來用，就會比較像是個分類在做的事，我們通常會取用最後一個時間的輸出，用於對整個序列做出「總結」，比如想去識別對話的意圖或情緒，我們通常都必須要看完整句話再做論斷。<br><img src="https://i.imgur.com/SIv9DdV.png" alt="sentiment classification"></p>
+<p class="img-meta">我們也能用 RNN 來分類一句話的情緒</p>
+
+<p>理解上述兩種情形後，我們也看出了 RNN 存在著一個侷限性，即是輸出的長度會受限於輸入的長度，我們甚至能夠斷言：「對於輸入長度為 <code>N</code> 的序列而言，是沒有辦法吐出長度超過 <code>N</code> 的輸出的。」不過，這又會造成什麼困擾呢?</p>
+<p>想像一下，今天老闆突發奇想，立志開發出一套中英翻譯系統，企劃書上洋洋灑灑地寫滿了<em>RNN</em>、<em>Deep learning</em>、<em>Neural machine translation</em> 等看起來超有深度的關鍵字，並附上了一組簡單的翻譯範例：</p>
+<table>
+<thead>
+<tr>
+<th>英文</th>
+<th>中文</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>An apple a day keeps the doctor away</td>
+<td>一天一蘋果, 醫生遠離我</td>
+</tr>
+</tbody>
+</table>
+<p>你眉頭一皺，發覺這範例並不單純：「英文有 8 個字，而中文，不多不少是 10 個字！」，猶記小學的數學老師曾經諄諄教誨過 8 &lt; 10，再配上剛剛得出的結論，你便瀟灑地在企劃書的封面撇下「不可能」三個大字，然後就進入了 Bad End。</p>
+<p><img src="https://i.imgur.com/98vnBOI.jpg" alt="仙劍End"></p>
+<h1 id="Sequence_to_Sequence"><a href="#Sequence_to_Sequence" class="headerlink" title="Sequence to Sequence"></a>Sequence to Sequence</h1><p>當然，故事不會這麼簡單就結束。為了解決這個困境，我們的主角 Sequence to Sequence 終於姍姍來遲了。</p>
+<p><img src="https://i.imgur.com/t2E7FfC.png" alt="Sequence to Sequence"></p>
+<p class="img-meta">透過 Sequence to Sequence ，機器能自動回覆 E-Mail</p>
+
+<p>Sequence to Sequence 是由 Encoder 與 Decoder 兩個 RNN 構成，它的運作原理其實與人類的思維很相似，當我們看到一段話時，會先將這句話理解吸收，再根據我們理解的內容說出回覆，Sequence to Sequence 就是在模擬這個過程。</p>
+<p>還記得我們剛剛提到 RNN 能用於總結一個序列嗎？ Encoder 就是負責將輸入序列消化、吸收成一個向量，我們通常把這個向量稱為 context vector，顧名思義，這個向量會囊括原序列的重要訊息。</p>
+<p>而 Decoder 則是根據 context vector 來生成文字，不過回到剛剛的困境，我們只有 1 個輸入，要怎麼生成出超過 1 個輸出呢？其實並不難，只要把目前的輸出當成之後的輸入就成了，就像這樣：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    output = decoder(output)</span><br><span class="line">    outputs.append(output)</span><br></pre></td></tr></table></figure>
+<p>由於我們總是將前個輸出當成後個輸入，就算等到花兒謝了，這個 <code>while</code> 也永遠不會結束。所以我們得設置一個終止信號 <code>EOS</code> (End Of Sentence)，告知 Decoder 夠了，到此為只就好：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> output != <span class="string">'EOS'</span>:</span><br><span class="line">    output = decoder(output)</span><br><span class="line">    outputs.append(output)</span><br></pre></td></tr></table></figure>
+<p>現在我們有能力處理不定長的輸入與輸出配對了，讓我們引入一點點數學，來談談 Sequence to Sequence 的目標函數吧。</p>
+<p>對於輸入序列 $x_1,…,x_T$ 與輸出序列 $y_1,…,y_{T’}$ 而言，透過 Encoder 我們能將 $x_1,…,x_T$ 轉換成 context vector $v$，我們希望能在 Decode 階段最大化條件機率 $p$：</p>
+<p><img src="https://i.imgur.com/r5YfgFB.png?1" alt="objective function"></p>
+<p>這個式子不算太複雜，最外圍的連乘符號表示想求的是全局最優解，而內部的機率項則指的是對時間點 $T$ 而言，模型知道已經聽了什麼(context vector)，以及之前說了些什麼($y_1,…,y_{T-1}$)，並將以這兩件事為基準，來評估現在該要說什麼 ($y_t$)。</p>
+<p>總歸而言， Sequence to Sequence 的精華所在便是串接了兩個 RNN ，第一個 RNN 負責將長度為 <code>M</code> 的序列給壓成 <code>1</code> 個向量，第二個 RNN 則根據這 <code>1</code> 個向量產生出 <code>N</code> 個輸出，這 <code>M -&gt; 1</code> 與 <code>1 -&gt; N</code> 相輔相成下就構建出了 <code>M to N</code> 的模型，能夠處理任何不定長的輸入與輸出序列，好比說：</p>
+<ul>
+<li>輸入一句英文，輸出一句法文，就寫好了一個翻譯系統</li>
+<li>輸入一個問題，輸出一句回覆，就架好一個聊天機器人</li>
+<li>輸入一篇文章，輸出一份總結，就構成一個摘要系統</li>
+<li>輸入幾個關鍵字，輸出一首短詩，就成就了一名詩人</li>
+</ul>
+<p>甚至，我們能把眼光放得更遠些，Encoder 與 Decoder 不一定都只有 RNN，可以讓 CNN 與 RNN 一起當 Encoder，負責將影像編碼成向量，而 Decoder 根據這個向量來生成描述，這樣就能讓機器描述圖片中發生了什麼：</p>
+<p><img src="https://i.imgur.com/Do4EMaQ.png" alt="Image Caption"></p>
+<p class="img-meta">Reference: <a href="https://arxiv.org/pdf/1505.00487.pdf" target="_blank" rel="external">Sequence to Sequence – Video to Text</a></p>
+
+<p>又或者來個逆向操作，讓機器能根據文字產生圖片：</p>
+<p><img src="https://i.imgur.com/UFBaz8i.png" alt="Text ot Image"></p>
+<p class="img-meta">Reference: <a href="https://github.com/paarthneekhara/text-to-image" target="_blank" rel="external">Text To Image Synthesis Using Thought Vectors</a></p>
+
+<p>雖然這些內容已經有點跑題了，但對於 Encoder 與 Decoder 這一搭一唱的行為，我們都將其視為「Encoder Decoder Framework」，隨著輸入與輸出的類型不同，就能輕鬆組合出不同風貌的應用，我想這便是 Sequence to Sequence 的迷人之處。</p>
+<h1 id="Show_me_the_code"><a href="#Show_me_the_code" class="headerlink" title="Show me the code"></a>Show me the code</h1><p>就算談了再多的理論，工程師最後還是要靠代碼來分出勝負，這系列教學的完整代碼都會放在<a href="https://github.com/zake7749/Sequence-to-Sequence-101" target="_blank" rel="external">這邊</a>，不妨先載下來吧。畢竟我們是從零開始，就別弄什麼太天馬行空的東西，往樸素點的著手。我們要設計的是一個序列自編碼器 (Sequence Autoencoder)，他的目標很簡單，就是希望輸出序列能和輸入序列愈像愈好：</p>
+<p><img src="https://i.imgur.com/uDzaG9J.jpg" alt="Autoencoder"></p>
+<p class="img-meta">瞧瞧，右邊的 2 和左邊的 2 挺像的吧</p>
+
+<p>我們的訓練語料來自 <a href="https://github.com/zake7749/Seq2Seq-101/blob/master/Epoch1-BasicSeq2Seq/dataset/Google-10000-English.txt" target="_blank" rel="external">Google-10000-English.txt</a>，顧名思義，這是一萬個英文常用單字，雖然不知為什麼裡面只有 9914 個就是了。既然要做自編碼器，我們就是要讓輸入的單字跟輸出的單字愈像愈好：</p>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Output</th>
+<th>Prediction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hello</td>
+<td>hello</td>
+<td>hello</td>
+</tr>
+<tr>
+<td>world</td>
+<td>world</td>
+<td>world</td>
+</tr>
+</tbody>
+</table>
+<p class="img-meta">我們資料的粒度以字母為主，所以像 <code>hello</code> 就是一個長度為 5 的序列</p>
+
+
+<p>關於資料集的預處理與向量化已經寫在 <a href="https://github.com/zake7749/Seq2Seq-101/blob/master/Epoch1-BasicSeq2Seq/dataset/DataHelper.py" target="_blank" rel="external">DataHelper.py</a> ，可以先運行看看，了解一下資料集及每個 batch 的構成：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># Output of DataHelper.py</span><br><span class="line">Vocab information:</span><br><span class="line"><span class="built_in">Char</span>: SOS <span class="built_in">Index</span>: <span class="number">0</span></span><br><span class="line"><span class="built_in">Char</span>: EOS <span class="built_in">Index</span>: <span class="number">1</span></span><br><span class="line"><span class="built_in">Char</span>: <span class="keyword">PAD</span> <span class="built_in">Index</span>: <span class="number">2</span></span><br><span class="line"><span class="built_in">Char</span>: UNK <span class="built_in">Index</span>: <span class="number">3</span></span><br><span class="line"><span class="built_in">Char</span>: t <span class="built_in">Index</span>: <span class="number">4</span></span><br><span class="line"><span class="built_in">Char</span>: h <span class="built_in">Index</span>: <span class="number">5</span></span><br><span class="line">...</span><br><span class="line"><span class="built_in">Char</span>: j <span class="built_in">Index</span>: <span class="number">27</span></span><br><span class="line"><span class="built_in">Char</span>: z <span class="built_in">Index</span>: <span class="number">28</span></span><br><span class="line"><span class="built_in">Char</span>: q <span class="built_in">Index</span>: <span class="number">29</span></span><br></pre></td></tr></table></figure>
+<p>這是字典與索引的轉換，我另外加了四種輔助字元：</p>
+<ul>
+<li><code>SOS</code> : Decoder 的啟動信號</li>
+<li><code>EOS</code> : Decoder 的終止信號</li>
+<li><code>PAD</code> : 因為每個 batch 的單字長度要一致，所以我們要用 PAD 來填充過短的單字</li>
+<li><code>UNK</code> : 如果輸入字元沒在字典裡出現過，就用 UNK 的索引替代它</li>
+</ul>
+<figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Sequence</span> before transformed: helloworld</span><br><span class="line">Indices <span class="keyword">sequence</span>: [<span class="number">5</span>, <span class="number">6</span>, <span class="number">20</span>, <span class="number">20</span>, <span class="number">7</span>, <span class="number">17</span>, <span class="number">7</span>, <span class="number">13</span>, <span class="number">20</span>, <span class="number">11</span>]</span><br><span class="line"><span class="keyword">Sequence</span> <span class="keyword">after</span> transformed: helloworld</span><br></pre></td></tr></table></figure>
+<p>這是個簡單的小示例，說明能透過字典將單字轉為成一組索引序列，並能正確無誤地還原回來。</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">B0-<span class="number">0</span>, Inputs</span><br><span class="line">(Variable containing:</span><br><span class="line">   <span class="number">24</span>    <span class="number">15</span>    <span class="number">23</span></span><br><span class="line">    <span class="number">6</span>     <span class="number">9</span>    <span class="number">18</span></span><br><span class="line">   <span class="number">10</span>    <span class="number">25</span>    <span class="number">15</span></span><br><span class="line">    <span class="number">6</span>    <span class="number">12</span>    <span class="number">20</span></span><br><span class="line">    <span class="number">4</span>    <span class="number">10</span>    <span class="number">12</span></span><br><span class="line">   <span class="number">12</span>    <span class="number">24</span>    <span class="number">22</span></span><br><span class="line">   <span class="number">22</span>     <span class="number">1</span>     <span class="number">1</span></span><br><span class="line">    <span class="number">1</span>     <span class="number">2</span>     <span class="number">2</span></span><br><span class="line"><span class="string">[torch.LongTensor of size 8x3]</span></span><br><span class="line">, <span class="string">[8, 7, 7]</span>)</span><br></pre></td></tr></table></figure>
+<p>這則是我們每個 batch 會取出的 Tensor，第一個矩陣是輸入，第二個矩陣是輸出因為我們要訓練的是字編碼器，所以輸入跟輸出是長的一模一樣的。</p>
+<p>這裡以 <code>batch_size=3</code> 的輸入為例，為了符合 PyTorch RNN 的預設形式， Tensor 的 shape 會是 <code>(time_steps, batch_size)</code>，也就是說 <code>24 6 10 6 4 12 22 1</code> 是一個單字，<code>15 9 25 12 10 24 1 2</code> 是一個單字，<code>23 18 15 20 12 22 1 2</code> 是一個單字。</p>
+<p>而 <code>[8, 7, 7]</code> 則表示每個單字原本的長度，還記得嗎？我們將 <code>PAD</code> 設定為 2 ，除了第一個單字外，另外兩個單字的結尾都被補上了 <code>2</code> ，代表它們的原始長度其實都是 <code>7</code>。</p>
+<p>現在對資料的預處理有些掌握了，讓我們正式切入模型的細節。我將 Sequence to Sequence 分成 <code>Encoder.py</code>、<code>Decoder.py</code>、<code>Seq2Seq.py</code> 三個模組。</p>
+<h2 id="Encoder"><a href="#Encoder" class="headerlink" title="Encoder"></a>Encoder</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># model/Encoder.py</span></span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> torch.nn.utils.rnn <span class="keyword">import</span>  pack_padded_sequence, pad_packed_sequence</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VanillaEncoder</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, vocab_size, embedding_size, output_size)</span>:</span></span><br><span class="line">        <span class="string">"""Define layers for a vanilla rnn encoder"""</span></span><br><span class="line">        super(VanillaEncoder, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.vocab_size = vocab_size</span><br><span class="line">        self.embedding = nn.Embedding(vocab_size, embedding_size)</span><br><span class="line">        self.gru = nn.GRU(embedding_size, output_size)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input_seqs, input_lengths, hidden=None)</span>:</span></span><br><span class="line">        embedded = self.embedding(input_seqs)</span><br><span class="line">        packed = pack_padded_sequence(embedded, input_lengths)</span><br><span class="line">        packed_outputs, hidden = self.gru(packed, hidden)</span><br><span class="line">        outputs, output_lengths = pad_packed_sequence(packed_outputs)</span><br><span class="line">        <span class="keyword">return</span> outputs, hidden</span><br></pre></td></tr></table></figure>
+<p>Encoder 的工作相當簡單明瞭，便是將一組序列編碼成一個向量，我們將選用 RNN 在最後一個時間點的輸出 <code>hidden</code> 來做為我們的 context vector。</p>
+<h2 id="Decoder"><a href="#Decoder" class="headerlink" title="Decoder"></a>Decoder</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># model/Decoder.py</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VanillaDecoder</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, hidden_size, output_size, max_length, teacher_forcing_ratio, sos_id, use_cuda)</span>:</span></span><br><span class="line">        <span class="string">"""Define layers for a vanilla rnn decoder"""</span></span><br><span class="line">        super(VanillaDecoder, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.hidden_size = hidden_size</span><br><span class="line">        self.output_size = output_size</span><br><span class="line">        self.embedding = nn.Embedding(output_size, hidden_size)</span><br><span class="line">        self.gru = nn.GRU(hidden_size, hidden_size)</span><br><span class="line">        self.out = nn.Linear(hidden_size, output_size)</span><br><span class="line">        self.log_softmax = nn.LogSoftmax()  <span class="comment"># work with NLLLoss = CrossEntropyLoss</span></span><br><span class="line"></span><br><span class="line">        self.max_length = max_length</span><br><span class="line">        self.teacher_forcing_ratio = teacher_forcing_ratio</span><br><span class="line">        self.sos_id = sos_id</span><br><span class="line">        self.use_cuda = use_cuda</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward_step</span><span class="params">(self, inputs, hidden)</span>:</span></span><br><span class="line">        <span class="comment"># inputs: (time_steps=1, batch_size)</span></span><br><span class="line">        batch_size = inputs.size(<span class="number">1</span>)</span><br><span class="line">        embedded = self.embedding(inputs)</span><br><span class="line">        embedded.view(<span class="number">1</span>, batch_size, self.hidden_size)  <span class="comment"># S = T(1) x B x N</span></span><br><span class="line">        rnn_output, hidden = self.gru(embedded, hidden)  <span class="comment"># S = T(1) x B x H</span></span><br><span class="line">        rnn_output = rnn_output.squeeze(<span class="number">0</span>)  <span class="comment"># squeeze the time dimension</span></span><br><span class="line">        output = self.log_softmax(self.out(rnn_output))  <span class="comment"># S = B x O</span></span><br><span class="line">        <span class="keyword">return</span> output, hidden</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, context_vector, targets)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Prepare variable for decoder on time_step_0</span></span><br><span class="line">        target_vars, target_lengths = targets</span><br><span class="line">        batch_size = context_vector.size(<span class="number">1</span>)</span><br><span class="line">        decoder_input = Variable(torch.LongTensor([[self.sos_id] * batch_size]))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Pass the context vector</span></span><br><span class="line">        decoder_hidden = context_vector</span><br><span class="line"></span><br><span class="line">        max_target_length = max(target_lengths)</span><br><span class="line">        decoder_outputs = Variable(torch.zeros(</span><br><span class="line">            max_target_length,</span><br><span class="line">            batch_size,</span><br><span class="line">            self.output_size</span><br><span class="line">        ))  <span class="comment"># (time_steps, batch_size, vocab_size)</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.use_cuda:</span><br><span class="line">            decoder_input = decoder_input.cuda()</span><br><span class="line">            decoder_outputs = decoder_outputs.cuda()</span><br><span class="line"></span><br><span class="line">        use_teacher_forcing = <span class="keyword">True</span> <span class="keyword">if</span> random.random() &gt; self.teacher_forcing_ratio <span class="keyword">else</span> <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Unfold the decoder RNN on the time dimension</span></span><br><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> range(max_target_length):</span><br><span class="line">            decoder_outputs_on_t, decoder_hidden = self.forward_step(decoder_input, decoder_hidden)</span><br><span class="line">            decoder_outputs[t] = decoder_outputs_on_t</span><br><span class="line">            <span class="keyword">if</span> use_teacher_forcing:</span><br><span class="line">                decoder_input = target_vars[t].unsqueeze(<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                decoder_input = self._decode_to_index(decoder_outputs_on_t)</span><br><span class="line">            <span class="keyword">return</span> decoder_outputs, decoder_hidden</span><br></pre></td></tr></table></figure>
+<p>相較於 Encoder， Decoder 的結構就複雜許多，主要的工作是在 RNN 的展開。不過別擔心，讓我們一步步來觀察 Tensor 的流動。</p>
+<p>讓我們先聚焦在 <code>forward</code>，它的輸入是先前 Encoder 產生出的 context vector 以及標準答案 <code>targets</code>。<br>首先，我們幫 Decoder 準備第一個時間點的輸入，其由一組 SOS (Start of sentence) 構成，告訴 Deocder 是時候了，該上工囉：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">decoder_input = Variable(torch.LongTensor([[self.sos_id] * batch_size]))</span><br></pre></td></tr></table></figure>
+<p>我們還要傳遞 Encoder 壓縮好的 context vector，這樣 Decoder 才能繼承 Encoder 的意志：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">decoder_hidden = context_vector</span><br></pre></td></tr></table></figure>
+<p>緊接著，模型重點的重點來了，我們將 RNN 沿著時間軸展開，透過 <code>forward_step</code> 對每個時間點的 <code>decoder_input</code> 進行解碼，並將解碼的結果儲存在 <code>decoder_outputs[t]</code> 裡：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">use_teacher_forcing = <span class="keyword">True</span> <span class="keyword">if</span> random.random() &gt; self.teacher_forcing_ratio <span class="keyword">else</span> <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Unfold the decoder RNN on the time dimension</span></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> range(max_target_length):</span><br><span class="line">    decoder_outputs_on_t, decoder_hidden = self.forward_step(decoder_input, decoder_hidden)</span><br><span class="line">    decoder_outputs[t] = decoder_outputs_on_t</span><br><span class="line">    <span class="keyword">if</span> use_teacher_forcing:</span><br><span class="line">        decoder_input = target_vars[t].unsqueeze(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        decoder_input = self._decode_to_index(decoder_outputs_on_t)</span><br><span class="line">    <span class="keyword">return</span> decoder_outputs, decoder_hidden</span><br></pre></td></tr></table></figure>
+<p><code>forward_step()</code> 的構成其實跟 Encoder 相當類似，差別只在加了一個輸出層 <code>out</code>，因為我們現在要輸出的已經不是特徵了，而是預測字元的機率分佈：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">forward_step</span><span class="params">(self, inputs, hidden)</span>:</span></span><br><span class="line">    <span class="comment"># inputs: (time_steps=1, batch_size)</span></span><br><span class="line">    batch_size = inputs.size(<span class="number">1</span>)</span><br><span class="line">    embedded = self.embedding(inputs)</span><br><span class="line">    embedded.view(<span class="number">1</span>, batch_size, self.hidden_size)  <span class="comment"># S = T(1) x B x N</span></span><br><span class="line">    rnn_output, hidden = self.gru(embedded, hidden)  <span class="comment"># S = T(1) x B x H</span></span><br><span class="line">    rnn_output = rnn_output.squeeze(<span class="number">0</span>)  <span class="comment"># squeeze the time dimension</span></span><br><span class="line">    output = self.log_softmax(self.out(rnn_output))  <span class="comment"># S = B x O</span></span><br><span class="line">    <span class="keyword">return</span> output, hidden</span><br></pre></td></tr></table></figure>
+<h3 id="Teacher_forcing"><a href="#Teacher_forcing" class="headerlink" title="Teacher forcing"></a>Teacher forcing</h3><p>等等，<code>Decoder</code> 裡怎麼有個從沒見過的 <code>use_teacher_forcing</code> ，莫急莫慌莫害怕，這其實只是個訓練 RNN 的小方法。因為 <code>Seq2Seq</code> 把前一個時間點的輸出當成後一個時間點的輸入，如果我們在前個時間點做了錯誤的結論，那往後所有的時間點都會受到這個錯誤影響，這個連鎖反應會讓訓練容易擺盪不定。</p>
+<p><img src="https://i.imgur.com/l5kT2nW.png" alt="PTT推文"></p>
+<p class="img-meta">就像推文接龍一樣，一步錯，步步錯</p>
+
+<p>於是我們就想到了，對於用於生成式的 RNN，如果他在第 $t$ 個時間搞錯了，沒關係，我們派個老師把錯誤的答案給糾正成對的，儘管學生記憶中裡還是覺得，但在看到了正確的輸入後，至少還有浪子回頭的餘地。</p>
+<p><img src="https://i.imgur.com/QDdOrTN.png" alt="Seq2seq with ground truth"></p>
+<p class="img-meta">簡單來說，就是不把預測當成輸入，而是把標準答案當成輸入</p>
+
+<p>不過，學生最終還是得踏出校園，自己探求人生的答案。同樣的，在測試階段，我們並沒有正確答案，模型必須試著自立自強，可惜往往會遇到些困難，因為在訓練時被老師過度保護了，輸出與輸入間的遞歸性可都還沒摸熟呢。</p>
+<p>既然兩種都有些缺陷，那不妨就取個中間值吧，時而讓老師介入，時而讓學生自己學習，這樣在訓練和測試時都能有些改進，Teacher forcing 就是這麼回事。</p>
+<h2 id="Seq2Seq"><a href="#Seq2Seq" class="headerlink" title="Seq2Seq"></a>Seq2Seq</h2><p>有了 Encoder 跟 Decoder 後，接下來讓我們把這兩個東西給串起來，<code>Seq2Seq</code> 就完成了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># model/Seq2Seq.py</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Seq2Seq</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, encoder, decoder)</span>:</span></span><br><span class="line">        super(Seq2Seq, self).__init__()</span><br><span class="line">        self.encoder = encoder</span><br><span class="line">        self.decoder = decoder</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, inputs, targets)</span>:</span></span><br><span class="line">        input_vars, input_lengths = inputs</span><br><span class="line">        encoder_outputs, encoder_hidden = self.encoder.forward(input_vars, input_lengths)</span><br><span class="line">        decoder_outputs, decoder_hidden = self.decoder.forward(context_vector=encoder_hidden, targets=targets)</span><br><span class="line">        <span class="keyword">return</span> decoder_outputs, decoder_hidden</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://i.imgur.com/7YJR9Ot.jpg" alt="Too easy"></p>
+<p class="img-meta">你沒看錯，<code>Seq2Seq</code> 就是這麼簡單</p>
+
+<h2 id="u8A13_u7DF4_u6642_u9593"><a href="#u8A13_u7DF4_u6642_u9593" class="headerlink" title="訓練時間"></a>訓練時間</h2><p>我們已經搞定模型了，現在是時候進入訓練的環節：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># train.py</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Trainer</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, model, data_transformer, learning_rate, use_cuda,</span><br><span class="line">                 checkpoint_name=config.checkpoint_name,</span><br><span class="line">                 teacher_forcing_ratio=config.teacher_forcing_ratio)</span>:</span></span><br><span class="line"></span><br><span class="line">        self.model = model</span><br><span class="line"></span><br><span class="line">        <span class="comment"># record some information about dataset</span></span><br><span class="line">        self.data_transformer = data_transformer</span><br><span class="line">        self.vocab_size = self.data_transformer.vocab_size</span><br><span class="line">        self.PAD_ID = self.data_transformer.PAD_ID</span><br><span class="line">        self.use_cuda = use_cuda</span><br><span class="line"></span><br><span class="line">        <span class="comment"># optimizer setting</span></span><br><span class="line">        self.learning_rate = learning_rate</span><br><span class="line">        self.optimizer= torch.optim.Adam(self.model.parameters(), lr=learning_rate)</span><br><span class="line">        self.criterion = torch.nn.NLLLoss(ignore_index=self.PAD_ID, size_average=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">        self.checkpoint_name = checkpoint_name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">(self, num_epochs, batch_size, pretrained=False)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> pretrained:</span><br><span class="line">            self.load_model()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">0</span>, num_epochs):</span><br><span class="line">            mini_batches = self.data_transformer.mini_batches(batch_size=batch_size)</span><br><span class="line">            <span class="keyword">for</span> input_batch, target_batch <span class="keyword">in</span> mini_batches:</span><br><span class="line">                self.optimizer.zero_grad()</span><br><span class="line">                decoder_outputs, decoder_hidden = self.model(input_batch, target_batch)</span><br><span class="line">                <span class="comment"># calculate the loss and back prop.</span></span><br><span class="line">                cur_loss = self.get_loss(decoder_outputs, target_batch[<span class="number">0</span>])</span><br><span class="line">                cur_loss.backward()</span><br><span class="line">                <span class="comment"># optimize</span></span><br><span class="line">                self.optimizer.step()</span><br><span class="line"></span><br><span class="line">        self.save_model()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_loss</span><span class="params">(self, decoder_outputs, targets)</span>:</span></span><br><span class="line">        b = decoder_outputs.size(<span class="number">1</span>)</span><br><span class="line">        t = decoder_outputs.size(<span class="number">0</span>)</span><br><span class="line">        targets = targets.contiguous().view(<span class="number">-1</span>)  <span class="comment"># S = (B*T)</span></span><br><span class="line">        decoder_outputs = decoder_outputs.view(b * t, <span class="number">-1</span>)  <span class="comment"># S = (B*T) x V</span></span><br><span class="line">        <span class="keyword">return</span> self.criterion(decoder_outputs, targets)</span><br></pre></td></tr></table></figure>
+<p>Sequence to Sequence 的訓練過程與 PyTorch 的其他模型別無二致，比較值得一提的會是計算誤差的部份，我們以 <code>NLLLoss(ignore_index=self.PAD_ID)</code> 作為我們的損失函數， <code>ignore_index=self.PAD_ID</code> 意思是不將 <code>PAD</code> 列為誤差，因為 <code>PAD</code> 本來就不屬於文本的一部分。</p>
+<p>誤差的計算主要是在 <code>get_loss</code>，<code>decoder_outputs</code> 的 shape 為 <code>(batch_size, time_steps, class_number)</code>，<code>targets</code> 的 shape 為 <code>(batch_size, time_steps)</code>，我們分別將 targets 與 decoder_outputs 給攤平，以方面一口氣計算整個 batch 的誤差：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_loss</span><span class="params">(self, decoder_outputs, targets)</span>:</span></span><br><span class="line">    b = decoder_outputs.size(<span class="number">1</span>)</span><br><span class="line">    t = decoder_outputs.size(<span class="number">0</span>)</span><br><span class="line">    targets = targets.contiguous().view(<span class="number">-1</span>)  <span class="comment"># S = (B*T)</span></span><br><span class="line">    decoder_outputs = decoder_outputs.view(b * t, <span class="number">-1</span>)  <span class="comment"># S = (B*T) x V</span></span><br><span class="line">    <span class="keyword">return</span> self.criterion(decoder_outputs, targets)</span><br></pre></td></tr></table></figure>
+<p>如此一來，整個訓練的流程就結束了。試著跑跑看 <code>python train.py</code> ，會輸出一個訓練好的自編碼器模型 <code>auto_encoder.pt</code>，我們能運行 <code>python eval.py</code> 評估一下這個模型的效能：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">You <span class="string">say:</span> python</span><br><span class="line">Model <span class="string">says:</span> python</span><br><span class="line">You <span class="string">say:</span> kappa</span><br><span class="line">Model <span class="string">says:</span> kappa</span><br><span class="line">You <span class="string">say:</span> doge</span><br><span class="line">Model <span class="string">says:</span> doge</span><br><span class="line">You <span class="string">say:</span> deeplearning</span><br><span class="line">Model <span class="string">says:</span> deeplearing</span><br><span class="line">You <span class="string">say:</span> excellent</span><br><span class="line">Model <span class="string">says:</span> excellent</span><br></pre></td></tr></table></figure>
+<h1 id="u5927_u529F_u544A_u6210_u2026_3F"><a href="#u5927_u529F_u544A_u6210_u2026_3F" class="headerlink" title="大功告成…?"></a>大功告成…?</h1><p>恭喜你，完成了第一個序列自編碼器，雖然測試上有些誤差，但大抵上的輸出都還是不錯的。</p>
+<p><img src="https://i.imgur.com/AwIJsvn.jpg" alt="Well-Done"></p>
+<p class="img-meta">真是…真是太棒了…嗎?</p>
+
+<p>現在讓我們來面對現實吧，目前的模型其實有一個很大的缺陷，那就是我們把一個<strong>不限長</strong>的輸入，給編碼成一個<strong>固定長度</strong>的向量，換句話說，隨著我們的輸入越來越長，context vector 的訊息損失就會越大。這方法顯然不太科學，就連我們在聽課時，都不免聽了後面就忘了前面，又怎麼能要求一個向量記住所有資訊呢？</p>
+<p>一個比較合乎邏輯的改進是應該這樣的，當我們在輸出時，能夠回想起當時聽到了什麼，或者說，當模型輸出某件事時，只會專注於與這件事相關的輸入上，這很像在學習一種配對關係，比如想要把序列 <code>How are you</code> 翻譯成 <code>你 好 嗎</code> ，當我們在翻譯 <code>你</code> 時，其實最該關注的是輸入中的 <code>You</code>，而不是全局的 context vector。這個技巧可是有個很響亮的名字 ── Attention(注意力機制)，至於 Attention 的細節該怎麼實現，就於下次的連載再與各位分享，敬請期待囉。</p>
+<h1 id="u53C3_u8003_u8CC7_u6599"><a href="#u53C3_u8003_u8CC7_u6599" class="headerlink" title="參考資料"></a>參考資料</h1><ul>
+<li><a href="https://arxiv.org/pdf/1406.1078.pdf" target="_blank" rel="external">Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation</a></li>
+<li><a href="https://arxiv.org/pdf/1409.3215.pdf" target="_blank" rel="external">Sequence to Sequence Learning with Neural Networks</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Autoencoder/" rel="tag">#Autoencoder</a>
+          
+            <a href="/tags/RNN/" rel="tag">#RNN</a>
+          
+            <a href="/tags/Sequence-to-Sequence/" rel="tag">#Sequence to Sequence</a>
+          
+            <a href="/tags/對話生成/" rel="tag">#對話生成</a>
+          
+            <a href="/tags/手把手的序列生成實務/" rel="tag">#手把手的序列生成實務</a>
+          
+            <a href="/tags/教學/" rel="tag">#教學</a>
+          
+            <a href="/tags/機器學習/" rel="tag">#機器學習</a>
+          
+            <a href="/tags/深度學習/" rel="tag">#深度學習</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/17/how-to-develop-chatbot/" rel="next" title="聊天機器人的開發思路">
+                <i class="fa fa-chevron-left"></i> 聊天機器人的開發思路
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/1428482092251.gif"
+               alt="Justin Yang" />
+          <p class="site-author-name" itemprop="name">Justin Yang</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zake7749" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://plus.google.com/110210184472476277760" target="_blank" title="Google">
+                  
+                    <i class="fa fa-fw fa-google-plus"></i>
+                  
+                  Google
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u5FEB_u901F_u56DE_u9867_RNN"><span class="nav-number">1.</span> <span class="nav-text">快速回顧 RNN</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sequence_to_Sequence"><span class="nav-number">2.</span> <span class="nav-text">Sequence to Sequence</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Show_me_the_code"><span class="nav-number">3.</span> <span class="nav-text">Show me the code</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Encoder"><span class="nav-number">3.1.</span> <span class="nav-text">Encoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Decoder"><span class="nav-number">3.2.</span> <span class="nav-text">Decoder</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Teacher_forcing"><span class="nav-number">3.2.1.</span> <span class="nav-text">Teacher forcing</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Seq2Seq"><span class="nav-number">3.3.</span> <span class="nav-text">Seq2Seq</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u8A13_u7DF4_u6642_u9593"><span class="nav-number">3.4.</span> <span class="nav-text">訓練時間</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u5927_u529F_u544A_u6210_u2026_3F"><span class="nav-number">4.</span> <span class="nav-text">大功告成…?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u53C3_u8003_u8CC7_u6599"><span class="nav-number">5.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+          <div class="copyright" style="text-algin:center;">
+    
+    &copy; 
+    <span itemprop="copyrightYear">2017</span>
+    <span class="with-love">
+      <i class="fa fa-heart" style="color:rgb(255,160,180);"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Justin Yang</span>
+  </div>
+
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme modified from NexT
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+     .Mist
+    </a>
+  </div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div id="open-sidebar" class="open-sidebar close-this-one">
+      <i class="fa fa-map"></i>
+    </div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'zake7749';
+      var disqus_identifier = '2017/09/28/Sequence-to-Sequence-tutorial/';
+      var disqus_title = "從零開始的 Sequence to Sequence";
+      var disqus_url = 'http://zake7749.github.io/2017/09/28/Sequence-to-Sequence-tutorial/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  <script type="text/javascript" src="/js/src/jquery.tipsy.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+  
+
+  
+
+</body>
+</html>
