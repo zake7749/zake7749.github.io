@@ -109,7 +109,7 @@
 <meta property="og:image" content="https://i.imgur.com/QDdOrTN.png">
 <meta property="og:image" content="https://i.imgur.com/7YJR9Ot.jpg">
 <meta property="og:image" content="https://i.imgur.com/AwIJsvn.jpg">
-<meta property="og:updated_time" content="2017-10-30T12:08:21.459Z">
+<meta property="og:updated_time" content="2017-10-31T13:09:37.508Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="從零開始的 Sequence to Sequence">
 <meta name="twitter:description" content="說起「創作」這檔事，我一直相信是機器走向元學習的必經之路。相較於傳統的分類與回歸，無中生有所要跨越的門檻又更上一層，特別是要創作出繪畫、文章等結構性資料更是難上加難，不過相當有趣的是，這兩項生成式技術在 2014 年均有革命性的突破，對抗式生成網路 (GAN) 能在一輪輪的過招後生成以假亂真的圖片，而 Sequence to Sequence 則扮起了網路詩人，將水光山色拓印在短短幾行的小品之間。">
@@ -328,7 +328,7 @@
 
 <a id="more"></a>
 <p>Sequence to Sequence 是近幾年蓬勃發展的生成式模型 ，它精彩地解決了 RNN 無法處理不定長配對的困境，並於機器寫作、人機對話等主題上嶄露頭角，可以說 Sequence to Sequence 是個相當具啟發性的模型。現在，就讓我們從零開始，與 Sequence to Sequence 進行一場深度邂逅吧。</p>
-<h1 id="u5FEB_u901F_u56DE_u9867_RNN"><a href="#u5FEB_u901F_u56DE_u9867_RNN" class="headerlink" title="快速回顧 RNN"></a>快速回顧 RNN</h1><p>在深入 Sequence to Sequence 的細節之前，我想先和各位介紹一位老朋友 ── RNN (Recurrent neural network)，就是它一手搭建起了最初的 Sequence to Sequence 模型。是故要走入 Sequence to Sequence 的前生今世，我們必須先從 RNN　出發。如果你與這位老友已相當熟識了，不妨直接跳到 Sequence to Sequence ，這對後續的教學並不會構成太大的影響。</p>
+<h1 id="u5FEB_u901F_u56DE_u9867_RNN"><a href="#u5FEB_u901F_u56DE_u9867_RNN" class="headerlink" title="快速回顧 RNN"></a>快速回顧 RNN</h1><p>在深入 Sequence to Sequence 的細節之前，我想先和各位介紹一位老朋友 ── RNN (Recurrent neural network)，就是它一手搭建起了最初的 Sequence to Sequence 模型。是故要走入 Sequence to Sequence 的前生今世，我們必須先從 RNN　出發。如果你與這位老友已相當熟識了，不妨直接跳到 <a href="https://zake7749.github.io/2017/09/28/Sequence-to-Sequence-tutorial/#Sequence_to_Sequence">Sequence to Sequence</a> ，這對後續的教學並不會構成太大的影響。</p>
 <p>言歸正傳，RNN 到底是個什麼玩意兒? 就讓我先從傳統的類神經網路切入吧。</p>
 <p>傳統上，我們假設神經網路的每個輸入是相互獨立的，意即對於輸入 $I_i, I_j$ 而言，$I_i$ 取什麼值，並不會影響 $I_j$ 取什麼值，因為 $I_i$ 與 $I_j$ 一點關係也沒有。但這個假設有個很大的缺點，就是在處理序列 (Sequence) 時不太管用，因為序列內的元素長幼有序、先後有別，這種順序性導致了輸入間彼此相依，打個比方吧，股票走勢就是種典型的數值序列：</p>
 <table>
@@ -349,7 +349,7 @@
 </tr>
 </tbody>
 </table>
-<p>如果有人問：「不知道下午一點是會漲還是會跌」，我們多半會回答：「當然會漲，因為九點在漲，十點在漲，十一點也在漲」。先姑且不論這麼武斷會不會讓我們賠錢，當我們想預測十二點的股市指數時，不是選擇隨手丟枚骰子，而是選擇參考以前的股市指數時，就說明了十二點的指數與十二點前的股票指數具有相依性。</p>
+<p>如果有人問：「不知道下午一點是會漲還是會跌」，我們多半會回答：「當然會漲，因為九點在漲，十點在漲，十一點也在漲」。先姑且不論這麼武斷會不會讓我們賠錢，當我們想預測十二點的股市指數時，不是選擇隨手丟枚骰子，而是選擇參考以前的股市指數，就說明了十二點當下的指數與十二點前的股票指數其實是有相依性的。</p>
 <p>再以文字序列舉個例子，比如說同樣都是用到了「不」、「歡」、「喜」這三個字，但「喜歡不?」是一個男孩切切於心的期盼，而「不喜歡。」則是女孩流水無情的漠然。這兩組序列有相同的構成，卻因順序，而讓彼此的結局殊如雲泥。</p>
 <p><img src="https://i.imgur.com/Cz4HiV0.jpg" alt=""></p>
 <p class="img-meta">所以說，保留序列的順序性還是挺重要的吶</p>
@@ -364,7 +364,7 @@
 <li>$W_h, U_h, b_h$: 是 RNN 的參數，我們要微調的目標</li>
 <li>$\sigma$ : 神經元的激活函數</li>
 </ul>
-<p>你會發現 RNN 其實只是兩個神經網路 $W_hx_t$ 和 $U_hh_{t-1}$ 的串接，不過這兩個網路的目的可是大不相同，從物理意義上來看：</p>
+<p>你會發現 RNN 其實只是兩個單層網路 $W_hx_t$ 和 $U_hh_{t-1}$ 的串接，不過這它們的目的可是大不相同，從物理意義上來看：</p>
 <ul>
 <li>$W_h$ 是在控制當前時間點的輸入 $x_t$ 如何影響當前時間點的輸出 $h_t$</li>
 <li>$U_h$ 則是控制前一個時間點的輸出 $h_{t-1}$ 如何影響對當前時間點的輸出 $h_t$</li>
@@ -375,7 +375,7 @@
 <li>現在我們到了第 $k+1$ 個時間點，有 $h_k$ 保留了 $x_1,x_2,…..,x_k$ 的資訊，佐以當前時間點的輸入 $x_{k+1}$ 得出 $h_{t+1}$。</li>
 <li>如此反覆迭代，直到走至第  $n$ 個時間點便結束。</li>
 </ul>
-<p>以一個比較打嘴砲的說法，我們能將 $h_k$ 當成記憶，而迭代就是在傳遞模型的記憶，這個過程能用簡單的程式碼來形象化：</p>
+<p>以一個比較打嘴砲的說法，我們能將 $h<em>k$ 當成記憶，記憶是由以前的記憶 $h\</em>{t-1}$ 和目前的輸入 $x_t$ 摻雜而成，至於迭代就是在傳遞模型記憶，這個過程能用簡單的虛擬碼形象化：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x_inputs = [...]</span><br><span class="line">hidden = h0</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> x_inputs:</span><br><span class="line">    hidden = rnn(x, hidden)</span><br></pre></td></tr></table></figure>
 <p>我們也能把 RNN 的結構畫成一張圖，橫向的箭頭便是建構輸入順序的關鍵。</p>
 <p><img src="https://i.imgur.com/U12Wwp5.png" alt="RNN"></p>
@@ -418,7 +418,7 @@
 <p>現在我們有能力處理不定長的輸入與輸出配對了，讓我們引入一點點數學，來談談 Sequence to Sequence 的目標函數吧。</p>
 <p>對於輸入序列 $x_1,…,x_T$ 與輸出序列 $y_1,…,y_{T’}$ 而言，透過 Encoder 我們能將 $x_1,…,x_T$ 轉換成 context vector $v$，我們希望能在 Decode 階段最大化條件機率 $p$：</p>
 <p><img src="https://i.imgur.com/r5YfgFB.png?1" alt="objective function"></p>
-<p>這個式子不算太複雜，最外圍的連乘符號表示想求的是全局最優解，而內部的機率項則指的是對時間點 $T$ 而言，模型知道已經聽了什麼(context vector)，以及之前說了些什麼($y_1,…,y_{T-1}$)，並將以這兩件事為基準，來評估現在該要說什麼 ($y_t$)。</p>
+<p>這式子不算太複雜，最外圍的連乘符號表示想求的是全局最優解，而內部的機率項則指的是對時間點 $T$ 而言，模型知道已經聽了什麼(context vector)，以及之前說了些什麼($y_1,…,y_{T-1}$)，並將以這兩件事為基準，來評估現在該要說什麼 ($y_T$)。</p>
 <p>總歸而言， Sequence to Sequence 的精華所在便是串接了兩個 RNN ，第一個 RNN 負責將長度為 <code>M</code> 的序列給壓成 <code>1</code> 個向量，第二個 RNN 則根據這 <code>1</code> 個向量產生出 <code>N</code> 個輸出，這 <code>M -&gt; 1</code> 與 <code>1 -&gt; N</code> 相輔相成下就構建出了 <code>M to N</code> 的模型，能夠處理任何不定長的輸入與輸出序列，好比說：</p>
 <ul>
 <li>輸入一句英文，輸出一句法文，就寫好了一個翻譯系統</li>

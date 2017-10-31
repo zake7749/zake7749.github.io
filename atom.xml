@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zake7749.github.io/"/>
-  <updated>2017-10-30T12:08:21.459Z</updated>
+  <updated>2017-10-31T13:09:37.508Z</updated>
   <id>http://zake7749.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://zake7749.github.io/2017/09/28/Sequence-to-Sequence-tutorial/"/>
     <id>http://zake7749.github.io/2017/09/28/Sequence-to-Sequence-tutorial/</id>
     <published>2017-09-28T13:56:47.000Z</published>
-    <updated>2017-10-30T12:08:21.459Z</updated>
+    <updated>2017-10-31T13:09:37.508Z</updated>
     
     <content type="html">&lt;p&gt;說起「創作」這檔事，我一直相信是機器走向元學習的必經之路。相較於傳統的分類與回歸，無中生有所要跨越的門檻又更上一層，特別是要創作出繪畫、文章等結構性資料更是難上加難，不過相當有趣的是，這兩項生成式技術在 2014 年均有革命性的突破，對抗式生成網路 (GAN) 能在一輪輪的過招後生成以假亂真的圖片，而 Sequence to Sequence 則扮起了網路詩人，將水光山色拓印在短短幾行的小品之間。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://i.imgur.com/yVnmiKu.jpg&quot; alt=&quot;陽光失了玻璃窗&quot;&gt;&lt;/p&gt;
@@ -28,7 +28,7 @@
 
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;p&gt;Sequence to Sequence 是近幾年蓬勃發展的生成式模型 ，它精彩地解決了 RNN 無法處理不定長配對的困境，並於機器寫作、人機對話等主題上嶄露頭角，可以說 Sequence to Sequence 是個相當具啟發性的模型。現在，就讓我們從零開始，與 Sequence to Sequence 進行一場深度邂逅吧。&lt;/p&gt;
-&lt;h1 id=&quot;u5FEB_u901F_u56DE_u9867_RNN&quot;&gt;&lt;a href=&quot;#u5FEB_u901F_u56DE_u9867_RNN&quot; class=&quot;headerlink&quot; title=&quot;快速回顧 RNN&quot;&gt;&lt;/a&gt;快速回顧 RNN&lt;/h1&gt;&lt;p&gt;在深入 Sequence to Sequence 的細節之前，我想先和各位介紹一位老朋友 ── RNN (Recurrent neural network)，就是它一手搭建起了最初的 Sequence to Sequence 模型。是故要走入 Sequence to Sequence 的前生今世，我們必須先從 RNN　出發。如果你與這位老友已相當熟識了，不妨直接跳到 Sequence to Sequence ，這對後續的教學並不會構成太大的影響。&lt;/p&gt;
+&lt;h1 id=&quot;u5FEB_u901F_u56DE_u9867_RNN&quot;&gt;&lt;a href=&quot;#u5FEB_u901F_u56DE_u9867_RNN&quot; class=&quot;headerlink&quot; title=&quot;快速回顧 RNN&quot;&gt;&lt;/a&gt;快速回顧 RNN&lt;/h1&gt;&lt;p&gt;在深入 Sequence to Sequence 的細節之前，我想先和各位介紹一位老朋友 ── RNN (Recurrent neural network)，就是它一手搭建起了最初的 Sequence to Sequence 模型。是故要走入 Sequence to Sequence 的前生今世，我們必須先從 RNN　出發。如果你與這位老友已相當熟識了，不妨直接跳到 &lt;a href=&quot;https://zake7749.github.io/2017/09/28/Sequence-to-Sequence-tutorial/#Sequence_to_Sequence&quot;&gt;Sequence to Sequence&lt;/a&gt; ，這對後續的教學並不會構成太大的影響。&lt;/p&gt;
 &lt;p&gt;言歸正傳，RNN 到底是個什麼玩意兒? 就讓我先從傳統的類神經網路切入吧。&lt;/p&gt;
 &lt;p&gt;傳統上，我們假設神經網路的每個輸入是相互獨立的，意即對於輸入 $I_i, I_j$ 而言，$I_i$ 取什麼值，並不會影響 $I_j$ 取什麼值，因為 $I_i$ 與 $I_j$ 一點關係也沒有。但這個假設有個很大的缺點，就是在處理序列 (Sequence) 時不太管用，因為序列內的元素長幼有序、先後有別，這種順序性導致了輸入間彼此相依，打個比方吧，股票走勢就是種典型的數值序列：&lt;/p&gt;
 &lt;table&gt;
@@ -49,7 +49,7 @@
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;如果有人問：「不知道下午一點是會漲還是會跌」，我們多半會回答：「當然會漲，因為九點在漲，十點在漲，十一點也在漲」。先姑且不論這麼武斷會不會讓我們賠錢，當我們想預測十二點的股市指數時，不是選擇隨手丟枚骰子，而是選擇參考以前的股市指數時，就說明了十二點的指數與十二點前的股票指數具有相依性。&lt;/p&gt;
+&lt;p&gt;如果有人問：「不知道下午一點是會漲還是會跌」，我們多半會回答：「當然會漲，因為九點在漲，十點在漲，十一點也在漲」。先姑且不論這麼武斷會不會讓我們賠錢，當我們想預測十二點的股市指數時，不是選擇隨手丟枚骰子，而是選擇參考以前的股市指數，就說明了十二點當下的指數與十二點前的股票指數其實是有相依性的。&lt;/p&gt;
 &lt;p&gt;再以文字序列舉個例子，比如說同樣都是用到了「不」、「歡」、「喜」這三個字，但「喜歡不?」是一個男孩切切於心的期盼，而「不喜歡。」則是女孩流水無情的漠然。這兩組序列有相同的構成，卻因順序，而讓彼此的結局殊如雲泥。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://i.imgur.com/Cz4HiV0.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;p class=&quot;img-meta&quot;&gt;所以說，保留序列的順序性還是挺重要的吶&lt;/p&gt;
@@ -64,7 +64,7 @@
 &lt;li&gt;$W_h, U_h, b_h$: 是 RNN 的參數，我們要微調的目標&lt;/li&gt;
 &lt;li&gt;$\sigma$ : 神經元的激活函數&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;你會發現 RNN 其實只是兩個神經網路 $W_hx_t$ 和 $U_hh_{t-1}$ 的串接，不過這兩個網路的目的可是大不相同，從物理意義上來看：&lt;/p&gt;
+&lt;p&gt;你會發現 RNN 其實只是兩個單層網路 $W_hx_t$ 和 $U_hh_{t-1}$ 的串接，不過這它們的目的可是大不相同，從物理意義上來看：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;$W_h$ 是在控制當前時間點的輸入 $x_t$ 如何影響當前時間點的輸出 $h_t$&lt;/li&gt;
 &lt;li&gt;$U_h$ 則是控制前一個時間點的輸出 $h_{t-1}$ 如何影響對當前時間點的輸出 $h_t$&lt;/li&gt;
@@ -75,7 +75,7 @@
 &lt;li&gt;現在我們到了第 $k+1$ 個時間點，有 $h_k$ 保留了 $x_1,x_2,…..,x_k$ 的資訊，佐以當前時間點的輸入 $x_{k+1}$ 得出 $h_{t+1}$。&lt;/li&gt;
 &lt;li&gt;如此反覆迭代，直到走至第  $n$ 個時間點便結束。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;以一個比較打嘴砲的說法，我們能將 $h_k$ 當成記憶，而迭代就是在傳遞模型的記憶，這個過程能用簡單的程式碼來形象化：&lt;/p&gt;
+&lt;p&gt;以一個比較打嘴砲的說法，我們能將 $h&lt;em&gt;k$ 當成記憶，記憶是由以前的記憶 $h\&lt;/em&gt;{t-1}$ 和目前的輸入 $x_t$ 摻雜而成，至於迭代就是在傳遞模型記憶，這個過程能用簡單的虛擬碼形象化：&lt;/p&gt;
 &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;x_inputs = [...]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hidden = h0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; x &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; x_inputs:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    hidden = rnn(x, hidden)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;我們也能把 RNN 的結構畫成一張圖，橫向的箭頭便是建構輸入順序的關鍵。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://i.imgur.com/U12Wwp5.png&quot; alt=&quot;RNN&quot;&gt;&lt;/p&gt;
@@ -118,7 +118,7 @@
 &lt;p&gt;現在我們有能力處理不定長的輸入與輸出配對了，讓我們引入一點點數學，來談談 Sequence to Sequence 的目標函數吧。&lt;/p&gt;
 &lt;p&gt;對於輸入序列 $x_1,…,x_T$ 與輸出序列 $y_1,…,y_{T’}$ 而言，透過 Encoder 我們能將 $x_1,…,x_T$ 轉換成 context vector $v$，我們希望能在 Decode 階段最大化條件機率 $p$：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://i.imgur.com/r5YfgFB.png?1&quot; alt=&quot;objective function&quot;&gt;&lt;/p&gt;
-&lt;p&gt;這個式子不算太複雜，最外圍的連乘符號表示想求的是全局最優解，而內部的機率項則指的是對時間點 $T$ 而言，模型知道已經聽了什麼(context vector)，以及之前說了些什麼($y_1,…,y_{T-1}$)，並將以這兩件事為基準，來評估現在該要說什麼 ($y_t$)。&lt;/p&gt;
+&lt;p&gt;這式子不算太複雜，最外圍的連乘符號表示想求的是全局最優解，而內部的機率項則指的是對時間點 $T$ 而言，模型知道已經聽了什麼(context vector)，以及之前說了些什麼($y_1,…,y_{T-1}$)，並將以這兩件事為基準，來評估現在該要說什麼 ($y_T$)。&lt;/p&gt;
 &lt;p&gt;總歸而言， Sequence to Sequence 的精華所在便是串接了兩個 RNN ，第一個 RNN 負責將長度為 &lt;code&gt;M&lt;/code&gt; 的序列給壓成 &lt;code&gt;1&lt;/code&gt; 個向量，第二個 RNN 則根據這 &lt;code&gt;1&lt;/code&gt; 個向量產生出 &lt;code&gt;N&lt;/code&gt; 個輸出，這 &lt;code&gt;M -&amp;gt; 1&lt;/code&gt; 與 &lt;code&gt;1 -&amp;gt; N&lt;/code&gt; 相輔相成下就構建出了 &lt;code&gt;M to N&lt;/code&gt; 的模型，能夠處理任何不定長的輸入與輸出序列，好比說：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;輸入一句英文，輸出一句法文，就寫好了一個翻譯系統&lt;/li&gt;
