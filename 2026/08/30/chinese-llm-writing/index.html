@@ -1,0 +1,992 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next mist">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+  <meta name="google-site-verification" content="hgJ2TZ2JCDOeoLUxOIYJsYe2aeExlKUNmkVS5S41BLY" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="LLM,中文寫作,AI 味,資料合成,RLVR,LLM-as-a-Judge,深度學習," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雷德麥的藏書閣" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+。 #}
+<meta name="description" content="LLM 早就能把中文寫得通順漂亮，問題是它不知道何時該停。本文從句子、段落與概念三個層次拆解「AI 味」的成因，提出修辭預算、段落 Spec，以及「拿掉招牌仍認得出風格」的 Judge 設計，並談資料合成中最容易被忽略的風險：Judge 自己也有 AI 味。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="淺談 AI 味：為什麼 LLM 中文寫作總是用力過猛">
+<meta property="og:url" content="https://zake7749.github.io/2026/08/30/chinese-llm-writing/index.html">
+<meta property="og:site_name" content="雷德麥的藏書閣">
+<meta property="og:description" content="LLM 早就能把中文寫得通順漂亮，問題是它不知道何時該停。本文從句子、段落與概念三個層次拆解「AI 味」的成因，提出修辭預算、段落 Spec，以及「拿掉招牌仍認得出風格」的 Judge 設計，並談資料合成中最容易被忽略的風險：Judge 自己也有 AI 味。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://zake7749.github.io/images/ai-flavor-hero.jpg">
+<meta property="article:published_time" content="2026-08-30T15:11:02.000Z">
+<meta property="article:modified_time" content="2026-08-30T15:11:02.000Z">
+<meta property="article:author" content="Justin Yang">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="中文寫作">
+<meta property="article:tag" content="AI 味">
+<meta property="article:tag" content="資料合成">
+<meta property="article:tag" content="RLVR">
+<meta property="article:tag" content="LLM-as-a-Judge">
+<meta property="article:tag" content="深度學習">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://zake7749.github.io/images/ai-flavor-hero.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://zake7749.github.io/2026/08/30/chinese-llm-writing/"/>
+
+  <title> 淺談 AI 味：為什麼 LLM 中文寫作總是用力過猛 | 雷德麥的藏書閣 </title>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      <a class="menu-item website-text-logo" href="/">
+        <b class="text-logo-eg">R</b><span class="text-logo-ch"><h1 class="site-title">雷德麥的藏書閣</h1></span>
+      </a>
+      
+        
+        <a class="menu-item menu-item-categories red-tooltip" href="/categories" data-toggle="tooltip" title="文章目錄">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i>
+              <span class="sidebar-title">文章目錄</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-archives red-tooltip" href="/archives" data-toggle="tooltip" title="文章歸檔">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i>
+              <span class="sidebar-title">文章歸檔</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-tags red-tooltip" href="/tags" data-toggle="tooltip" title="特色標籤">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i>
+              <span class="sidebar-title">特色標籤</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-about red-tooltip" href="https://zake7749.github.io/AboutMe/index.html" data-toggle="tooltip" title="關於作者">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i>
+              <span class="sidebar-title">關於作者</span>
+            
+          </a>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+ </div>
+      <ul id="btm-menu" class="menu cus-menu">
+        <a id="cus-object-group" href="https://csienckugrade3.hackpad.com/" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="CS Notes">
+          <i class="menu-item-icon fa fa fa-object-group"></i>
+          <span class="sidebar-title">CS Note pads</span>
+        </a>
+        <a id="cus-map" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="關閉側邊欄">
+          <i class="menu-item-icon fa fa-map"></i>
+          <span class="sidebar-title">關閉側邊欄</span>
+        </a>
+        <a id="cus-lightbulb" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="施工中 ─=≡Σ(((っﾟДﾟ)っ">
+          <i class="menu-item-icon fa fa-lightbulb-o"></i>
+          <span class="sidebar-title">顯示模式</span>
+        </a>
+      </ul>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal  post-index-border" itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                淺談 AI 味：為什麼 LLM 中文寫作總是用力過猛
+              
+            
+          </h1>
+        
+
+        
+        
+          <p class="post-dek">為什麼模型總愛把一盞燈寫成希望、把一場雨寫成人生，最後還要補一句「這不只是一段旅程」？</p>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2026-08-30T23:11:02+08:00" content="2026-08-30">
+              2026-08-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/%E8%87%AA%E7%84%B6%E8%AA%9E%E8%A8%80%E8%99%95%E7%90%86/" itemprop="url" rel="index">
+                    <span itemprop="name">自然語言處理</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2026/08/30/chinese-llm-writing/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2026/08/30/chinese-llm-writing/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    
+    
+      <img class="post-cover" src="/images/ai-flavor-hero.jpg" alt="淺談 AI 味：為什麼 LLM 中文寫作總是用力過猛">
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近總算狠下心把 Blog 從 GitHub 重建回來了。一晃快九年，上一篇還停在 Sequence to Sequence Learning。那時候沒有 ChatGPT，模型仍在牙牙學語，我們總擔心它講話不順、翻譯粗糙，寫出來的文章像狗啃過的。</p>
+<p>到了 2026，大概沒多少人還會質疑 LLM 能不能把話說通順。新的問題恰好相反：它把話說得太完整、太漂亮，也太像某種「文章」了。今天就來聊聊這件事：淺談什麼是 AI 味，它為什麼會出現，又能如何從資料、模型與生成流程三個方向對症下藥。</p>
+<span id="more"></span>
+
+<h2 id="首先，什麼是-AI-味？"><a href="#首先，什麼是-AI-味？" class="headerlink" title="首先，什麼是 AI 味？"></a>首先，什麼是 AI 味？</h2><p>AI 味到底是什麼？</p>
+<p>是每個月亮都得像白玉盤，每場雨都要沖刷過往的回憶，每一段青春都要承載著一個盛大的遠行？</p>
+<p>還是明明只想寫一句「他很難過」，模型卻偏要先推開一扇半掩的窗，擺上一杯早已冷掉的咖啡，讓窗簾先被晚風輕輕吹動，最後再悠悠補上一句：</p>
+<blockquote>
+<p>他終於明白，有些告別，從來不需要說出口。</p>
+</blockquote>
+<p>AI 味不只是一眼就能認出的陳腔濫調，更是一種更難言明的東西：層巒疊嶂的詞藻、整齊劃一的對仗、欲言又止的轉折，彷彿每句都在醞釀某種深意，等氣氛烘托到不能再高，再砸下一句煞有介事的 Punchline！</p>
+<blockquote>
+<p>我想，這大抵就是所謂的 AI 味吧。</p>
+</blockquote>
+<img src="https://i.meee.com.tw/W5oLcoe.png" class="img-md">
+<p class="img-meta">很好。連解釋 AI 味都開始有 AI 味了</p>
+
+<p>但這裡有個棘手的問題：上面這些句子，單獨拿出來看其實都沒有錯。比喻沒錯，排比沒錯，轉折沒錯，「不是 X，而是 Y」更不是什麼新時代的 AI 修辭，千年前歐陽脩就已經寫過：</p>
+<blockquote>
+<p>醉翁之意不在酒，在乎山水之間也。</p>
+</blockquote>
+<p>所以別太苛責 LLM，畢竟人類也會這麼寫，而且往往寫得更怪、更不講武德。LLM 真正錯的其實能概括成兩點：</p>
+<blockquote>
+<p>模型把技巧用歪了，以及技巧用滿了。</p>
+</blockquote>
+<p>所謂「用歪」，是文學技巧原本負責醞釀感受，模型卻經常直接公布答案。作家讓動作、細節與尺度自行生出情感；模型則怕讀者沒看懂，老愛掛上一堆藍色窗簾，告訴讀者，這裡，你應該要這樣解讀才對。</p>
+<p>而所謂「用滿」，則是模型太貪心了，覺得既然一次有效，不如再來一次。於是句句設喻，段段轉折，每個場景最後都要昇華為成長、孤獨、自我與人生。不過當文章通篇都是金句時，讀者又該怎麼去甄別文眼所在？</p>
+<p>如果我們用這些耳熟能詳的句子對比一下，這種感覺會更為立體：</p>
+<table>
+<thead>
+<tr>
+<th>寫作機制</th>
+<th>作家的做法</th>
+<th>LLM 寫法</th>
+<th>被抹平的是什麼</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>以動作承載情感</td>
+<td>「他用兩手攀着上面，兩腳再向上縮。」——朱自清</td>
+<td>「他艱難地攀上月台，踉蹌的背影顯露出深沉的父愛。」</td>
+<td>父愛原本是讀者從動作中得到的感受，改寫卻預先公布答案。</td>
+</tr>
+<tr>
+<td>以細節構成矛盾</td>
+<td>「孔乙己是站着喝酒而穿長衫的唯一的人。」——魯迅</td>
+<td>「孔乙己衣着落魄，顯得與周遭格格不入。」</td>
+<td>「站着」與「長衫」構成階級矛盾；「格格不入」只保留結論。</td>
+</tr>
+<tr>
+<td>讓喻體維持一致</td>
+<td>「庭下如積水空明，水中藻荇交橫，蓋竹柏影也。」——蘇軾</td>
+<td>「月光如水、如碎鑽，又如薄紗籠罩着庭院。」</td>
+<td>原文沿著「水」發展同一套視覺錯覺；改寫則讓多個喻體互搶注意力。</td>
+</tr>
+<tr>
+<td>將情感寄居於物</td>
+<td>「庭有枇杷樹，吾妻死之年所手植也。」——歸有光</td>
+<td>「庭前的枇杷樹依舊青翠，更襯出物是人非的哀傷。」</td>
+<td>悲痛原本藏在樹、妻子與年份的並置裡，改寫替讀者把情緒說破。</td>
+</tr>
+<tr>
+<td>用尺度組織視野</td>
+<td>「惟長堤一痕，湖心亭一點，與余舟一芥，舟中人兩三粒而已。」——張岱</td>
+<td>「景物次第縮小，也映照出人在天地之間的渺小。」</td>
+<td>原文讓「渺小」成為視覺經驗；改寫直接把它變成中心思想。</td>
+</tr>
+<tr>
+<td>以重複製造陌生</td>
+<td>「一株是棗樹，還有一株也是棗樹。」——魯迅</td>
+<td>「園裡兩株棗樹，獨立在秋夜之中。」</td>
+<td>原文保留了停頓與不自然的辨認；改寫覺得這就是兩株棗樹，更流暢，但抹平了異樣。</td>
+</tr>
+<tr>
+<td>維持敘事重心</td>
+<td>〈背影〉買橘子的段落始終圍繞父親的動作、距離與「我」的觀看。</td>
+<td>「父親買橘子的背影，也讓我想到親情、成長與人生的離別。」</td>
+<td>場景原本持續累積同一份感受；改寫卻把場景當成通往主題詞的入口。</td>
+</tr>
+</tbody></table>
+<p>我們能發現問題還挺一致的。模型保留了技巧的外形，卻抹平了它起作用的過程。此外，也能發現問題不總是停在同一尺度，有時是一句話太用力，有時是一個段落走偏；有時句子與段落均無可挑剔，文章卻只學到某位作家的口頭禪，而沒有學到他看世界的眼光。所以，接下來就讓我們分三層探討：先看句子如何用力過猛，再看段落如何失去重心，最後剖析 LLM 學到的究竟是風格的皮，還是作者的骨。</p>
+<h2 id="先從句子開始聊起"><a href="#先從句子開始聊起" class="headerlink" title="先從句子開始聊起"></a>先從句子開始聊起</h2><p>句子層級的 AI 味大致能分為兩種，一是用力過猛，二是說得太多。</p>
+<h3 id="什麼是用力過猛？"><a href="#什麼是用力過猛？" class="headerlink" title="什麼是用力過猛？"></a>什麼是用力過猛？</h3><p>我們可以先從一個用力過猛的句子說起：</p>
+<blockquote>
+<p>倫敦的雨從入夜後就沒停過，把整座城市沖刷得只剩模糊的輪廓。街燈在霧裡搖晃，像一段快要被遺忘的記憶。福爾摩斯獨自站在街角，任雨水沿著大衣往下淌。他始終沒有開口，而那份沉默，像一封藏著真相、卻從未寄出的信。</p>
+</blockquote>
+<p>這裡沒有哪個比喻特別糟，問題是它們來得太平均。雨要表演，街燈要表演，城市也要表演，反而真正的主角福爾摩斯不樂意了。這整段顯然能壓縮成短短的：</p>
+<blockquote>
+<p>倫敦的雨下至深夜，福爾摩斯站在街角，沉默得像一封未寄出的信。</p>
+</blockquote>
+<p>這就夠了。可模型往往愛加油添醋，如果要量化到底被灌了多少水，我們可以定義一個概念：「修辭預算」。凡是會提高閱讀顯著性的手段，都該被視為一筆支出，比如譬喻、排比、設問、強烈轉折，乃至刻意拉長或縮短的句子都算。它們是文章的妝容，在告訴讀者：「這裡值得多看一眼。」</p>
+<p>可問題是讀者的注意力是有限的。三個比喻散落在一千字裡，和四句話塞進三個比喻，讀起來完全不是一回事。因此，我們至少該觀察四類訊號：</p>
+<ol>
+<li>詞的密度：成語、形容詞與抽象大詞是否擠成一團？</li>
+<li>句子的手勢：比喻、排比、對比與設問是否反覆出現？</li>
+<li>句間節奏：長句是否連發，顯著句後面有沒有平句讓讀者喘氣？</li>
+<li>段內分布：修辭集中在真正的文眼，還是平均鋪滿全文？</li>
+</ol>
+<p>有了這些特徵和語意訊號，我們就能組建 Judge 篩掉明顯有問題的訓練語料。不過實際使用時得留意，這些指標得依情境用真人語料校準，比方一篇演講與一篇小說本來就有不同的修辭密度，我們真正該處理的一直是技巧與文體失去比例，而絕非技巧本身。</p>
+<h3 id="什麼是說得太多？"><a href="#什麼是說得太多？" class="headerlink" title="什麼是說得太多？"></a>什麼是說得太多？</h3><p>小時候，我們常被教導寫作要留白，最好能「不著一字，盡得風流」。這是文學迷人的地方，卻也是模型最不習慣的地方。LLM 在 alignment 時往往被鼓勵成更有幫助、更少讓使用者猜。這對客服與說明書很有用，放進小說裡卻容易變成熱心過頭，比如說：</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">柳如煙把鑰匙放在桌上，沒有坐下。</span><br><span class="line">「貓我明天來接。」</span><br><span class="line">顧北辰看了看鑰匙，又看了看門邊的行李。</span><br><span class="line">-&gt; 他終於明白，她是真的要離開了。</span><br><span class="line"></span><br><span class="line">顧北辰沒有攔她。</span><br><span class="line">柳如煙拉著行李箱轉身，輪子壓過地板，發出很輕的摩擦聲。</span><br></pre></td></tr></table></figure>
+
+<p>問題就在箭頭那句。</p>
+<p>我想問問誰不知道柳如煙要走了？讀者跟顧北辰早就明白柳如煙要走了，就只有模型對讀者缺乏信任，白描後又把內心戲復誦一次，順手把畫面撕裂了。</p>
+<p>這正是 Show, don’t Tell 想處理的問題。模型被大量語料訓練得很擅長 Show 跟 Tell，可是總喜歡 show 了後又再 tell。解決策略是衡量每個句子是否帶來新的資訊，比如說針對收尾去判斷：</p>
+<ol>
+<li>它增加了新的動作或細節嗎？</li>
+<li>它改變了人物與事件的關係嗎？</li>
+<li>它讓原本的解讀更精確，還是只把讀者剛剛想到的事情再念一次？</li>
+</ol>
+<p>如果這些答案都是否，那這句多半可以刪掉。</p>
+<p>幸運的是，模型雖然不太懂自制，但對審查這種風格挺有一套。一個簡單的作法是補述偵測：給定前文、目標句與後文，先請 Judge 分析結論是否被前文的哪些細節表達，再基於此判斷目標句是在提供新資訊、明說既有推論、完成必要承接，還是單純重複，這在 Few-Shot 的場域其實已經做得不錯。</p>
+<p>句子處理乾淨後，事情仍沒有結束。每句都不過量，也不代表整段知道自己在做什麼。一個段落依然可能從買橘子談到父愛，再從父愛談到成長，最後莫名抵達宇宙與人生。</p>
+<p>接下來，就得把鏡頭拉到段落了。</p>
+<h2 id="再把鏡頭拉到段落"><a href="#再把鏡頭拉到段落" class="headerlink" title="再把鏡頭拉到段落"></a>再把鏡頭拉到段落</h2><p>老樣子，先上範文：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">父親吃過晚飯，把母親常坐的那把木椅搬到陽台，翻過來看了看。</span><br><span class="line">右後腳有些晃，他找來工具，把鬆掉的螺絲重新鎖緊，又順手磨了磨扶手翹起來的一小片木刺。</span><br><span class="line">母親經過時說，還能坐就好了，費這個工夫做什麼。</span><br><span class="line">父親只說快弄完了，等木屑擦乾淨，便把椅子放回原來的位置，連坐墊也擺了回去。</span><br><span class="line">後來想起這件事，我才慢慢覺得，有些人的關心大概就是這樣，很少特地說出口，只落在一些不起眼的小事裡。</span><br><span class="line">人與人之間許多重要的東西，似乎也都是到了很久以後，我們才知道自己曾經被怎樣照顧過。</span><br></pre></td></tr></table></figure>
+
+<p>這種文章是不是有種熟悉感？以小見大，而後反思再昇華，妥妥的作文範例。坦白說這架構沒什麼問題，畢竟這種八股形式也是傳承千年了，它之所以看起來怪，是因為抽象的太早了。修椅子讓人想到感情，感情讓人想到陪伴，陪伴再讓人想到珍惜與告別，這一切很 OK，但是鋪陳顯然不足以撐起這麼大的結論。這一篇就像去參加作文比賽，拚到最後十分鐘，突然發現故事來不及說下去了，我得馬上開始提升結論，最後就落得趕鴨子上架。</p>
+<p>所以段落層級其實有兩種不同的失敗，一種是議題飄移，寫着寫着換了題目。另一種是尺度躍升，題目沒換，卻太快從具體場景升到抽象道理。前者需要把方向拉回來，後者則需要延後解釋，或者乾脆停筆。那怎麼修？國文老師都教過，就是先擬大綱。</p>
+<h3 id="先決定這一段要做什麼，再開始寫"><a href="#先決定這一段要做什麼，再開始寫" class="headerlink" title="先決定這一段要做什麼，再開始寫"></a>先決定這一段要做什麼，再開始寫</h3><p>如果邊想邊寫會出問題，那我們不如先擬好大綱。我們可以先設計一份寫作計畫當作 Prefix，羅列好第一段該寫什麼、第二段該寫什麼，再請模型照本宣科寫下去，這確實能優化段落承接的連貫性。在如今的 2026 這個技巧挺常見的，推理模型的 Reasoning 很大程度具備了這個功能，比如 GLM 的 Reasoning 就有很漂亮的寫作計畫。但單有計畫其實遠遠不夠，通常我們還會遇到兩個問題。</p>
+<h3 id="計畫趕不上變化"><a href="#計畫趕不上變化" class="headerlink" title="計畫趕不上變化"></a>計畫趕不上變化</h3><p>我們總說計畫趕不上變化，長文寫作更是如此。想像一下，如果有一份橫貫十年連載，我們有辦法在十年前就把所有東西安排的面面俱到嗎？這估計挺難的，我也就看過噬謊者跟進擊的巨人能做到。即便我們縮小尺度，不談下一個十年，只談下一個章節就好，大綱還是很難寫死，不然 LLM 寫歪了就得硬掰回去，使得段跟段的轉折乍看之下很順，其實有很強烈的鋪陳感，這個現象在跨篇探索的 Deep Research 特別常見。這是 LLM 的天性使然，比起著眼下一個段落，它更專注在下一個 token。</p>
+<p>那這就衍生出了下一個問題，既然寫作計畫要調整，什麼時候該觸發調整？</p>
+<h3 id="從計畫走向框架"><a href="#從計畫走向框架" class="headerlink" title="從計畫走向框架"></a>從計畫走向框架</h3><p>讓我們回到作文比賽，當我們擬好大綱，然後開始爆寫，你寫到什麼時候會想改大綱？我猜多半是寫到卡住的時候，或者是突發奇想發現一個更好命題的時候。這就對了，你會發現我們除了靠大綱，還有一個隱性的決策過程。要模擬這個行為，我們就會需要引入 Writer 跟 Critic 兩個角色，Writer 負責寫，Critic 負責審，兩者靠一份包含著大綱的 Spec 溝通，比如說其中一段可能是：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">段落任務：</span><br><span class="line">用父親修椅子的動作，表現沒有說出口的關心。</span><br><span class="line"></span><br><span class="line">可用材料：</span><br><span class="line">鬆掉的榫頭、砂紙、母親的問話、窗邊的位置。</span><br><span class="line"></span><br><span class="line">禁止事項：</span><br><span class="line">不直接說明父親的感情。</span><br><span class="line">不延伸到成長、告別或人生。</span><br><span class="line"></span><br><span class="line">停止條件：</span><br><span class="line">父親把椅子搬回窗邊，段落結束。</span><br></pre></td></tr></table></figure>
+
+<p>當我們完成一段時，評審會審核任務、判斷這個段落有沒有達成需求，進而決定要不要編修寫作計畫，這整個流程像是不斷交錯的：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Plan</span> → <span class="title class_">Write</span> → <span class="title class_">Reflect</span></span><br><span class="line">        ↑          ↓</span><br><span class="line">        └── 更新計畫</span><br></pre></td></tr></table></figure>
+
+<p>也就是寫一段、檢查一次、必要時重算路線，而不是把所有希望都寄託在開頭那份完美大綱上。</p>
+<p>透過這一層層把關，我們能讓模型走在一條合理的大道上，至於這會不會引入其他問題？當然有，Planning 的文章往往會落於窠臼，以及一個很妙的問題，在某些情境，non-reasoning &#x2F; planning 或 low-reasoning 寫出的文章更好。不過這又是另一個大哉問，容我們下次再說。</p>
+<h2 id="模型寫的究竟是形還是骨？"><a href="#模型寫的究竟是形還是骨？" class="headerlink" title="模型寫的究竟是形還是骨？"></a>模型寫的究竟是形還是骨？</h2><p>這是一層更刁鑽的問題，當我們談起文風，模型展現的究竟是 instruction following？還是某種更為深層的東西？一樣讓我們從例子切入，假設以「以魯迅的口吻撰寫一篇題為千年一嘆的文章」，有兩篇候選，你會選哪篇呢？</p>
+<div class="tabs" data-tabs><div class="tabs-nav" role="tablist"><button type="button" role="tab" class="tabs-nav-item" id="tab-18wg684-0" aria-controls="panel-18wg684-0" aria-selected="true" tabindex="0">A</button><button type="button" role="tab" class="tabs-nav-item" id="tab-18wg684-1" aria-controls="panel-18wg684-1" aria-selected="false" tabindex="-1">B</button></div><div class="tabs-panels"><section role="tabpanel" class="tabs-panel" id="panel-18wg684-0" aria-labelledby="tab-18wg684-0"><p class="tabs-panel-label">A</p><p>我向來不大敢談「千年」這樣闊大的字眼。因為凡人活到三十，已覺得年月像破棉被般沉重；活到五十，便連昨日與前日也混作一團。至於一千年，實在是皇帝、神仙、史官和賣古董的人們的職業範圍，與我等在煤油燈下數銅板的人，本沒有多大干係。</p>
+<p>然而千年畢竟是走過去了。</p>
+<p>城頭的磚換過幾番，河裡的水濁過幾番，祠堂裡的祖宗牌位也新漆舊裂。人們說，朝代更替，文明進步，車輪代了牛車，電燈代了燭火，鐵鳥飛上天去，聲音也可穿洋過海。這自然都是真的；正如病人換了綢被，總也算添了些體面。</p>
+<p>但我有時夜裡醒來，聽見遠處犬吠，近處嬰兒啼哭，忽然疑心這千年原不曾走遠。那哭聲與犬聲，大約與宋人唐人漢人所聞，也相差無幾。餓的人仍舊餓著，怕的人仍舊怕著，欺人的照舊昂首，被欺的照舊低頭。只不過從前拿鞭子的，如今換了皮手套；從前跪在泥地上的，如今跪在光亮的地板上罷了。</p>
+<p>我曾見過一些極聰明的人，談起歷史來，眼睛發亮，口角飛沫。他們把千年切成段落，裝進書冊，像店家把鹹魚切塊陳列，叫人看得清楚，也聞得明白。只是那魚腥氣，終究瀰漫在空氣裡，怎樣也洗不淨。歷史若只是年號與戰爭，倒也簡單；怕只怕那裡頭還夾著無數無名者的眼淚，乾了，便成了紙上的斑點。</p>
+<p>我也見過另一些人，專門歌頌千年。他們說我們的祖先如何偉大，我們的未來如何光明，中間卻把今日活著的人忘記了。彷彿一座大宅門前懸著金字匾額，裡面卻漏雨，灶裡無柴，孩子發燒。匾額是祖傳的，自然可敬；只是若拿來當棉被蓋，大約仍要著涼。</p>
+<p>所以我對千年，既不敢歌，也不敢哭，只好嘆一口氣。</p>
+<p>這一嘆，未必為古人，也未必為後人，多半是為眼前的人。因為古人已埋，後人未生，唯有眼前的人，日日在塵土中打滾，卻偏被宏大的詞句壓得喘不過氣來。</p>
+<p>倘若千年真有什麼意義，我想不在宮殿高了幾尺，疆土廣了幾分，書籍厚了幾箱；乃在一個孩子能否少挨一頓打，一個婦人能否少受一句辱，一個老人能否安穩睡完寒夜，一個青年說真話時不必先看門外有沒有人。</p>
+<p>若這些仍舊不能，那麼千年過去，也不過是日曆撕得厚些而已。</p>
+<p>想到這裡，我便又嘆了一聲。聲音不大，怕驚醒了熟睡的人；也怕驚不醒裝睡的人。</p>
+</section><section role="tabpanel" class="tabs-panel" id="panel-18wg684-1" aria-labelledby="tab-18wg684-1" data-secondary><p class="tabs-panel-label">B</p><p>夜深了，睡不著，便起來翻書。翻的自然還是那一部書：所謂正史，從三皇五帝一直排到於今，一疊又一疊，壓得人透不過氣來。</p>
+<p>書上寫得體面：聖君，賢相，忠臣，義士；禪讓，中興，盛世，太平。字是端正的字，話是漂亮的話。我橫豎睡不著，索性仔細地看，這才從字縫裏看出些別的東西來。原來所謂千年，不過是兩樣東西在那裏循環：一是想做奴隸而不得的時代，一是暫時做穩了奴隸的時代。</p>
+<p>新主子來了，殺，燒，搶，此謂之亂，是想做奴隸而不得；殺夠了，燒夠了，於是定下規矩：納糧若干，磕頭若干，人頭若干，此謂之治，是暫時做穩了奴隸。百姓們於是額手稱慶，喚作盛世，家家換新桃符，人人稱頌聖明。再過些年，主子爛了，別的主子又來了，於是再殺，再燒，再納糧，再磕頭。如此一而再，再而三，號稱數千年之文明，平心細算，大抵如此。</p>
+<p>在這大循環裏，中國人練成了一樣絕技，是嘆氣。</p>
+<p>嘆氣實在是我們的國粹。聽見苛政，嘆一口氣；看見屠戮，嘆一口氣；讀到「興，百姓苦；亡，百姓苦」，尤其要拍案長嘆，搖頭，踱步，鬚眉皆張，彷彿胸中真有塊壘似的。嘆罷，神清氣爽，該納糧的納糧，該磕頭的磕頭，天下於是太平。</p>
+<p>我因此疑心，嘆是極聰明的發明。它比吶喊便宜，因為不必冒殺頭的險；又比沉默高尚，因為顯得良心未死。阿Q挨了打，說一句「兒子打老子」，便得勝了；我們讀了史，嘆一口氣，說一句「氣數使然」，也就得勝了。可見精神勝利法不止一味藥，嘆氣不過是其中最風雅的一味。</p>
+<p>說到嘆的祖師，自然要推屈大夫。「長太息以掩涕兮，哀民生之多艱」，嘆得確乎好，然而後來到底跳了江。這也罷了，妙在後人：年年端午，划了龍船去打撈，一面嘆他的忠，一面吃他的粽子，還要敲鑼，還要放炮，於是祖師爺的一嘆一跳，終於做成了年年一度的熱鬧。中國人的本領，是把一切沉重都釀成節令的歡喜。</p>
+<p>我也見過嘆得最出色的場合：一個人綁在中間，行將正法，四圍站滿了看客，一樣的同胞。刀起，刀落，血濺得多高，脖子便伸得多長，有性急的，還早備好了饅頭。忽然人叢裏嘆出一口氣：「唉，可憐！」於是都嘆，都搖頭，都自覺是善人，已經盡了心，於是散了，回家，吃飯，睡覺，明天再來伸脖子。這嘆，是從伸長的脖子裏發出來的，與看殺的興致，原是同一條筋。</p>
+<p>至於不嘆的也有。不嘆，便要動手，動手的，照例被殺；殺了之後，又照例被寫進書裏，塗上金粉，塑成金身，供入廟堂，封作神明，於是又成為後人嘆的新題目：嘆其忠，嘆其冤，嘆其可惜，嘆罷回家吃飯睡覺。這法子極妙，連不肯嘆的人，終於也被熬成了一嘆。</p>
+<p>於是千年之中，嘆聲不絕，連綿成我們最悠久的一種音樂。考古家嘆古人的智慧，詩人嘆歷史的蒼涼，遺老嘆前朝的煙月，闊人也嘆，嘆罷便著書，講學，遊歷，發思古之幽情，靠這嘆過活得舒舒服服的，也頗有人在。大家都在嘆，彷彿人人於心不安，又彷彿人人於心已安：不安的是古人，已安的是自己。</p>
+<p>夜更深了。我忽然想，倘使這千年來的嘆，統統聚攏在一處，該是何等龐大的一團空氣，沉沉壓在這土地上。然而不必怕，它終於要散的，也確乎散了：散盡之後，什麼也不曾留下，什麼也不曾改變，只留下下一個千年的嘆。</p>
+<p>一嘆抵不了千年；千年，卻養成了一嘆。</p>
+<p>有人說，不在沉默中爆發，就在沉默中滅亡。我們卻在嘆息中，既不爆發，也不滅亡，於是千年還是千年。</p>
+<p>我不想嘆了。合上書，窗外月色冷冷的，千年前大約這樣照過，一千年後想必還要這樣照。我知道這嘆大約還要傳下去，傳到地老天荒，也未可知。但地上的路，原不是嘆出來的。</p>
+<p>走的人多了，才有。</p>
+</section></div></div>
+
+<p>首先，這兩篇都很出色，不過風格差異其實也很明顯，我個人認為 A 在學魯迅怎麼下刀，B 在展示它認得魯迅有哪幾把刀。為什麼會這樣說？因為 B 簡直是一個魯迅的素材庫：</p>
+<ul>
+<li>「想做奴隸而不得的時代／暫時做穩了奴隸的時代」</li>
+<li>阿Q與精神勝利法</li>
+<li>看客、殺頭、饅頭</li>
+<li>…</li>
+</ul>
+<p>它向我們展示了它超懂魯迅，恨不得把關鍵字一個一個亮給觀眾看。這篇文章讀起來非常有力，但這力量很大一部分是借來的文學記憶，而不是作者原本的聲音，比方最後那句：</p>
+<blockquote>
+<p> 但地上的路，原不是嘆出來的。走的人多了，才有。</p>
+</blockquote>
+<p>這句話簡直漂亮得過份，可立即會人聯想到《故鄉》的：「其實地上本沒有路，走的人多了，也便成了路。」雖然 A 也用了「裝睡」這種熟悉的文化回聲，給人的感覺倒沒這麼強烈，因為它行文上沒直接把魯迅給搬上台面，而是順著它的筆鋒走，比方諷刺是藏著刀的，用一些很日常、甚至有點滑稽的比喻提出問題。</p>
+<p>當然了，我並不是主張模型真的抓到了「魯迅的靈魂」，這種話連文學系都不敢隨便亂講，但至少 A 抓到的已經不只是表面的關鍵字，而是某些選材眼光、敘事距離與組織矛盾的習慣。</p>
+<h3 id="拿掉招牌，還認得出來嗎？"><a href="#拿掉招牌，還認得出來嗎？" class="headerlink" title="拿掉招牌，還認得出來嗎？"></a>拿掉招牌，還認得出來嗎？</h3><p>問題來了，除卻當今少數頂尖模型，LLM 寫作其實都偏向 B 而不是 A，因為要讓一個通用模型走 A 其實沒什麼好處，當初能走出 A 也算是種機緣巧合。在最一開始，我在調整的其實是 knowledge injection 與 instruction following，啟發來自費曼學習法的直覺：模型能不能不丟出術語，仍把一件事解釋清楚？</p>
+<p>這個作法放到歷史文獻上產生了不少有趣的化學效應，比方「請在不提及『阿金庫爾』與『亨利五世』跟我講述阿金庫爾戰役」，或「請在不提『熙德』及西班牙地名時講述他的流亡經歷」。因為有了這些限制，模型不能照抄 Wiki，只能從事件、關係與因果順藤摸瓜，用自己的口吻把形象搭建出來。這既考驗歷史寫作，又有可追溯的關鍵字驗證，是種漂亮的 Rejection Sampling 與 RLVR 環境。</p>
+<p>套用在作者也是如此，當我們談及某個作者時，先收集一包關鍵字與招牌概念，再建立兩個 Judge：</p>
+<ol>
+<li>Keyword Judge：要求招牌詞、角色、名句與標誌性概念不能直接出現。</li>
+<li>Guesser：拿掉作者姓名後，仍要能從文章的選材與行文猜出目標風格。</li>
+</ol>
+<p>如果只有 Keyword Judge，模型可能被洗成一杯白開水；如果只有 Guesser，事情更簡單，只要把看客、精神勝利法與幾句名言依序端上桌，Guesser 隔著門都能喊出魯迅。所以這兩個得一起用，讓他們去跟 Writer 左右互搏，這會衍生出一個有趣的收斂條件：「招牌不能用，但讀者仍然辨識出來。」</p>
+<p>當然囉，Guesser 也會走捷徑。實作時最好使用跨題材 Prompt 與保留字做驗證，否則最後學到的可能只是另一套隱密的關鍵詞。</p>
+<h2 id="把三層維度串連起來"><a href="#把三層維度串連起來" class="headerlink" title="把三層維度串連起來"></a>把三層維度串連起來</h2><p>走到這裡，我們心中大致有了三把尺：</p>
+<ol>
+<li>句子層看修辭是否過滿，或者 show 完又 tell。</li>
+<li>段落層看 Writer Plan 是否明確，正文有沒有走偏。</li>
+<li>概念層拿掉招牌後，形象與風格是否仍然成立。</li>
+</ol>
+<p>我們顯然能組出一個 Pipeline：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Instruction</span></span><br><span class="line">→ <span class="title class_">Writer</span> <span class="title class_">Plan</span></span><br><span class="line">→ <span class="title class_">Draft</span></span><br><span class="line">→ 句子評分</span><br><span class="line">→ 段落評分</span><br><span class="line">→ 概念評分</span><br><span class="line">→ 局部改寫或淘汰</span><br><span class="line">→ 留作訓練資料</span><br></pre></td></tr></table></figure>
+
+<p>這條 Pipeline 同時落在資料、模型與推論策略三個層面。</p>
+<h3 id="資料面"><a href="#資料面" class="headerlink" title="資料面"></a>資料面</h3><p>我們可以用細粒度 Judge 找出有問題的訓練語料，接著選擇刪除或保留原文與修訂版作為 preference pair。也能以 Judge 濾出高品質文章做逆向工程，反向推敲它的 writer plan，比如分析作者選了哪些材料、每一段完成什麼任務、在哪裡轉折，又在哪裡停下等等。</p>
+<h3 id="模型面"><a href="#模型面" class="headerlink" title="模型面"></a>模型面</h3><p>如果某種規劃模式反覆有效，就可以把它做成 SFT、preference optimization 做 step-level credit assignment，進一步累積可用於 process supervision 的資料。例如 Reviewer 發現問題出在 Plan 的第三步，就不必把整篇推倒重來，我們可以保留前兩步的 prefix，從錯誤步驟重新生成，累積「哪一種計畫會導致哪一種成文」的資料。</p>
+<h3 id="策略面"><a href="#策略面" class="headerlink" title="策略面"></a>策略面</h3><p>即使不重新訓練模型，我們實際上還是定義了一整個 workflow 並能走完流程：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Plan</span> → <span class="title class_">Draft</span> → <span class="title class_">Diagnose</span> → <span class="title class_">Revise</span> → <span class="title class_">Re</span>-plan</span><br></pre></td></tr></table></figure>
+
+<p>這正是 Writing Skill、Agent workflow 與外部 Judge 最能發揮的地方。它們可以設定修辭預算、段落任務與停止條件，也能把修改侷限在真正有問題的位置，避免模型為了改一個比喻，順手把整段換成另一種 AI 味。</p>
+<h2 id="說到這裡，一個好的-Writing-Skill-不就全解了嗎？"><a href="#說到這裡，一個好的-Writing-Skill-不就全解了嗎？" class="headerlink" title="說到這裡，一個好的 Writing Skill 不就全解了嗎？"></a>說到這裡，一個好的 Writing Skill 不就全解了嗎？</h2><p>很大一部分真的可以，而且我會建議工程手段先這樣做，只是要先了解幾個風險。首先，Writing Skill 也有等級之分，如果一個 Writing Skill 只有寫：</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">少用比喻。</span><br><span class="line">避免陳腔濫調。</span><br><span class="line">少用 Not X <span class="keyword">but</span> Y。</span><br><span class="line">Show, don&#x27;t <span class="keyword">tell</span>。</span><br><span class="line">不要有 AI 味。</span><br></pre></td></tr></table></figure>
+
+<p>就挺糟的，因為它對場域、限制與具體做法避而不談，每一套模型的 Prior 會走出自己的反 AI 味，最後還是要人去做分佈調校。但假如我們有一個輕量化的 Harness，以及這個 Skill 已經包含文體辨識、修辭預算、Writer Plan 與偏好記錄等等，那它當然能解決非常多問題，只是到了這個程度，它本身已經從一句厲害的 Prompt 進化成一套完整的 writing system 了，而有了這套 system，我們也有了反向優化底層的本錢。</p>
+<p>除此之外，Skill 本身很難替代 model prior，我會把兩者的分工形容成：</p>
+<ul>
+<li>Skill：這一次，請你不要這樣寫。</li>
+<li>Training：你慢慢開始覺得，這本來就不是最好寫法。</li>
+</ul>
+<p>舉個例子，假設前一句是：「她關上門。」模型下一句的內在分布可能長這樣：</p>
+<table>
+<thead>
+<tr>
+<th>機率</th>
+<th>成句</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>40%</td>
+<td>她知道，有些告別終究無法避免。</td>
+</tr>
+<tr>
+<td>25%</td>
+<td>眼淚終於落了下來。</td>
+</tr>
+<tr>
+<td>15%</td>
+<td>那一刻，她終於明白……</td>
+</tr>
+<tr>
+<td>10%</td>
+<td>門外的雨仍在下。</td>
+</tr>
+<tr>
+<td>3%</td>
+<td>又打開門，把冰箱裡的半顆檸檬丟掉。</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody></table>
+<p>Skill 可能會說「不要總結情緒，不要陳腔濫調，要有意外性。」而把前三名給壓掉，把下面的給拉上來，但這樣就會衍生出更漂亮的答案嗎？因果上未必，因為那個更好的答案可能不在 Prior 裡，以當今 Alignment 的範式來說，更可能的結果其實是找到下一個「安全又符合規則」的答案，這就是為什麼你會看到 anti-AI prompt 用久之後，出現另一種 AI 味。</p>
+<p>此外，通用的 Writing Skill 往往存在把「指令遵循」與「創意寫作」綁死的 Anti-Pattern。不過因為這部分的研究挺新的，而且還挺見仁見智，容我引用一點枯燥的論文輔助，如果受不了可以直接參考我的個人結論：「把 Skill 用來 Polish，而不是用來 Writing」。</p>
+<p>這個結論的直覺其實很簡單，讓 Skill 直接負責寫作，等於叫同一個人一邊即興創作，一邊拿著幾十條規則驗收，這件事連專家都很難做到，就別為難語言模型了吧。2026 的 <a href="https://aclanthology.org/2026.findings-acl.1361.pdf">Style over Story</a> 從另一個角度觀察到類似風險。它給模型自由選擇兩百多條規則去組出敘事，結果發現模型都穩定偏好選 Style 類型的條件，對 Event、Character 與 Setting 的偏好反而更不穩定。這其實挺直觀的，要我們寫一篇議論文或抒情文挺容易，可要寫得精彩就很困難，如果想拿分當然從容易的點下手。</p>
+<p>往更深一層看，有 <a href="https://arxiv.org/abs/2602.16162">Preprint</a> 分析了二十八個模型，發現 LLM 的創意續寫整體比專業作家呈現更低的不確定性，而且這個差距在 instruction-tuned 與 reasoning models 上更加明顯。作者因此提出一個值得玩味的假說：一般 Alignment 為了追求安全、清楚與可預期，可能也連帶壓低了文學需要的建設性曖昧。Alignment 很擅長把答案推向清楚、安全、完整，文學需要的卻是曖昧、停頓，以及留白，當我們試圖把這種留白推導成規則時，結果確實可能是留白，在那份規則下的留白。</p>
+<p>這也是為什麼很多架構喜歡用先寫草稿，再反覆迭代的方式優化，讓模型一開始能自由發揮，成文後再在這個比較小的 scope 做規則層級的編修。這很像人類寫作時 v1, v2, v3 的迭代行為，對於模型也比較友善，比如 <a href="https://aclanthology.org/2024.findings-emnlp.458/">DeCRIM</a> 也指出過一次給模型很多限制會容易漏，但如果是先寫好再去評審後編修倒是可行。</p>
+<p>所以說，Skill、訓練與 Judge 本身是互補的關係，模型決定了什麼句子看起來最自然，Skill 決定了這一次準備怎麼寫，而 Judge 則決定哪些話最後不該留下來。</p>
+<h2 id="但要注意，Judge-也會有-AI-味"><a href="#但要注意，Judge-也會有-AI-味" class="headerlink" title="但要注意，Judge 也會有 AI 味"></a>但要注意，Judge 也會有 AI 味</h2><p>像這種資料工廠最大的風險就是監守自盜。如果所有 Judge 都偏愛完整、明確、有結論的文章，那麼層層篩選之後，我們不會消除八股文，只會得到一批句句合格的高級八股文。比如訓練資料最後總是：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">具體場景</span><br><span class="line">→ 解釋情緒</span><br><span class="line">→ 提升主題</span><br><span class="line">→ 總結人生</span><br></pre></td></tr></table></figure>
+
+<p>模型自然會把這套結構學成標準答案，換句話說，Judge 的品味，最後會變成 Writer 的 loss function。</p>
+<p>所以如何篩選 Instruction 與最終成文就是個大問題，不同的領域與文體，需由人校正出不同的篩選下限，成文也要依照語意多樣性和結構多樣性留存，在訓練時針對同一種 Prompt 搭配不同輸出避免分佈過於 Sharp。而 Plan 上也是如此，我在訓練過程中就遇到了一種 Bias，無論任何 Prompt 進來，模型總是傾向走：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">1.</span>  <span class="strong">**理解使用者需求**</span>：...</span><br><span class="line"><span class="bullet">2.</span>  <span class="strong">**分析文體**</span>：...</span><br><span class="line"><span class="bullet">3.</span>  <span class="strong">**構思開場**</span>：...</span><br><span class="line"><span class="bullet">4.</span>  <span class="strong">**構思正文**</span>：...</span><br><span class="line"><span class="bullet">5.</span>  <span class="strong">**構思結尾**</span>：...</span><br></pre></td></tr></table></figure>
+
+<p>這份 Plan 很完整，也很死板。好在 Step-by-Step 的 Plan 優勢相當大，我們能夠透過一個 Judge 從成文點評是哪個步驟出現問題了，然後從上個 Step 開始重生，甚至直接塞入一個包裝好的 prefix，來累積 Plan 本身的有效性與多樣性。</p>
+<h2 id="最後，讓雨只負責下雨"><a href="#最後，讓雨只負責下雨" class="headerlink" title="最後，讓雨只負責下雨"></a>最後，讓雨只負責下雨</h2><p>回頭看文章開頭，那盞燈當然可以象徵希望，那場雨也完全有資格沖刷過往。但它們不必每次都上場。</p>
+<p>我們想教給模型的是一種比例感。哪句該成為亮點，哪句只要把事情交代清楚；哪個情緒該說出來，哪個情緒該留給讀者。</p>
+<p>時至今日，模型早已能寫出漂亮，甚至偶爾令人讚嘆的中文。但中文寫作還有很長一段路要走。畢竟真正的寫作能力，或許不只是知道怎麼寫，也包括寫到這裡時，知道可以停了。</p>
+<p>至於那場雨，就讓它繼續下吧。</p>
+<p>它今天不用負責人生。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><h3 id="AI-味、風格與中文創意寫作"><a href="#AI-味、風格與中文創意寫作" class="headerlink" title="AI 味、風格與中文創意寫作"></a>AI 味、風格與中文創意寫作</h3><ul>
+<li><p>Tuhin Chakrabarty, Philippe Laban, and Chien-Sheng Wu. 2025. <a href="https://doi.org/10.1145/3706598.3713559">Can AI writing be salvaged? Mitigating Idiosyncrasies and Improving Human-AI Alignment in the Writing Process through Edits</a>. <em>CHI 2025</em>.</p>
+</li>
+<li><p>Federico Boggia. 2026. <a href="https://arxiv.org/abs/2607.21498">Artificial Epanorthosis: Why large language models overuse a classical rhetorical figure, and how to mitigate it</a>. <em>arXiv preprint arXiv:2607.21498</em>.</p>
+</li>
+<li><p>Zhengxiang Wang, Nafis Irtiza Tripto, Solha Park, Zhenzhen Li, and Jiawei Zhou. 2025. <a href="https://aclanthology.org/2025.findings-emnlp.532/">Catch Me If You Can? Not Yet: LLMs Still Struggle to Imitate the Implicit Writing Styles of Everyday Authors</a>. <em>Findings of EMNLP 2025</em>.</p>
+</li>
+<li><p>Yunwen Li et al. 2025. <a href="https://arxiv.org/abs/2510.14763">COIG-Writer: A High-Quality Dataset for Chinese Creative Writing with Thought Processes</a>. <em>arXiv preprint arXiv:2510.14763</em>.</p>
+</li>
+<li><p>Donghoon Jung, Jiwoo Choi, Songeun Chae, and Seohyon Jung. 2026. <a href="https://aclanthology.org/2026.findings-acl.1361/">Style over Story: Measuring LLM Narrative Preferences via Structured Selection</a>. <em>Findings of ACL 2026</em>.</p>
+</li>
+<li><p>Peiqi Sui. 2026. <a href="https://arxiv.org/abs/2602.16162">LLMs Exhibit Significantly Lower Uncertainty in Creative Writing Than Professional Writers</a>. <em>arXiv preprint arXiv:2602.16162</em>.</p>
+</li>
+</ul>
+<h3 id="Planning-與長文生成"><a href="#Planning-與長文生成" class="headerlink" title="Planning 與長文生成"></a>Planning 與長文生成</h3><ul>
+<li><p>Lili Yao, Nanyun Peng, Ralph Weischedel, Kevin Knight, Dongyan Zhao, and Rui Yan. 2019. <a href="https://ojs.aaai.org/index.php/AAAI/article/view/4726">Plan-and-Write: Towards Better Automatic Storytelling</a>. <em>AAAI 2019</em>.</p>
+</li>
+<li><p>Kevin Yang, Yuandong Tian, Nanyun Peng, and Dan Klein. 2022. <a href="https://aclanthology.org/2022.emnlp-main.296/">Re3: Generating Longer Stories With Recursive Reprompting and Revision</a>. <em>EMNLP 2022</em>.</p>
+</li>
+<li><p>Kevin Yang, Dan Klein, Nanyun Peng, and Yuandong Tian. 2023. <a href="https://aclanthology.org/2023.acl-long.190/">DOC: Improving Long Story Coherence With Detailed Outline Control</a>. <em>ACL 2023</em>.</p>
+</li>
+<li><p>Kaiyang Wan, Honglin Mu, Rui Hao, Haoran Luo, Tianle Gu, and Xiuying Chen. 2025. <a href="https://aclanthology.org/2025.findings-acl.511/">A Cognitive Writing Perspective for Constrained Long-Form Text Generation</a>. <em>Findings of ACL 2025</em>.</p>
+</li>
+<li><p>Zechen Sun et al. 2026. <a href="https://aclanthology.org/2026.acl-long.911/">IS-CoT: Breaking the Long-form Generation Collapse via Interleaved Structural Thinking</a>. <em>ACL 2026</em>.</p>
+</li>
+</ul>
+<h3 id="Writing-Assistant、Skill-與多重限制"><a href="#Writing-Assistant、Skill-與多重限制" class="headerlink" title="Writing Assistant、Skill 與多重限制"></a>Writing Assistant、Skill 與多重限制</h3><ul>
+<li><p>Vipul Raheja, Dhruv Kumar, Ryan Koo, and Dongyeop Kang. 2023. <a href="https://aclanthology.org/2023.findings-emnlp.350/">CoEdIT: Text Editing by Task-Specific Instruction Tuning</a>. <em>Findings of EMNLP 2023</em>.</p>
+</li>
+<li><p>Thomas Palmeira Ferraz et al. 2024. <a href="https://aclanthology.org/2024.findings-emnlp.458/">LLM Self-Correction with DeCRIM: Decompose, Critique, and Refine for Enhanced Following of Instructions with Multiple Constraints</a>. <em>Findings of EMNLP 2024</em>.</p>
+</li>
+<li><p>Hannan Cao, Hai Ye, and Hwee Tou Ng. 2025. <a href="https://aclanthology.org/2025.findings-acl.1383/">Rationalize and Align: Enhancing Writing Assistance with Rationale via Self-Training for Improved Alignment</a>. <em>Findings of ACL 2025</em>.</p>
+</li>
+</ul>
+<h3 id="Creative-Writing-Judge-與評估"><a href="#Creative-Writing-Judge-與評估" class="headerlink" title="Creative Writing Judge 與評估"></a>Creative Writing Judge 與評估</h3><ul>
+<li><p>Li-Chun Lu, Miri Liu, Pin Chun Lu, Yufei Tian, Shao-Hua Sun, and Nanyun Peng. 2026. <a href="https://aclanthology.org/2026.eacl-long.297/">Rethinking Creativity Evaluation: A Critical Analysis of Existing Creativity Evaluations</a>. <em>EACL 2026</em>.</p>
+</li>
+<li><p>Daniel Fein, Sebastian Russo, Violet Xiang, Kabir Jolly, Rafael Rafailov, and Nick Haber. 2026. <a href="https://aclanthology.org/2026.eacl-long.362/">LitBench: A Benchmark and Dataset for Reliable Evaluation of Creative Writing</a>. <em>EACL 2026</em>.</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LLM/" rel="tag">#LLM</a>
+          
+            <a href="/tags/%E4%B8%AD%E6%96%87%E5%AF%AB%E4%BD%9C/" rel="tag">#中文寫作</a>
+          
+            <a href="/tags/AI-%E5%91%B3/" rel="tag">#AI 味</a>
+          
+            <a href="/tags/%E8%B3%87%E6%96%99%E5%90%88%E6%88%90/" rel="tag">#資料合成</a>
+          
+            <a href="/tags/RLVR/" rel="tag">#RLVR</a>
+          
+            <a href="/tags/LLM-as-a-Judge/" rel="tag">#LLM-as-a-Judge</a>
+          
+            <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%B8%E7%BF%92/" rel="tag">#深度學習</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/28/Sequence-to-Sequence-tutorial/" rel="next" title="從零開始的 Sequence to Sequence">
+                <i class="fa fa-chevron-left"></i> 從零開始的 Sequence to Sequence
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.webp"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zake7749" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A6%96%E5%85%88%EF%BC%8C%E4%BB%80%E9%BA%BC%E6%98%AF-AI-%E5%91%B3%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">首先，什麼是 AI 味？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E5%BE%9E%E5%8F%A5%E5%AD%90%E9%96%8B%E5%A7%8B%E8%81%8A%E8%B5%B7"><span class="nav-number">2.</span> <span class="nav-text">先從句子開始聊起</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AF%E7%94%A8%E5%8A%9B%E9%81%8E%E7%8C%9B%EF%BC%9F"><span class="nav-number">2.1.</span> <span class="nav-text">什麼是用力過猛？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AF%E8%AA%AA%E5%BE%97%E5%A4%AA%E5%A4%9A%EF%BC%9F"><span class="nav-number">2.2.</span> <span class="nav-text">什麼是說得太多？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%8D%E6%8A%8A%E9%8F%A1%E9%A0%AD%E6%8B%89%E5%88%B0%E6%AE%B5%E8%90%BD"><span class="nav-number">3.</span> <span class="nav-text">再把鏡頭拉到段落</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E6%B1%BA%E5%AE%9A%E9%80%99%E4%B8%80%E6%AE%B5%E8%A6%81%E5%81%9A%E4%BB%80%E9%BA%BC%EF%BC%8C%E5%86%8D%E9%96%8B%E5%A7%8B%E5%AF%AB"><span class="nav-number">3.1.</span> <span class="nav-text">先決定這一段要做什麼，再開始寫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%88%E7%95%AB%E8%B6%95%E4%B8%8D%E4%B8%8A%E8%AE%8A%E5%8C%96"><span class="nav-number">3.2.</span> <span class="nav-text">計畫趕不上變化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%9E%E8%A8%88%E7%95%AB%E8%B5%B0%E5%90%91%E6%A1%86%E6%9E%B6"><span class="nav-number">3.3.</span> <span class="nav-text">從計畫走向框架</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%AF%AB%E7%9A%84%E7%A9%B6%E7%AB%9F%E6%98%AF%E5%BD%A2%E9%82%84%E6%98%AF%E9%AA%A8%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">模型寫的究竟是形還是骨？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%BF%E6%8E%89%E6%8B%9B%E7%89%8C%EF%BC%8C%E9%82%84%E8%AA%8D%E5%BE%97%E5%87%BA%E4%BE%86%E5%97%8E%EF%BC%9F"><span class="nav-number">4.1.</span> <span class="nav-text">拿掉招牌，還認得出來嗎？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%8A%E4%B8%89%E5%B1%A4%E7%B6%AD%E5%BA%A6%E4%B8%B2%E9%80%A3%E8%B5%B7%E4%BE%86"><span class="nav-number">5.</span> <span class="nav-text">把三層維度串連起來</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E9%9D%A2"><span class="nav-number">5.1.</span> <span class="nav-text">資料面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E9%9D%A2"><span class="nav-number">5.2.</span> <span class="nav-text">模型面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%96%E7%95%A5%E9%9D%A2"><span class="nav-number">5.3.</span> <span class="nav-text">策略面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AA%AA%E5%88%B0%E9%80%99%E8%A3%A1%EF%BC%8C%E4%B8%80%E5%80%8B%E5%A5%BD%E7%9A%84-Writing-Skill-%E4%B8%8D%E5%B0%B1%E5%85%A8%E8%A7%A3%E4%BA%86%E5%97%8E%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">說到這裡，一個好的 Writing Skill 不就全解了嗎？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%86%E8%A6%81%E6%B3%A8%E6%84%8F%EF%BC%8CJudge-%E4%B9%9F%E6%9C%83%E6%9C%89-AI-%E5%91%B3"><span class="nav-number">7.</span> <span class="nav-text">但要注意，Judge 也會有 AI 味</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%BE%8C%EF%BC%8C%E8%AE%93%E9%9B%A8%E5%8F%AA%E8%B2%A0%E8%B2%AC%E4%B8%8B%E9%9B%A8"><span class="nav-number">8.</span> <span class="nav-text">最後，讓雨只負責下雨</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">9.</span> <span class="nav-text">Reference</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-%E5%91%B3%E3%80%81%E9%A2%A8%E6%A0%BC%E8%88%87%E4%B8%AD%E6%96%87%E5%89%B5%E6%84%8F%E5%AF%AB%E4%BD%9C"><span class="nav-number">9.1.</span> <span class="nav-text">AI 味、風格與中文創意寫作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Planning-%E8%88%87%E9%95%B7%E6%96%87%E7%94%9F%E6%88%90"><span class="nav-number">9.2.</span> <span class="nav-text">Planning 與長文生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Writing-Assistant%E3%80%81Skill-%E8%88%87%E5%A4%9A%E9%87%8D%E9%99%90%E5%88%B6"><span class="nav-number">9.3.</span> <span class="nav-text">Writing Assistant、Skill 與多重限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Creative-Writing-Judge-%E8%88%87%E8%A9%95%E4%BC%B0"><span class="nav-number">9.4.</span> <span class="nav-text">Creative Writing Judge 與評估</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+          <div class="copyright" style="text-algin:center;">
+    
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart" style="color:rgb(255,160,180);"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Justin Yang</span>
+  </div>
+
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme modified from NexT
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+     .Mist
+    </a>
+  </div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div id="open-sidebar" class="open-sidebar close-this-one">
+      <i class="fa fa-map"></i>
+    </div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'zake7749';
+      var disqus_identifier = '2026/08/30/chinese-llm-writing/';
+      var disqus_title = "淺談 AI 味：為什麼 LLM 中文寫作總是用力過猛";
+      var disqus_url = 'https://zake7749.github.io/2026/08/30/chinese-llm-writing/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  <script type="text/javascript" src="/js/src/jquery.tipsy.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+  
+
+  
+
+</body>
+</html>

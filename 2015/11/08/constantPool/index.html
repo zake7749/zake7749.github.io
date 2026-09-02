@@ -1,0 +1,760 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next mist">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+  <meta name="google-site-verification" content="hgJ2TZ2JCDOeoLUxOIYJsYe2aeExlKUNmkVS5S41BLY" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java,解題," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雷德麥的藏書閣" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+。 #}
+<meta name="description" content="1234567891011121314151617181920212223242526272829303132333435363738&#x2F;* * 	What is the output of this program ? *	猜猜看，這個程式的輸出是什麼？ *&#x2F;public class ConstantPool &#123;	public static void main(String[] args">
+<meta property="og:type" content="article">
+<meta property="og:title" content="淺談Java的常數池">
+<meta property="og:url" content="https://zake7749.github.io/2015/11/08/constantPool/index.html">
+<meta property="og:site_name" content="雷德麥的藏書閣">
+<meta property="og:description" content="1234567891011121314151617181920212223242526272829303132333435363738&#x2F;* * 	What is the output of this program ? *	猜猜看，這個程式的輸出是什麼？ *&#x2F;public class ConstantPool &#123;	public static void main(String[] args">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2015-11-08T11:18:35.000Z">
+<meta property="article:modified_time" content="2015-11-08T11:18:35.000Z">
+<meta property="article:author" content="Justin Yang">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="解題">
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://zake7749.github.io/2015/11/08/constantPool/"/>
+
+  <title> 淺談Java的常數池 | 雷德麥的藏書閣 </title>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      <a class="menu-item website-text-logo" href="/">
+        <b class="text-logo-eg">R</b><span class="text-logo-ch"><h1 class="site-title">雷德麥的藏書閣</h1></span>
+      </a>
+      
+        
+        <a class="menu-item menu-item-categories red-tooltip" href="/categories" data-toggle="tooltip" title="文章目錄">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i>
+              <span class="sidebar-title">文章目錄</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-archives red-tooltip" href="/archives" data-toggle="tooltip" title="文章歸檔">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i>
+              <span class="sidebar-title">文章歸檔</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-tags red-tooltip" href="/tags" data-toggle="tooltip" title="特色標籤">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i>
+              <span class="sidebar-title">特色標籤</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-about red-tooltip" href="https://zake7749.github.io/AboutMe/index.html" data-toggle="tooltip" title="關於作者">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i>
+              <span class="sidebar-title">關於作者</span>
+            
+          </a>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+ </div>
+      <ul id="btm-menu" class="menu cus-menu">
+        <a id="cus-object-group" href="https://csienckugrade3.hackpad.com/" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="CS Notes">
+          <i class="menu-item-icon fa fa fa-object-group"></i>
+          <span class="sidebar-title">CS Note pads</span>
+        </a>
+        <a id="cus-map" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="關閉側邊欄">
+          <i class="menu-item-icon fa fa-map"></i>
+          <span class="sidebar-title">關閉側邊欄</span>
+        </a>
+        <a id="cus-lightbulb" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="施工中 ─=≡Σ(((っﾟДﾟ)っ">
+          <i class="menu-item-icon fa fa-lightbulb-o"></i>
+          <span class="sidebar-title">顯示模式</span>
+        </a>
+      </ul>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal  post-index-border" itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                淺談Java的常數池
+              
+            
+          </h1>
+        
+
+        
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2015-11-08T19:18:35+08:00" content="2015-11-08">
+              2015-11-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">程式語言</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/11/08/constantPool/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/08/constantPool/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 	What is the output of this program ?</span></span><br><span class="line"><span class="comment"> *	猜猜看，這個程式的輸出是什麼？</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">ConstantPool</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	public <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span>(<span class="title class_">String</span>[] args) &#123;</span><br><span class="line">		</span><br><span class="line">		<span class="title class_">ConstantPool</span> cp = <span class="keyword">new</span> <span class="title class_">ConstantPool</span>();</span><br><span class="line">		cp.<span class="title function_">aboutString</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public <span class="keyword">void</span> <span class="title function_">aboutString</span>()&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="title class_">String</span> s1 = <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line">		<span class="title class_">String</span> s2 = <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line">		<span class="title class_">String</span> s3 = <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">		<span class="title class_">String</span> s4 = <span class="string">&quot;Hel&quot;</span> + <span class="string">&quot;lo&quot;</span>;</span><br><span class="line">		<span class="title class_">String</span> s5 = <span class="string">&quot;Hel&quot;</span> + <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;lo&quot;</span>);</span><br><span class="line">		<span class="title class_">String</span> s7 = <span class="string">&quot;He&quot;</span>;</span><br><span class="line">		<span class="title class_">String</span> s8 = <span class="string">&quot;llo&quot;</span>;</span><br><span class="line">		<span class="title class_">String</span> s9 = s7+s8;</span><br><span class="line">		<span class="title class_">String</span> s10 = <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		 * Try this :)</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		 </span><br><span class="line">		<span class="title class_">System</span>.out.<span class="title function_">println</span>(s1==s2);</span><br><span class="line">		<span class="title class_">System</span>.out.<span class="title function_">println</span>(s1==s3);</span><br><span class="line">		<span class="title class_">System</span>.out.<span class="title function_">println</span>(s1==s4);</span><br><span class="line">		<span class="title class_">System</span>.out.<span class="title function_">println</span>(s1==s5);</span><br><span class="line">		<span class="title class_">System</span>.out.<span class="title function_">println</span>(s1==s9);</span><br><span class="line">		<span class="title class_">System</span>.out.<span class="title function_">println</span>(s3==s10);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<h3 id="Answer"><a href="#Answer" class="headerlink" title="Answer"></a>Answer</h3><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">true</span></span><br><span class="line"><span class="literal">false</span></span><br><span class="line"><span class="literal">true</span></span><br><span class="line"><span class="literal">false</span></span><br><span class="line"><span class="literal">false</span></span><br><span class="line"><span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="這是什麼巫術"><a href="#這是什麼巫術" class="headerlink" title="這是什麼巫術 ?"></a>這是什麼巫術 ?</h4><p>首先，在Java中的<code>==</code>有兩種意涵：</p>
+<blockquote>
+<p>對於基本資料型態，比對兩者的數值<br>對於物件，則是比對兩者存放的位置</p>
+</blockquote>
+<p>String是個物件，所以對String使用&#x3D;&#x3D;，我們其實是在比較物件的記憶體位置，這就解決了最後一個問題，s3與s10都是經過<code>new</code>配置而成，實際上new傳回了兩個String，只不過他們的字串值都叫做Hello而已，比對兩者的位置當然會得出false。</p>
+<table>
+<thead>
+<tr>
+<th>stack</th>
+<th>heap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>s3 -&gt;</td>
+<td>“Hello”</td>
+</tr>
+<tr>
+<td>s10-&gt;</td>
+<td>“Hello”</td>
+</tr>
+</tbody></table>
+<p>如果明白了最後一題在搞什麼花樣，問題來了，為什麼第一題是true？</p>
+<h4 id="常數池"><a href="#常數池" class="headerlink" title="常數池"></a>常數池</h4><p>讓我們從答案往回推，既然第一題是true，也就代表s1與s2所指向的是<strong>同一個物件</strong>，而為何會指向同一個物件呢？</p>
+<p>其實是Java存在一個特殊空間，把<strong>編譯時期</strong>就已經確定的**常數(constant)**包進.class，執行時再從這個空間統一拿出。這個特殊空間稱作常數池或常量池(constant pool)，它主要保管這兩種東西：</p>
+<ul>
+<li><p>字面量(Literal)<br>包含了常數以及既定字串。</p>
+</li>
+<li><p>Symbolic References<br>主要是類別和介面的<a href="https://en.wikipedia.org/wiki/Fully_qualified_name">Fully qualified name</a>，欄位和方法的名稱。</p>
+</li>
+</ul>
+<p>每當編譯完成，編譯器會將上述兩者包進.class中。原始碼中每一個字面量會被統一構成一張常數表，並透過索引的型式參照它。而當JVM載入這份.class檔時，會特別為常數池在方法區建立一個資料結構，並把常數表中所有的字面量在Heap上生成一個實例(即是String.intern()的工作內容)。</p>
+<p>除了String，Java對<code>double</code>及<code>float</code>以外的6個基本類別在區間<code>-128~127</code>都實作了常數池，也就是說</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Integer i1 <span class="operator">=</span> <span class="number">1</span><span class="comment">;</span></span><br><span class="line">Integer i2 <span class="operator">=</span> <span class="number">1</span><span class="comment">;</span></span><br><span class="line">Integer i3 <span class="operator">=</span> <span class="number">128</span><span class="comment">;</span></span><br><span class="line">Integer i4 <span class="operator">=</span> <span class="number">128</span><span class="comment">;</span></span><br><span class="line">System.out.println(i1<span class="operator">=</span><span class="operator">=</span>i2)<span class="comment">;//true</span></span><br><span class="line">System.out.println(i3<span class="operator">=</span><span class="operator">=</span>i4)<span class="comment">;//false</span></span><br></pre></td></tr></table></figure>
+
+<p>關於這點，我們也可從Integer類別中valueOf的實作得到證實：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//IntegerCache.low  預設為 -128</span></span><br><span class="line"><span class="comment">//IntegerCache.high 預設為  127</span></span><br><span class="line"></span><br><span class="line">public <span class="keyword">static</span> <span class="title class_">Integer</span> <span class="title function_">valueOf</span>(<span class="built_in">int</span> i) &#123;</span><br><span class="line">    <span class="keyword">assert</span> <span class="title class_">IntegerCache</span>.high &gt;= <span class="number">127</span>;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= <span class="title class_">IntegerCache</span>.low &amp;&amp; i &lt;= <span class="title class_">IntegerCache</span>.high)</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">IntegerCache</span>.cache[i + (-<span class="title class_">IntegerCache</span>.low)];</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Integer</span>(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div class="psBox"><span class="ps">P.S</span>
+我會提到valueOf是因為`Integer i1 = 1`其實是個編譯器蜜糖，編譯器會將上述程式碼展開成`Integer i1 = valueOf(1)`，對於這部分更深入的細節，可以餵食Google「Java裝箱拆箱」。
+</div>
+
+<p>一般來說，常數池是這麼運作的(以string及題目為例)：</p>
+<ol start="0">
+<li>編譯時發現字串，若常數池中已存在，則將現有的(先前找到的)位置賦予它，否則將該字串壓入常數池，並紀錄位置</li>
+<li>當載入class時，JVM會尋找.class的常數表，發現了字串常量<code>Hello</code>，在heap中生成對應的實例。</li>
+<li>接著JVM會對常數池的入口位置進行解析，首先會找到字串<code>s1</code>的字面量<code>Hello</code>。</li>
+<li>由於常數池中已經存在<code>Hello</code>，所以提供常數池的引用給<code>s1</code></li>
+<li>之後JVM找到<code>s2</code>的字面量<code>Hello</code>，</li>
+<li>由於常數池中已經存在<code>Hello</code>，所以仍舊將<code>s2</code>指向已經生成好的<code>Hello</code>，而非再產生一個<code>Hello</code>。</li>
+</ol>
+<p>由此我們也能發現常數池的優點，它達到了共享的效果，避免資源頻繁產生或釋放造成不必要的浪費。</p>
+<p>關於第二題 (s1&#x3D;&#x3D;s3) 為false，是因為new是動態產生新的物件，其跟s1接收到的Hello自然是不同的，但是要注意，new 仍舊會觸發常數池存取，如果今天<code>s3 = new String(&quot;Hello&quot;);</code>是第一行，常數池的處理會變成這樣：</p>
+<ol>
+<li>當載入class時，JVM會尋找.class的常數表，發現了字串常量<code>Hello</code>，在heap中生成對應的實例。</li>
+<li>因為 s3 使用的是 new ，所以其不引用常數池，而是在heap生成一個新的String物件</li>
+<li>所以此時heap實際上存在<strong>兩份物件</strong>，一個是讓常數池提供引用的，另一個是s3持有的。</li>
+</ol>
+<p>直觀來看，&#x3D; 與 new 都會進行常數池的檢查，就像先前說的，編譯器找的是原始碼中的字面量，它才不會管你是 new 還是 &#x3D; 。不過在執行時， &#x3D; 會引用常數池，new則是另外生成新的物件。</p>
+<p>關於第三題 (s1&#x3D;&#x3D;s4) 為true，是Java的優化功能之一，編譯器會將<code>&quot;Hel&quot;+&quot;lo&quot;</code>組合成<code>&quot;Hello&quot;</code>，因此道理和(s1&#x3D;&#x3D;s2)相同。</p>
+<p>關於第四題，近似於第二題的概念，具體來說<code>String s5 = &quot;Hel&quot; + new String(&quot;lo&quot;);</code>做了三件事：</p>
+<ol>
+<li>常數池存放了 “Hel” 及 “lo”，並產生對應的實例</li>
+<li>heap 再另外new出一個新的 “lo”</li>
+<li>使用String方法.append()合併”Hel”與”lo”，傳回一個新字串給s5</li>
+</ol>
+<p>第五題則是和第三題的類比，會回傳false可不是因為它是拆成He與llo，而是跟先前提到的優化有關，它只會進行常數的優化，這是因為編譯器不知道我們在<code>String s9 = s7+s8;</code>這行前，會不會對<code>s7</code>與<code>s8</code>的值進行修改，若貿然的假設<code>s7</code>仍是He或<code>s8</code>仍是llo，反而可能導致預期外的錯誤，這風險可不是編譯器能承擔的，自然也不會負責這個部分。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+            <a href="/tags/%E8%A7%A3%E9%A1%8C/" rel="tag">#解題</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/26/homework3/" rel="next" title="打造一個書籤管理網站">
+                <i class="fa fa-chevron-left"></i> 打造一個書籤管理網站
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/28/word2vec-with-gensim/" rel="prev" title="以 gensim 訓練中文詞向量">
+                以 gensim 訓練中文詞向量 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.webp"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zake7749" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Answer"><span class="nav-number">1.</span> <span class="nav-text">Answer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%99%E6%98%AF%E4%BB%80%E9%BA%BC%E5%B7%AB%E8%A1%93"><span class="nav-number">1.1.</span> <span class="nav-text">這是什麼巫術 ?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E6%95%B8%E6%B1%A0"><span class="nav-number">1.2.</span> <span class="nav-text">常數池</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+          <div class="copyright" style="text-algin:center;">
+    
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart" style="color:rgb(255,160,180);"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Justin Yang</span>
+  </div>
+
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme modified from NexT
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+     .Mist
+    </a>
+  </div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div id="open-sidebar" class="open-sidebar close-this-one">
+      <i class="fa fa-map"></i>
+    </div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'zake7749';
+      var disqus_identifier = '2015/11/08/constantPool/';
+      var disqus_title = "淺談Java的常數池";
+      var disqus_url = 'https://zake7749.github.io/2015/11/08/constantPool/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  <script type="text/javascript" src="/js/src/jquery.tipsy.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+  
+
+  
+
+</body>
+</html>

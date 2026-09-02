@@ -1,0 +1,798 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next mist">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+  <meta name="google-site-verification" content="hgJ2TZ2JCDOeoLUxOIYJsYe2aeExlKUNmkVS5S41BLY" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="訊息鑑別," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雷德麥的藏書閣" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+。 #}
+<meta name="description" content="什麼是訊息鑑別技術？顧名思義，我們是在識別文件，不過比起去深究文章內涵與背景故事，我們通常會更關心這三件事：  送出的訊息是否完整且正確 (protect integrity) 你不會希望在匯款時多送了幾個 0   發訊人的身分是不是正確的 (validate identity) 防止有人假冒你幹些雞鳴狗盜的勾當   發訊人不可否認曾做過的事 (Non-repudiation) 沒辦法切割曾經幹過">
+<meta property="og:type" content="article">
+<meta property="og:title" content="訊息鑑別技術">
+<meta property="og:url" content="https://zake7749.github.io/2015/08/06/message_auth/index.html">
+<meta property="og:site_name" content="雷德麥的藏書閣">
+<meta property="og:description" content="什麼是訊息鑑別技術？顧名思義，我們是在識別文件，不過比起去深究文章內涵與背景故事，我們通常會更關心這三件事：  送出的訊息是否完整且正確 (protect integrity) 你不會希望在匯款時多送了幾個 0   發訊人的身分是不是正確的 (validate identity) 防止有人假冒你幹些雞鳴狗盜的勾當   發訊人不可否認曾做過的事 (Non-repudiation) 沒辦法切割曾經幹過">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://lh3.googleusercontent.com/1sj77qCly4DcogfQTiFeLzeQtsuQsTzxxn9Lj32Qy4g=w977-h618-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/uGotHGCNaNSnknU-0ecQ2XXm7Em8y8iGOA9tce2xNbY=w1143-h577-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/ROJ40m32HUa83UekOJzeOKM9Y6PiyXtD9bUGV-OxjRA=w1143-h572-no">
+<meta property="og:image" content="https://lh3.googleusercontent.com/192-qOycchKGnjmb31-BGDuO2ayVYE9oER0uynFqXzU=w954-h509-no">
+<meta property="article:published_time" content="2015-08-06T03:18:44.000Z">
+<meta property="article:modified_time" content="2015-08-06T03:18:44.000Z">
+<meta property="article:author" content="Justin Yang">
+<meta property="article:tag" content="訊息鑑別">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/1sj77qCly4DcogfQTiFeLzeQtsuQsTzxxn9Lj32Qy4g=w977-h618-no">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://zake7749.github.io/2015/08/06/message_auth/"/>
+
+  <title> 訊息鑑別技術 | 雷德麥的藏書閣 </title>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      <a class="menu-item website-text-logo" href="/">
+        <b class="text-logo-eg">R</b><span class="text-logo-ch"><h1 class="site-title">雷德麥的藏書閣</h1></span>
+      </a>
+      
+        
+        <a class="menu-item menu-item-categories red-tooltip" href="/categories" data-toggle="tooltip" title="文章目錄">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i>
+              <span class="sidebar-title">文章目錄</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-archives red-tooltip" href="/archives" data-toggle="tooltip" title="文章歸檔">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i>
+              <span class="sidebar-title">文章歸檔</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-tags red-tooltip" href="/tags" data-toggle="tooltip" title="特色標籤">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i>
+              <span class="sidebar-title">特色標籤</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-about red-tooltip" href="https://zake7749.github.io/AboutMe/index.html" data-toggle="tooltip" title="關於作者">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i>
+              <span class="sidebar-title">關於作者</span>
+            
+          </a>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+ </div>
+      <ul id="btm-menu" class="menu cus-menu">
+        <a id="cus-object-group" href="https://csienckugrade3.hackpad.com/" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="CS Notes">
+          <i class="menu-item-icon fa fa fa-object-group"></i>
+          <span class="sidebar-title">CS Note pads</span>
+        </a>
+        <a id="cus-map" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="關閉側邊欄">
+          <i class="menu-item-icon fa fa-map"></i>
+          <span class="sidebar-title">關閉側邊欄</span>
+        </a>
+        <a id="cus-lightbulb" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="施工中 ─=≡Σ(((っﾟДﾟ)っ">
+          <i class="menu-item-icon fa fa-lightbulb-o"></i>
+          <span class="sidebar-title">顯示模式</span>
+        </a>
+      </ul>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal  post-index-border" itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                訊息鑑別技術
+              
+            
+          </h1>
+        
+
+        
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2015-08-06T11:18:44+08:00" content="2015-08-06">
+              2015-08-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/%E8%B3%87%E8%A8%8A%E5%AE%89%E5%85%A8/" itemprop="url" rel="index">
+                    <span itemprop="name">資訊安全</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/08/06/message_auth/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/08/06/message_auth/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="什麼是訊息鑑別技術？"><a href="#什麼是訊息鑑別技術？" class="headerlink" title="什麼是訊息鑑別技術？"></a>什麼是訊息鑑別技術？</h2><p>顧名思義，我們是在<span style="color:#99dd00">識別</span>文件，不過比起去深究文章內涵與背景故事，我們通常會更關心這三件事：</p>
+<ul>
+<li>送出的訊息是否完整且正確 (protect integrity)<ul>
+<li>你不會希望在匯款時多送了幾個 0</li>
+</ul>
+</li>
+<li>發訊人的身分是不是正確的 (validate identity)<ul>
+<li>防止有人假冒你幹些雞鳴狗盜的勾當</li>
+</ul>
+</li>
+<li>發訊人不可否認曾做過的事 (Non-repudiation)<ul>
+<li>沒辦法切割曾經幹過的壞事</li>
+</ul>
+</li>
+</ul>
+<p>要實踐訊息鑑別，有兩個簡單的方法：</p>
+<ul>
+<li>CBC - residue , CMAC(Cipher-based MAC)：在區塊加密時進行鑑別</li>
+<li>HMAC ：另外用個雜湊函式(Hash) 進行鑑別</li>
+</ul>
+<span id="more"></span>
+
+<hr>
+<h5 id="MAC是什麼東東？"><a href="#MAC是什麼東東？" class="headerlink" title="MAC是什麼東東？"></a>MAC是什麼東東？</h5><p>MAC是Message Authentication code的縮寫，由文件經過某些演算法(MAC algorith)產生的。MAC能夠擷取出文件訊息，這些訊息往往能代表該份文件的特徵，就像是指紋、DNA訊息一般，透過比對得出MAC，我們通常能得知文件的一致性。<br>如果從加解密的角度出發，我們可以把它當成一個Checksum，用其進行完整性或身分檢查。</p>
+<p><img src="https://lh3.googleusercontent.com/1sj77qCly4DcogfQTiFeLzeQtsuQsTzxxn9Lj32Qy4g=w977-h618-no" alt="MAC示例"></p>
+<p>要使用MAC，傳送方跟接受方需要共享一把鑰匙，這可以視為MAC演算法的一個參數。每當傳送方發送文件時，會經由演算法送出MAC，並附在文件中，接收方在收到文件後，會對收到的文件再做一次演算，如果兩方得出的MAC是相同的，可以假定這份文件沒被修改過。</p>
+<hr>
+<h5 id="CBC-Residue"><a href="#CBC-Residue" class="headerlink" title="CBC - Residue"></a>CBC - Residue</h5><p>CBC-Residue，其實是CBC的結果。其使用了2把Key，一把用於進行CBC模式，一把用於產生MAC(Residue)。CBC - Residue在加密過程幾乎沒有改變，唯一的不同是在最後一份明文Pn的加密，他分成兩個部份，我們把Pn和密文Cn-1做XOR產生的東東叫做Xn好了，一是Xn用Key1加密產生最後一份密文Cn，二是Xn用Key2加密產生一個渣渣，這個渣渣跟密文一點關係都沒有，我們把他當做一個校正碼。因為CBC特有的雪崩效應，使得先前的加密有ㄧ些小改變就會造成後續一連串的錯誤，所以我們才能把這個渣渣用做比對。</p>
+<hr>
+<h5 id="HMAC-Hash-MAC"><a href="#HMAC-Hash-MAC" class="headerlink" title="HMAC (Hash MAC)"></a>HMAC (Hash MAC)</h5><p>1.什麼是 Hash ?</p>
+<p>簡單來說，Hash是一個函式，即是數學上我們常常用F(X)表示的玩意兒，不過Hash函式有一個特性，<strong>Hash是單向的，我們無法透過結果去反推斷讀入的參數</strong>，即是說 H(A) &#x3D; B，如果我們只給你B，是無法透過運算反推代入參數為A的。</p>
+<p>若加解密的觀點來看，Hash做到的只有加密(從A變成B)，而沒辦法解密(B無法逆運算至A)，因此Hash只會用來做驗證。</p>
+<p>此外，除了難以逆運算外，一個好的Hash我們還會希望它</p>
+<ul>
+<li>電腦計算上高效</li>
+<li><strong>鍵的碰撞率低，也就是說，H(A)!&#x3D;H(B)。</strong></li>
+</ul>
+<p>我們之前提到過，MAC產生出的可以說是一份文件的指紋，讓我們透過它來辨識文件的完整性，如果說兩份不同的文件，會產生出同一份MAC，那這個MAC的可信度便有待加強。</p>
+<p>2.HMAC</p>
+<p>HashMAC就是用Hash來進行驗證，市面上常見的MD5即是如此。</p>
+<p>HMAC的原理很簡單，我們有相同訊息，相同Hash算法，那麼對一份相同的明文，Hash出來的東西就該相同。</p>
+<pre>傳送方
+假設我們要輸送一份訊息 M = ＂HelloWorld＂給接收方
+
+1. 在傳送端進行Hash : H(M)
+2. 將Hash的結果儲存為認證戳記 T = H(M)
+3. 將T與M一起送至接收方</pre>
+
+<pre>接收方
+我們現在收到了 M' 與 T'，因為不曉得改過沒有所以加了'
+
+1. 對 M' 進行 Hash : H(M')
+2. 將Hash的結果儲存為 T''
+3. 驗證 T' 是否等於 T''
+4. if(T'==T'') -> M == M'</pre>
+
+
+<p>或許你會有個小疑問，如果說我有能力更改 M’，那我應該也能更動 T’，然而這麼做的前提是必須持有 H(X) 與原訊息才行。</p>
+<hr>
+<h2 id="數位簽章"><a href="#數位簽章" class="headerlink" title="數位簽章"></a>數位簽章</h2><p>雖然叫做簽章，不過這跟紙筆一點關係也沒有，它是一種用來<em>辨別身分的加密型式</em>，嚴格來說，數位簽章是以數學演算法或其他運算方式，對要簽署的文件進行加密，所產生的結果。</p>
+<p>先看看怎麼產生一份簽章吧：</p>
+<ul>
+<li>有一份文件M</li>
+<li>計算文件的摘要 h &#x3D; Hash(M)</li>
+<li>加密這份摘要：Ek1(h)</li>
+<li>加密的結果便是簽章 S &#x3D; Ek(h)</li>
+</ul>
+<p>之後通過同時送出M與S給接收方，簽章的傳送就完成了。</p>
+<p>在接收方</p>
+<ul>
+<li>收到了文件M’與簽章S’</li>
+<li>計算出文件M’的摘要 h’ &#x3D; Hash(M’)</li>
+<li>解密收到的簽章S’: h’’ &#x3D; Dk2(S’)</li>
+<li>比對 h’ 與 h’’ 的關聯性</li>
+<li>傳送者的<strong>身分</strong>獲得認證</li>
+</ul>
+<p>目前看來，這些流程與MAC相當近似，但細節上略有不同。比如在資料處理上，MAC考慮的是這份文件到底有沒有被動過，而不在乎文件本身，所以MAC會破壞資料儲存結構，產出一個固定長度的驗證碼，比如MD5就是吃進一個不定長度的文件，把文件擠壓抽取成128位元（16位元組）的散列值，而數位簽章則會保存文件與憑證，你該知道這是我簽的，也該知道我簽了些什麼。</p>
+<p>不同之處還有MAC與簽章的協定方式：MAC是由傳送方跟接收方約定而成，建立一個除錯碼以及演算出除錯碼的方式，接收方在獲得密文後再行驗證。不過數位簽章無法這麼做，因為它是對外公開的，我們無法去約束對方怎麼簽，但能肯定的是，這份簽章只有他簽它的出來。</p>
+<p>此外，數位簽章與MAC最大的差異在於<strong>金鑰系統</strong>，MAC採用對稱式，而簽章是非對稱式，也就是說，<strong>數位簽章加密與解密用的金鑰是不同的，加密用的是私鑰，解密用的是公鑰</strong>，即是非對稱式金鑰系統。</p>
+<p>讓我們先回歸簽章的目的，它要能：</p>
+<ul>
+<li>驗證<ul>
+<li>簽章者身份 （不可偽冒）</li>
+<li>簽章日期、時間</li>
+<li>訊息完整性 （不可偽造）</li>
+</ul>
+</li>
+<li><span style="color:#99dd00">透過簽章，能讓第三方來解決紛爭 （不可否認性）</span></li>
+</ul>
+<p>首先，雙方鑰匙一定要不同，不然接收者就能用你的鑰匙來仿冒你。</p>
+<p>不過重點還是在這個第三方。數位簽章既為數位，我們能把它當成網路上的身分證，當社會大眾想驗明你的正身時，就把簽章蓋在他臉上，不過隨隨便便這麼做，也沒人知道你這簽章是真是假，你總不會打了好幾把鑰匙給別人，當然也不會傻到公開自己的私人鑰匙。</p>
+<p>那麼你也許會說：我們需要一把公開的鑰匙，問題就來了，我們該把鑰匙放在哪裡？會不會有人的鑰匙打得跟我一模一樣？或者很多人都有我的公開鑰匙，搞得大家不知道該跟誰拿，誰才是真的？</p>
+<p>一個可能的答案是：我們需要在你我之外，具備公信力的組織，在確認了我們的身份後，把私鑰留給你，在用你的姓名啦、申請日期啦、使用期限等等訊息混在一起作出你的公鑰，對外公開為<em>數位憑證</em>。以後大家想知道你之為你，算算你的數位憑證就成啦 ~</p>
+<hr>
+<h2 id="Authenticated-Encryption"><a href="#Authenticated-Encryption" class="headerlink" title="Authenticated Encryption"></a>Authenticated Encryption</h2><p>對於加密與驗證，剛接觸時往往會存在一個迷思。無論是加密或驗證 ：</p>
+<ul>
+<li>我們都有一個演算法，一份明文。</li>
+<li>我們都會把明文給塞到算法裡</li>
+<li>結果都會跑出一個看似亂碼的東東</li>
+</ul>
+<p>這個東東在加密上稱為密文，在鑑別上則叫做驗證。儘管跑出來的結果都不是給人看的(通常如此)，不過行為的目的卻大不相同。</p>
+<blockquote>
+<p>加密做的是：保證資料的安全性<br>驗證做的是：保證資料的完整性</p>
+</blockquote>
+<p>而雙管齊下的方法就是Authenticated encryption，直觀來看有這幾種型式：<br><img src="https://lh3.googleusercontent.com/uGotHGCNaNSnknU-0ecQ2XXm7Em8y8iGOA9tce2xNbY=w1143-h577-no" alt="3 ways of authenticated encryption"></p>
+<ul>
+<li>對 M 進行加密處理及用 M 產生信息戳記 T</li>
+<li>先用 M 產生信息戳記，再用信息戳記 T 及 M 放入加密器產生 C</li>
+<li>先對 M 進行加密處理，再用密文 C 產生信息戳記 T</li>
+</ul>
+<p>M(Message)是我們欲處理的信息，C(Ciphertext)得出的是密文，來保證M的安全性，T是鑑別戳記(Tag)，用來確認M的完整性。</p>
+<p>然而，這三種方法都存在一個缺點，即是對於<em>N</em>個區塊而言，他們往往要進行<em>2N</em>次的處理，因為加密跟認證分開來了。為了解決這個問題，出現了IAPM與OCB這兩種新模式。</p>
+<hr>
+<h5 id="IAPM"><a href="#IAPM" class="headerlink" title="IAPM"></a>IAPM</h5><p><img src="https://lh3.googleusercontent.com/ROJ40m32HUa83UekOJzeOKM9Y6PiyXtD9bUGV-OxjRA=w1143-h572-no" alt="IAPM"></p>
+<p>S0~SM是用做擾亂資料，因為這是個近似ECB的模式。Sigma P 是由P1 Xor P2… Xor Pm-1得出的，Cm即為產生的校正碼。</p>
+<hr>
+<h5 id="OCB-Offset-codebook-Mode"><a href="#OCB-Offset-codebook-Mode" class="headerlink" title="OCB (Offset codebook Mode)"></a>OCB (Offset codebook Mode)</h5><p>Checksum &#x3D; M1 ⊕…⊕ Mn，對於流程的更細部內容，<a href="http://web.cs.ucdavis.edu/~rogaway/ocb/ocb-faq.htm">參見這邊</a></p>
+<p><img src="https://lh3.googleusercontent.com/192-qOycchKGnjmb31-BGDuO2ayVYE9oER0uynFqXzU=w954-h509-no" alt="OCB"></p>
+<hr>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E8%A8%8A%E6%81%AF%E9%91%91%E5%88%A5/" rel="tag">#訊息鑑別</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/17/SocketProgramming/" rel="next" title="TCP Socket Programming 學習筆記">
+                <i class="fa fa-chevron-left"></i> TCP Socket Programming 學習筆記
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/13/Cpreprocessor/" rel="prev" title="前置處理器">
+                前置處理器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.webp"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zake7749" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AF%E8%A8%8A%E6%81%AF%E9%91%91%E5%88%A5%E6%8A%80%E8%A1%93%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">什麼是訊息鑑別技術？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#MAC%E6%98%AF%E4%BB%80%E9%BA%BC%E6%9D%B1%E6%9D%B1%EF%BC%9F"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">MAC是什麼東東？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CBC-Residue"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">CBC - Residue</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HMAC-Hash-MAC"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">HMAC (Hash MAC)</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B8%E4%BD%8D%E7%B0%BD%E7%AB%A0"><span class="nav-number">2.</span> <span class="nav-text">數位簽章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Authenticated-Encryption"><span class="nav-number">3.</span> <span class="nav-text">Authenticated Encryption</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#IAPM"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">IAPM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#OCB-Offset-codebook-Mode"><span class="nav-number">3.0.0.2.</span> <span class="nav-text">OCB (Offset codebook Mode)</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+          <div class="copyright" style="text-algin:center;">
+    
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart" style="color:rgb(255,160,180);"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Justin Yang</span>
+  </div>
+
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme modified from NexT
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+     .Mist
+    </a>
+  </div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div id="open-sidebar" class="open-sidebar close-this-one">
+      <i class="fa fa-map"></i>
+    </div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'zake7749';
+      var disqus_identifier = '2015/08/06/message_auth/';
+      var disqus_title = "訊息鑑別技術";
+      var disqus_url = 'https://zake7749.github.io/2015/08/06/message_auth/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  <script type="text/javascript" src="/js/src/jquery.tipsy.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+  
+
+  
+
+</body>
+</html>

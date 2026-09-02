@@ -1,0 +1,797 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next mist">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+  <meta name="google-site-verification" content="hgJ2TZ2JCDOeoLUxOIYJsYe2aeExlKUNmkVS5S41BLY" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux,C,Socket," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雷德麥的藏書閣" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+。 #}
+<meta name="description" content="有別於 IPC ，Socket 是用於網路上不同程序的互相溝通，比如說流覽器要怎麼跟 Web Server 拿取資料、Messenger 訊息的收發、 ftp 檔案的上傳與下載等等，在現今的網路編程中，Socket 可以說是無所不在。 至今 Socket 也應不同的需求或 OS 衍生出了不少版本，這篇筆計主要是討論 Linux 的 socket ，並專注在實現 TCP 編程：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP Socket Programming 學習筆記">
+<meta property="og:url" content="https://zake7749.github.io/2015/03/17/SocketProgramming/index.html">
+<meta property="og:site_name" content="雷德麥的藏書閣">
+<meta property="og:description" content="有別於 IPC ，Socket 是用於網路上不同程序的互相溝通，比如說流覽器要怎麼跟 Web Server 拿取資料、Messenger 訊息的收發、 ftp 檔案的上傳與下載等等，在現今的網路編程中，Socket 可以說是無所不在。 至今 Socket 也應不同的需求或 OS 衍生出了不少版本，這篇筆計主要是討論 Linux 的 socket ，並專注在實現 TCP 編程：">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/cqr4O2P.png">
+<meta property="article:published_time" content="2015-03-17T12:57:24.000Z">
+<meta property="article:modified_time" content="2015-03-17T12:57:24.000Z">
+<meta property="article:author" content="Justin Yang">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="Socket">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/cqr4O2P.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://zake7749.github.io/2015/03/17/SocketProgramming/"/>
+
+  <title> TCP Socket Programming 學習筆記 | 雷德麥的藏書閣 </title>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      <a class="menu-item website-text-logo" href="/">
+        <b class="text-logo-eg">R</b><span class="text-logo-ch"><h1 class="site-title">雷德麥的藏書閣</h1></span>
+      </a>
+      
+        
+        <a class="menu-item menu-item-categories red-tooltip" href="/categories" data-toggle="tooltip" title="文章目錄">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i>
+              <span class="sidebar-title">文章目錄</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-archives red-tooltip" href="/archives" data-toggle="tooltip" title="文章歸檔">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i>
+              <span class="sidebar-title">文章歸檔</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-tags red-tooltip" href="/tags" data-toggle="tooltip" title="特色標籤">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i>
+              <span class="sidebar-title">特色標籤</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-about red-tooltip" href="https://zake7749.github.io/AboutMe/index.html" data-toggle="tooltip" title="關於作者">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i>
+              <span class="sidebar-title">關於作者</span>
+            
+          </a>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+ </div>
+      <ul id="btm-menu" class="menu cus-menu">
+        <a id="cus-object-group" href="https://csienckugrade3.hackpad.com/" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="CS Notes">
+          <i class="menu-item-icon fa fa fa-object-group"></i>
+          <span class="sidebar-title">CS Note pads</span>
+        </a>
+        <a id="cus-map" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="關閉側邊欄">
+          <i class="menu-item-icon fa fa-map"></i>
+          <span class="sidebar-title">關閉側邊欄</span>
+        </a>
+        <a id="cus-lightbulb" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="施工中 ─=≡Σ(((っﾟДﾟ)っ">
+          <i class="menu-item-icon fa fa-lightbulb-o"></i>
+          <span class="sidebar-title">顯示模式</span>
+        </a>
+      </ul>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal  post-index-border" itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                TCP Socket Programming 學習筆記
+              
+            
+          </h1>
+        
+
+        
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2015-03-17T20:57:24+08:00" content="2015-03-17">
+              2015-03-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">程式語言</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/03/17/SocketProgramming/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/17/SocketProgramming/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>有別於 IPC ，Socket 是用於網路上不同程序的互相溝通，比如說流覽器要怎麼跟 Web Server 拿取資料、Messenger 訊息的收發、 ftp 檔案的上傳與下載等等，在現今的網路編程中，Socket 可以說是無所不在。</p>
+<p>至今 Socket 也應不同的需求或 OS 衍生出了不少版本，這篇筆計主要是討論 Linux 的 <code>socket</code> ，並專注在實現 TCP 編程：</p>
+<p><img src="https://i.imgur.com/cqr4O2P.png" alt="TCP"></p>
+<span id="more"></span>
+
+<h2 id="先從建立一個-Socket-出發"><a href="#先從建立一個-Socket-出發" class="headerlink" title="先從建立一個 Socket 出發"></a>先從建立一個 Socket 出發</h2><p>使用<code>socket(int,int,int)</code>，它能幫助我們在kernel中建立一個socket，並傳回對該socket的<a href="https://zh.wikipedia.org/wiki/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6">檔案描述符</a>。</p>
+<h3 id="Prototype"><a href="#Prototype" class="headerlink" title="Prototype"></a>Prototype</h3><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> socket(<span class="type">int</span> <span class="keyword">domain</span>, <span class="type">int</span> <span class="keyword">type</span>, <span class="type">int</span> protocol);</span><br></pre></td></tr></table></figure>
+<h3 id="Arguments"><a href="#Arguments" class="headerlink" title="Arguments"></a>Arguments</h3><h4 id="domain"><a href="#domain" class="headerlink" title="domain"></a>domain</h4><p>定義了socket要在哪個領域溝通，常用的有2種：</p>
+<ul>
+<li>AF_UNIX&#x2F;AF_LOCAL：用在本機<strong>程序與程序</strong>間的傳輸，讓兩個程序共享一個檔案系統(file system)</li>
+<li>AF_INET , AF_INET6 ：讓兩台主機<strong>透過網路</strong>進行資料傳輸，AF_INET使用的是IPv4協定，而AF_INET6則是IPv6協定。</li>
+</ul>
+<h4 id="type"><a href="#type" class="headerlink" title="type"></a>type</h4><p>說明這個socket是傳輸的手段為何：</p>
+<ul>
+<li>SOCK_STREAM：提供一個序列化的連接導向位元流，可以做位元流傳輸。對應的protocol為TCP。</li>
+<li>SOCK_DGRAM：提供的是一個一個的資料包(datagram)，對應的protocol為UDP</li>
+</ul>
+<h4 id="protocol"><a href="#protocol" class="headerlink" title="protocol"></a>protocol</h4><p>設定socket的協定標準，一般來說都會設為0，讓kernel選擇type對應的默認協議。</p>
+<h4 id="Return-Value"><a href="#Return-Value" class="headerlink" title="Return Value"></a>Return Value</h4><p>成功產生socket時，會返回該socket的檔案描述符(socket file descriptor)，我們可以透過它來操作socket。若socket創建失敗則會回傳-1(INVALID_SOCKET)。</p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc , <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> sockfd = <span class="number">0</span>;</span><br><span class="line">    sockfd = <span class="built_in">socket</span>(AF_INET , SOCK_STREAM , <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (socket_fd == <span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Fail to create a socket.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="從Client連向Server"><a href="#從Client連向Server" class="headerlink" title="從Client連向Server"></a>從Client連向Server</h2><p>客戶端要連向伺服端，需要先知道並儲存伺服端的IP及port，<code>netinet/in.h</code>已經為我們定義好了一個<code>struct sockaddr_in</code>來儲存這些資訊：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IPv4 AF_INET sockets:</span></span><br><span class="line"><span class="comment">// IPv6參見 sockaddr_in6</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">sockaddr_in</span> &#123;</span><br><span class="line">    <span class="type">short</span>            sin_family;   <span class="comment">// AF_INET,因為這是IPv4;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">short</span>   sin_port;     <span class="comment">// 儲存port No</span></span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">in_addr</span>   sin_addr;     <span class="comment">// 參見struct in_addr</span></span><br><span class="line">    <span class="type">char</span>             sin_zero[<span class="number">8</span>];  <span class="comment">// Not used, must be zero */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">in_addr</span> &#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> s_addr;          <span class="comment">// load with inet_pton()</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>有了IP跟port，我們就能使用<code>connect(int struct sockaddr, int)</code>進行客戶端與伺服端之間的連線。</p>
+<h3 id="Prototype-1"><a href="#Prototype-1" class="headerlink" title="Prototype"></a>Prototype</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">connect</span><span class="params">(<span class="type">int</span> sd, <span class="keyword">struct</span> sockaddr *server, <span class="type">int</span> addr_len)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="Arguments-1"><a href="#Arguments-1" class="headerlink" title="Arguments"></a>Arguments</h3><h4 id="sd"><a href="#sd" class="headerlink" title="sd"></a>sd</h4><p>sd是socket的描述符，即是前個Example的<code>sockfd</code></p>
+<h4 id="server"><a href="#server" class="headerlink" title="server"></a>server</h4><p>負責提供關於這個socket的所有信息，以下是一個簡單的設定例子：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct sockaddr_in info<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">bzero<span class="punctuation">(</span>&amp;info,sizeof<span class="punctuation">(</span>info<span class="punctuation">)</span><span class="punctuation">)</span><span class="comment">;//初始化，將struct涵蓋的bits設為0</span></span><br><span class="line">info.sin_family = PF_INET<span class="comment">;//sockaddr_in為Ipv4結構</span></span><br><span class="line">info.sin_addr.s_addr = inet_addr<span class="punctuation">(</span><span class="string">&quot;123.123.13.12&quot;</span><span class="punctuation">)</span><span class="comment">;//IP address</span></span><br><span class="line">info.sin_port = htons<span class="punctuation">(</span><span class="number">8080</span><span class="punctuation">)</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="iner-addr-是什麼東東？"><a href="#iner-addr-是什麼東東？" class="headerlink" title="iner_addr()是什麼東東？"></a>iner_addr()是什麼東東？</h5><blockquote>
+<p>210.25.132.181屬於IP地址的ASCII表示法，也就是字符串形式。英語叫做IPv4 numbers-and-dots notation。<br>如果把210.25.132.181轉換為整數形式，是3524887733，這個就是整數形式的IP地址。英語叫做binary data。（其實binary是二進制的意思）<br>– 出自<a href="http://roclinux.cn/?p=1160">《Linux大棚》</a></p>
+</blockquote>
+<p><code>inet_addr()</code>便負責將字串型式的IP轉換為整數型式的IP。</p>
+<h5 id="那htons-又做了什麼？"><a href="#那htons-又做了什麼？" class="headerlink" title="那htons()又做了什麼？"></a>那htons()又做了什麼？</h5><p>首先，我們要知道網路端的字節序與本機端的<a href="https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82%E5%BA%8F">字節序</a>可能不一致。</p>
+<p>網路端總是用Big endian，而本機端卻要視處理器體系而定，比如x86就跟網路端的看法不同，使用的是Little endian。</p>
+<p>而<code>htons()</code>就是Host TO Network Short integer的縮寫，它將本機端的字節序(endian)轉換成了網路端的字節序。根據這個命名法來推斷，htons()應該還有一群好朋友：htonl()、ntohl()、ntohs()，<a href="http://my.oschina.net/alphajay/blog/4277">不過這又是另一個故事了。</a></p>
+<h4 id="addr-len"><a href="#addr-len" class="headerlink" title="addr_len"></a>addr_len</h4><p>它的意義簡單明瞭，就是*server的大小</p>
+<h4 id="Return-value"><a href="#Return-value" class="headerlink" title="Return value"></a>Return value</h4><p>嗯……如果成功了就回傳<code>0</code>，不然就回傳<code>-1</code></p>
+<h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h3><p>乘接上面所有內容，目前進度已經達到2&#x2F;5。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span> </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc , <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//socket的建立</span></span><br><span class="line">    <span class="type">int</span> sockfd = <span class="number">0</span>;</span><br><span class="line">    sockfd = <span class="built_in">socket</span>(AF_INET , SOCK_STREAM , <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (sockfd == <span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Fail to create a socket.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//socket的連線</span></span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">sockaddr_in</span> info;</span><br><span class="line">    <span class="built_in">bzero</span>(&amp;info,<span class="keyword">sizeof</span>(info));</span><br><span class="line">    info.sin_family = PF_INET;</span><br><span class="line">    info.sin_addr.s_addr = <span class="built_in">inet_addr</span>(<span class="string">&quot;127.0.0.1&quot;</span>);</span><br><span class="line">    info.sin_port = <span class="built_in">htons</span>(<span class="number">8080</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> err = <span class="built_in">connect</span>(sockfd,(<span class="keyword">struct</span> sockaddr *)&amp;info,<span class="keyword">sizeof</span>(info));</span><br><span class="line">    <span class="keyword">if</span>(err==<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Connection error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="接收資料"><a href="#接收資料" class="headerlink" title="接收資料"></a>接收資料</h2><p>Socket存在多種接收方式，從最基本的<code>read()</code>到其衍生的recv()、recvfrom()、recvfmsg()等。這邊主要介紹recv()的功能。</p>
+<h3 id="Prototype-2"><a href="#Prototype-2" class="headerlink" title="Prototype"></a>Prototype</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">ssize_t</span> <span class="title">recv</span><span class="params">(<span class="type">int</span> sockfd, <span class="type">void</span> *buf, <span class="type">size_t</span> len, <span class="type">int</span> flags)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Arguments-2"><a href="#Arguments-2" class="headerlink" title="Arguments"></a>Arguments</h3><h4 id="sockfd"><a href="#sockfd" class="headerlink" title="sockfd"></a>sockfd</h4><p>sd是socket的描述符，即是前個Example的<code>sockfd</code></p>
+<h4 id="buf"><a href="#buf" class="headerlink" title="buf"></a>buf</h4><p>一個緩衝區，讓Socket能把接收到的資料塞進裡頭。</p>
+<h4 id="len"><a href="#len" class="headerlink" title="len"></a>len</h4><p>即是buf的大小</p>
+<h4 id="flags"><a href="#flags" class="headerlink" title="flags"></a>flags</h4><p>相比最基本的<code>read()</code>，<code>recv()</code>的參數中多了這個旗標，flags代表接收的相關細節，通常是設定為0，也存在其他巨集處理一些特殊要求，比如blocking&#x2F;nonblocking與超額接收等等，這部分細節可參見<a href="http://man7.org/linux/man-pages/man2/recv.2.html">man-pages</a>。</p>
+<h4 id="Return-value-1"><a href="#Return-value-1" class="headerlink" title="Return value"></a>Return value</h4><p>recv()會回傳接收到了多少個位元組，若在接收時發生的錯誤則會傳回<code>-1</code>。</p>
+<p>我想值得一提的是回傳<strong>0</strong>的情形，可以考慮為以下三者：</p>
+<ul>
+<li>就真的是 0 bytes</li>
+<li>兩方Socket設定的domain不一致，比如一方為網路一方為本機</li>
+<li>當一方在正常情況下結束連線，也會回傳 0 (end-of-file)</li>
+</ul>
+<h3 id="Example-2"><a href="#Example-2" class="headerlink" title="Example"></a>Example</h3><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">char buffer[<span class="number">100</span>]<span class="comment">;</span></span><br><span class="line">recv<span class="punctuation">(</span>sockfd,buf,sizeof<span class="punctuation">(</span>buf<span class="punctuation">)</span>,<span class="number">0</span><span class="punctuation">)</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="傳送資料"><a href="#傳送資料" class="headerlink" title="傳送資料"></a>傳送資料</h2><p>Socket的傳送與接收大同小異，同樣有很多傳送手段(如<code>write()</code>、<code>send()</code>、<code>sendto()</code>等等)，也都是給定三個東西：</p>
+<ul>
+<li>Socket 描述符</li>
+<li>一個緩衝區</li>
+<li>緩衝區的大小</li>
+</ul>
+<p>就差在接收是把資料往緩衝區裡塞，而傳送是把緩衝區向外倒而已。這裡主要介紹</p>
+<h3 id="Prototype-3"><a href="#Prototype-3" class="headerlink" title="Prototype"></a>Prototype</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">ssize_t</span> <span class="title">send</span><span class="params">(<span class="type">int</span> sockfd, <span class="type">const</span> <span class="type">void</span> *buf, <span class="type">size_t</span> len, <span class="type">int</span> flags)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Arguments-3"><a href="#Arguments-3" class="headerlink" title="Arguments"></a>Arguments</h3><p>Σ(・ω・ノ)ノ <em>複製貼上警報注意</em></p>
+<h4 id="sockfd-1"><a href="#sockfd-1" class="headerlink" title="sockfd"></a>sockfd</h4><p>sockfd是socket的描述符，即是前個Example的<code>sockfd</code></p>
+<h4 id="buf-1"><a href="#buf-1" class="headerlink" title="buf"></a>buf</h4><p>一個緩衝區，讓Socket能把接收到的資料塞進裡頭。</p>
+<h4 id="len-1"><a href="#len-1" class="headerlink" title="len"></a>len</h4><p>即是buf的大小</p>
+<h4 id="flags-1"><a href="#flags-1" class="headerlink" title="flags"></a>flags</h4><p>相比最基本的<code>write()</code>，<code>send()</code>的參數中多了這個旗標，flags代表接收的相關細節，通常是設定為0，也存在其他巨集處理一些特殊要求，比如blocking&#x2F;nonblocking與超額傳輸等等，這部分細節可參見<a href="http://www.linuxhowtos.org/manpages/2/send.htm">man-pages</a>。</p>
+<h4 id="Return-value-2"><a href="#Return-value-2" class="headerlink" title="Return value"></a>Return value</h4><p>如果輸送成功，會回傳共送出了多少個位元組，傳輸失敗則回傳<code>-1</code>。</p>
+<h3 id="Example-3"><a href="#Example-3" class="headerlink" title="Example"></a>Example</h3><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">char buf[] = <span class="string">&quot;Hi there!&quot;</span><span class="comment">;</span></span><br><span class="line">send<span class="punctuation">(</span>sockfd,buf,sizeof<span class="punctuation">(</span>buf<span class="punctuation">)</span>,<span class="number">0</span><span class="punctuation">)</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="綁定Server端的地址"><a href="#綁定Server端的地址" class="headerlink" title="綁定Server端的地址"></a>綁定Server端的地址</h2><p>connect()讓我們到別人家去取用資料，bind()則是把自己家地址綁在Socket身上。不論當Clinet或當Server，我們都需要給Socket一份地址，同樣的，能以結構<code>sockaddr_in</code>來儲存資料。</p>
+<h3 id="Prototype-4"><a href="#Prototype-4" class="headerlink" title="Prototype"></a>Prototype</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">bind</span><span class="params">(<span class="type">int</span> sockfd, <span class="keyword">struct</span> sockaddr* addr, <span class="type">int</span> addrlen)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Arguments-4"><a href="#Arguments-4" class="headerlink" title="Arguments"></a>Arguments</h3><h4 id="sockfd-2"><a href="#sockfd-2" class="headerlink" title="sockfd"></a>sockfd</h4><p>socket的描述符</p>
+<h4 id="addr"><a href="#addr" class="headerlink" title="addr"></a>addr</h4><p>與<code>connetc()</code>的 server 的設定大同小異，值得一提的是s_addr，這部分常有人設定為<code>info.sin_addr.s_addr = INADDR_ANY</code>，<code>INADDR_ANY</code>表示我不在乎loacl IP是什麼，讓kernel替我決定就好。</p>
+<h4 id="addrlen"><a href="#addrlen" class="headerlink" title="addrlen"></a>addrlen</h4><p>即是 *addr的大小</p>
+<h4 id="Return-value-3"><a href="#Return-value-3" class="headerlink" title="Return value"></a>Return value</h4><p><code>0</code>表示綁定成功，<code>-1</code>則表失敗</p>
+<h2 id="設置Server的監聽隊列"><a href="#設置Server的監聽隊列" class="headerlink" title="設置Server的監聽隊列"></a>設置Server的監聽隊列</h2><p>如果說IP對應到一座城市，Port就是城市的港口。在<code>bind()</code>告訴別人我們住在哪裡，並該從哪座港口登陸後，我們必需反覆去查看客人來了沒有，這個過程就稱為監聽，對應到了Socket的<code>listen()</code>。</p>
+<p>由於Server一次只能服務一個人，當港口出入頻繁時，我們得讓來客照拜訪的先後排成隊列，即是說每當一個請求送到Server，Socket就會把它丟到監聽隊列的尾端。</p>
+<h3 id="Prototype-5"><a href="#Prototype-5" class="headerlink" title="Prototype"></a>Prototype</h3><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">listen</span><span class="params">(<span class="type">int</span> sockfd, <span class="type">int</span> backlog)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Argument"><a href="#Argument" class="headerlink" title="Argument"></a>Argument</h4><h5 id="sockfd-3"><a href="#sockfd-3" class="headerlink" title="sockfd"></a>sockfd</h5><p>sockfd是socket的描述符，即是前個Example的<code>sockfd</code></p>
+<h5 id="backlog"><a href="#backlog" class="headerlink" title="backlog"></a>backlog</h5><p>規定最多能有幾個人能連入server，即時說這個隊列究竟有多大</p>
+<h4 id="Return-value-4"><a href="#Return-value-4" class="headerlink" title="Return value"></a>Return value</h4><p>成功為<code>0</code>，產生錯誤則回傳<code>-1</code></p>
+<h3 id="Example-4"><a href="#Example-4" class="headerlink" title="Example"></a>Example</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">listen</span>(sockfd, <span class="number">5</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Server-接收請求"><a href="#Server-接收請求" class="headerlink" title="Server 接收請求"></a>Server 接收請求</h2><p>Socket在港口等了又等，終於有客人拜訪了，我們可以用函式<code>accept()</code>去接見這名客人。當<code>accept()</code>被調用時，它會為該請求產生出一個新的Socket，並把這個請求從監聽隊列剔除掉。</p>
+<h3 id="Prototype-6"><a href="#Prototype-6" class="headerlink" title="Prototype"></a>Prototype</h3><p>int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);</p>
+<h4 id="Argument-1"><a href="#Argument-1" class="headerlink" title="Argument"></a>Argument</h4><h5 id="sockfd-4"><a href="#sockfd-4" class="headerlink" title="sockfd"></a>sockfd</h5><p>毫無反應，就是個socket的描述符</p>
+<h5 id="addr-1"><a href="#addr-1" class="headerlink" title="addr"></a>addr</h5><p>一樣是個描述Socket資訊的結構，不過他是一個空容器，用於儲存接收到的Client端相關資訊，比如port、IP等等。</p>
+<h5 id="addrlen-1"><a href="#addrlen-1" class="headerlink" title="addrlen"></a>addrlen</h5><p>描述的是addr的大小</p>
+<h4 id="Return-value-5"><a href="#Return-value-5" class="headerlink" title="Return value"></a>Return value</h4><p>它會傳回一個新的Socket描述符，以後和Client端交談的是這個新創出的Socket，如果失敗則傳回<code>-1</code>(INVALID_SOCKET)</p>
+<h3 id="Example-5"><a href="#Example-5" class="headerlink" title="Example"></a>Example</h3><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int forClientSockfd<span class="comment">;</span></span><br><span class="line">struct sockaddr_in client_info<span class="comment">;</span></span><br><span class="line">int addrlen = sizeof<span class="punctuation">(</span>client_addr<span class="punctuation">)</span><span class="comment">;</span></span><br><span class="line"></span><br><span class="line">forClientSockfd = accept<span class="punctuation">(</span>sockfd,<span class="punctuation">(</span>structsockaddr*<span class="punctuation">)</span> &amp;client_addr, &amp;addrlen<span class="punctuation">)</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Server-範例程式"><a href="#Server-範例程式" class="headerlink" title="Server 範例程式"></a>Server 範例程式</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc , <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//socket的建立</span></span><br><span class="line">    <span class="type">char</span> inputBuffer[<span class="number">256</span>] = &#123;&#125;;</span><br><span class="line">    <span class="type">char</span> message[] = &#123;<span class="string">&quot;Hi,this is server.\n&quot;</span>&#125;;</span><br><span class="line">    <span class="type">int</span> sockfd = <span class="number">0</span>,forClientSockfd = <span class="number">0</span>;</span><br><span class="line">    sockfd = <span class="built_in">socket</span>(AF_INET , SOCK_STREAM , <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (sockfd == <span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Fail to create a socket.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//socket的連線</span></span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">sockaddr_in</span> serverInfo,clientInfo;</span><br><span class="line">    <span class="type">int</span> addrlen = <span class="keyword">sizeof</span>(clientInfo);</span><br><span class="line">    <span class="built_in">bzero</span>(&amp;serverInfo,<span class="keyword">sizeof</span>(serverInfo));</span><br><span class="line"></span><br><span class="line">    serverInfo.sin_family = PF_INET;</span><br><span class="line">    serverInfo.sin_addr.s_addr = INADDR_ANY;</span><br><span class="line">    serverInfo.sin_port = <span class="built_in">htons</span>(<span class="number">8700</span>);</span><br><span class="line">    <span class="built_in">bind</span>(sockfd,(<span class="keyword">struct</span> sockaddr *)&amp;serverInfo,<span class="keyword">sizeof</span>(serverInfo));</span><br><span class="line">    <span class="built_in">listen</span>(sockfd,<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">        forClientSockfd = <span class="built_in">accept</span>(sockfd,(<span class="keyword">struct</span> sockaddr*) &amp;clientInfo, &amp;addrlen);</span><br><span class="line">        <span class="built_in">send</span>(forClientSockfd,message,<span class="keyword">sizeof</span>(message),<span class="number">0</span>);</span><br><span class="line">        <span class="built_in">recv</span>(forClientSockfd,inputBuffer,<span class="keyword">sizeof</span>(inputBuffer),<span class="number">0</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Get:%s\n&quot;</span>,inputBuffer);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="Client-範例程式"><a href="#Client-範例程式" class="headerlink" title="Client 範例程式"></a>Client 範例程式</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc , <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//socket的建立</span></span><br><span class="line">    <span class="type">int</span> sockfd = <span class="number">0</span>;</span><br><span class="line">    sockfd = <span class="built_in">socket</span>(AF_INET , SOCK_STREAM , <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (sockfd == <span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Fail to create a socket.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//socket的連線</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">sockaddr_in</span> info;</span><br><span class="line">    <span class="built_in">bzero</span>(&amp;info,<span class="keyword">sizeof</span>(info));</span><br><span class="line">    info.sin_family = PF_INET;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//localhost test</span></span><br><span class="line">    info.sin_addr.s_addr = <span class="built_in">inet_addr</span>(<span class="string">&quot;127.0.0.1&quot;</span>);</span><br><span class="line">    info.sin_port = <span class="built_in">htons</span>(<span class="number">8700</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> err = <span class="built_in">connect</span>(sockfd,(<span class="keyword">struct</span> sockaddr *)&amp;info,<span class="keyword">sizeof</span>(info));</span><br><span class="line">    <span class="keyword">if</span>(err==<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Connection error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//Send a message to server</span></span><br><span class="line">    <span class="type">char</span> message[] = &#123;<span class="string">&quot;Hi there&quot;</span>&#125;;</span><br><span class="line">    <span class="type">char</span> receiveMessage[<span class="number">100</span>] = &#123;&#125;;</span><br><span class="line">    <span class="built_in">send</span>(sockfd,message,<span class="keyword">sizeof</span>(message),<span class="number">0</span>);</span><br><span class="line">     <span class="built_in">recv</span>(sockfd,receiveMessage,<span class="keyword">sizeof</span>(receiveMessage),<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,receiveMessage);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;close Socket\n&quot;</span>);</span><br><span class="line">    <span class="built_in">close</span>(sockfd);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
+          
+            <a href="/tags/C/" rel="tag">#C</a>
+          
+            <a href="/tags/Socket/" rel="tag">#Socket</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/10/30/C4labsLinux/" rel="next" title="C4Labs Linux講座">
+                <i class="fa fa-chevron-left"></i> C4Labs Linux講座
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/06/message_auth/" rel="prev" title="訊息鑑別技術">
+                訊息鑑別技術 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.webp"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zake7749" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E5%BE%9E%E5%BB%BA%E7%AB%8B%E4%B8%80%E5%80%8B-Socket-%E5%87%BA%E7%99%BC"><span class="nav-number">1.</span> <span class="nav-text">先從建立一個 Socket 出發</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype"><span class="nav-number">1.1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arguments"><span class="nav-number">1.2.</span> <span class="nav-text">Arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#domain"><span class="nav-number">1.2.1.</span> <span class="nav-text">domain</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#type"><span class="nav-number">1.2.2.</span> <span class="nav-text">type</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#protocol"><span class="nav-number">1.2.3.</span> <span class="nav-text">protocol</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return-Value"><span class="nav-number">1.2.4.</span> <span class="nav-text">Return Value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">1.3.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%9EClient%E9%80%A3%E5%90%91Server"><span class="nav-number">2.</span> <span class="nav-text">從Client連向Server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-1"><span class="nav-number">2.1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arguments-1"><span class="nav-number">2.2.</span> <span class="nav-text">Arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sd"><span class="nav-number">2.2.1.</span> <span class="nav-text">sd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#server"><span class="nav-number">2.2.2.</span> <span class="nav-text">server</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#iner-addr-%E6%98%AF%E4%BB%80%E9%BA%BC%E6%9D%B1%E6%9D%B1%EF%BC%9F"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">iner_addr()是什麼東東？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%82%A3htons-%E5%8F%88%E5%81%9A%E4%BA%86%E4%BB%80%E9%BA%BC%EF%BC%9F"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">那htons()又做了什麼？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#addr-len"><span class="nav-number">2.2.3.</span> <span class="nav-text">addr_len</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return-value"><span class="nav-number">2.2.4.</span> <span class="nav-text">Return value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-1"><span class="nav-number">2.3.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6%E8%B3%87%E6%96%99"><span class="nav-number">3.</span> <span class="nav-text">接收資料</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-2"><span class="nav-number">3.1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arguments-2"><span class="nav-number">3.2.</span> <span class="nav-text">Arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sockfd"><span class="nav-number">3.2.1.</span> <span class="nav-text">sockfd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#buf"><span class="nav-number">3.2.2.</span> <span class="nav-text">buf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#len"><span class="nav-number">3.2.3.</span> <span class="nav-text">len</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flags"><span class="nav-number">3.2.4.</span> <span class="nav-text">flags</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return-value-1"><span class="nav-number">3.2.5.</span> <span class="nav-text">Return value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-2"><span class="nav-number">3.3.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%82%B3%E9%80%81%E8%B3%87%E6%96%99"><span class="nav-number">4.</span> <span class="nav-text">傳送資料</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-3"><span class="nav-number">4.1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arguments-3"><span class="nav-number">4.2.</span> <span class="nav-text">Arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sockfd-1"><span class="nav-number">4.2.1.</span> <span class="nav-text">sockfd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#buf-1"><span class="nav-number">4.2.2.</span> <span class="nav-text">buf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#len-1"><span class="nav-number">4.2.3.</span> <span class="nav-text">len</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flags-1"><span class="nav-number">4.2.4.</span> <span class="nav-text">flags</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return-value-2"><span class="nav-number">4.2.5.</span> <span class="nav-text">Return value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-3"><span class="nav-number">4.3.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B6%81%E5%AE%9AServer%E7%AB%AF%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="nav-number">5.</span> <span class="nav-text">綁定Server端的地址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-4"><span class="nav-number">5.1.</span> <span class="nav-text">Prototype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arguments-4"><span class="nav-number">5.2.</span> <span class="nav-text">Arguments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sockfd-2"><span class="nav-number">5.2.1.</span> <span class="nav-text">sockfd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#addr"><span class="nav-number">5.2.2.</span> <span class="nav-text">addr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#addrlen"><span class="nav-number">5.2.3.</span> <span class="nav-text">addrlen</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return-value-3"><span class="nav-number">5.2.4.</span> <span class="nav-text">Return value</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%AD%E7%BD%AEServer%E7%9A%84%E7%9B%A3%E8%81%BD%E9%9A%8A%E5%88%97"><span class="nav-number">6.</span> <span class="nav-text">設置Server的監聽隊列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-5"><span class="nav-number">6.1.</span> <span class="nav-text">Prototype</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Argument"><span class="nav-number">6.1.1.</span> <span class="nav-text">Argument</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#sockfd-3"><span class="nav-number">6.1.1.1.</span> <span class="nav-text">sockfd</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#backlog"><span class="nav-number">6.1.1.2.</span> <span class="nav-text">backlog</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return-value-4"><span class="nav-number">6.1.2.</span> <span class="nav-text">Return value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-4"><span class="nav-number">6.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server-%E6%8E%A5%E6%94%B6%E8%AB%8B%E6%B1%82"><span class="nav-number">7.</span> <span class="nav-text">Server 接收請求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prototype-6"><span class="nav-number">7.1.</span> <span class="nav-text">Prototype</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Argument-1"><span class="nav-number">7.1.1.</span> <span class="nav-text">Argument</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#sockfd-4"><span class="nav-number">7.1.1.1.</span> <span class="nav-text">sockfd</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#addr-1"><span class="nav-number">7.1.1.2.</span> <span class="nav-text">addr</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#addrlen-1"><span class="nav-number">7.1.1.3.</span> <span class="nav-text">addrlen</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Return-value-5"><span class="nav-number">7.1.2.</span> <span class="nav-text">Return value</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-5"><span class="nav-number">7.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server-%E7%AF%84%E4%BE%8B%E7%A8%8B%E5%BC%8F"><span class="nav-number">8.</span> <span class="nav-text">Server 範例程式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client-%E7%AF%84%E4%BE%8B%E7%A8%8B%E5%BC%8F"><span class="nav-number">9.</span> <span class="nav-text">Client 範例程式</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+          <div class="copyright" style="text-algin:center;">
+    
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart" style="color:rgb(255,160,180);"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Justin Yang</span>
+  </div>
+
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme modified from NexT
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+     .Mist
+    </a>
+  </div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div id="open-sidebar" class="open-sidebar close-this-one">
+      <i class="fa fa-map"></i>
+    </div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'zake7749';
+      var disqus_identifier = '2015/03/17/SocketProgramming/';
+      var disqus_title = "TCP Socket Programming 學習筆記";
+      var disqus_url = 'https://zake7749.github.io/2015/03/17/SocketProgramming/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  <script type="text/javascript" src="/js/src/jquery.tipsy.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,753 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next mist">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+  <meta name="google-site-verification" content="hgJ2TZ2JCDOeoLUxOIYJsYe2aeExlKUNmkVS5S41BLY" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="密碼學," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雷德麥的藏書閣" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+。 #}
+<meta name="description" content="古典密碼學已經被電腦打爆了，但這跟它重不重要一點關係都沒有。── 我的資安導師總是這樣嘮叨著……  最近重新改寫以前的Blog，終於理解這句話的意涵。舉凡近代加密演算法，多為古典密碼學手段的組合，只不過以前人力與能力都不及。 比方說你不會想把16個字母放進一個矩陣中，每個查表代換10次，再每行平移幾個單位，然後各別乘上一個矩陣，最後再和別的矩陣做XOR邏輯判斷。 Welcome to moder">
+<meta property="og:type" content="article">
+<meta property="og:title" content="古典密碼學">
+<meta property="og:url" content="https://zake7749.github.io/2015/08/15/classical_cipher/index.html">
+<meta property="og:site_name" content="雷德麥的藏書閣">
+<meta property="og:description" content="古典密碼學已經被電腦打爆了，但這跟它重不重要一點關係都沒有。── 我的資安導師總是這樣嘮叨著……  最近重新改寫以前的Blog，終於理解這句話的意涵。舉凡近代加密演算法，多為古典密碼學手段的組合，只不過以前人力與能力都不及。 比方說你不會想把16個字母放進一個矩陣中，每個查表代換10次，再每行平移幾個單位，然後各別乘上一個矩陣，最後再和別的矩陣做XOR邏輯判斷。 Welcome to moder">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://3.bp.blogspot.com/-cIUNh6ALKzs/VGV1ikUgOKI/AAAAAAAAAL0/t2mG1J9F1qA/s320/scytale.gif">
+<meta property="og:image" content="https://3.bp.blogspot.com/-awX-BGDZDMM/VGYhoh_nnsI/AAAAAAAAAMc/vq9awjlikUQ/s1600/CardanGrille.png">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/4/41/English-slf.png">
+<meta property="og:image" content="https://1.bp.blogspot.com/-CLC48A92h_w/VJFiTQvAhCI/AAAAAAAAAQk/XOSwXGlgeho/s1600/hILL%2BCIPHER.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-DwYbQG7U6u0/VGWGDLIZM-I/AAAAAAAAAMM/tXsTlLvCw14/s400/300px-Vigene%CC%80re_square.svg.png">
+<meta property="article:published_time" content="2015-08-15T12:03:07.000Z">
+<meta property="article:modified_time" content="2015-08-15T12:03:07.000Z">
+<meta property="article:author" content="Justin Yang">
+<meta property="article:tag" content="密碼學">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://3.bp.blogspot.com/-cIUNh6ALKzs/VGV1ikUgOKI/AAAAAAAAAL0/t2mG1J9F1qA/s320/scytale.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://zake7749.github.io/2015/08/15/classical_cipher/"/>
+
+  <title> 古典密碼學 | 雷德麥的藏書閣 </title>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      <a class="menu-item website-text-logo" href="/">
+        <b class="text-logo-eg">R</b><span class="text-logo-ch"><h1 class="site-title">雷德麥的藏書閣</h1></span>
+      </a>
+      
+        
+        <a class="menu-item menu-item-categories red-tooltip" href="/categories" data-toggle="tooltip" title="文章目錄">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i>
+              <span class="sidebar-title">文章目錄</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-archives red-tooltip" href="/archives" data-toggle="tooltip" title="文章歸檔">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i>
+              <span class="sidebar-title">文章歸檔</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-tags red-tooltip" href="/tags" data-toggle="tooltip" title="特色標籤">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i>
+              <span class="sidebar-title">特色標籤</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-about red-tooltip" href="https://zake7749.github.io/AboutMe/index.html" data-toggle="tooltip" title="關於作者">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i>
+              <span class="sidebar-title">關於作者</span>
+            
+          </a>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+ </div>
+      <ul id="btm-menu" class="menu cus-menu">
+        <a id="cus-object-group" href="https://csienckugrade3.hackpad.com/" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="CS Notes">
+          <i class="menu-item-icon fa fa fa-object-group"></i>
+          <span class="sidebar-title">CS Note pads</span>
+        </a>
+        <a id="cus-map" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="關閉側邊欄">
+          <i class="menu-item-icon fa fa-map"></i>
+          <span class="sidebar-title">關閉側邊欄</span>
+        </a>
+        <a id="cus-lightbulb" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="施工中 ─=≡Σ(((っﾟДﾟ)っ">
+          <i class="menu-item-icon fa fa-lightbulb-o"></i>
+          <span class="sidebar-title">顯示模式</span>
+        </a>
+      </ul>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal  post-index-border" itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                古典密碼學
+              
+            
+          </h1>
+        
+
+        
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2015-08-15T20:03:07+08:00" content="2015-08-15">
+              2015-08-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/%E8%B3%87%E8%A8%8A%E5%AE%89%E5%85%A8/" itemprop="url" rel="index">
+                    <span itemprop="name">資訊安全</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/08/15/classical_cipher/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/08/15/classical_cipher/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>古典密碼學已經被電腦打爆了，但這跟它重不重要一點關係都沒有。<br>── 我的資安導師總是這樣嘮叨著……</p>
+</blockquote>
+<p>最近重新改寫以前的<a href="http://sogacsie.blogspot.tw/">Blog</a>，終於理解這句話的意涵。舉凡近代加密演算法，多為古典密碼學<strong>手段</strong>的組合，只不過以前人力與能力都不及。</p>
+<p>比方說你不會想把16個字母放進一個矩陣中，每個查表代換10次，再每行平移幾個單位，然後各別乘上一個矩陣，最後再和別的矩陣做XOR邏輯判斷。</p>
+<p><em>Welcome to modern cryptography</em></p>
+<p>這也太繁瑣了，正常人才不會想圈圈畫畫這些詭異的流程。不過，若將這些細項拆開來看，平移對應到移項式密碼，代換跟替換式密碼有關，矩陣運算則是來自希爾密碼，XOR就比較特別了些，但兩無關序列間的運算，可讓人追溯至維吉尼亞密碼的金鑰概念，這些都屬於古典加密的範疇。所以若想踏入近代密碼的殿堂，古典密碼當為一個必經的前哨站，助於釐清算法本身的原理與優劣勢。</p>
+<span id="more"></span>
+
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="明文-Plain-text"><a href="#明文-Plain-text" class="headerlink" title="明文 (Plain text)"></a>明文 (Plain text)</h3><p>即是要加密的內容，不過，文不一定單指文字，也包含了圖片、音樂、各式各樣的檔案都可以當作明文。又因為明文的單字為Plain text，在密碼學上，我們常常用大寫字母<code>P</code>來表示它。</p>
+<h3 id="密文-Cipher-text"><a href="#密文-Cipher-text" class="headerlink" title="密文 (Cipher text)"></a>密文 (Cipher text)</h3><p>呃…顧名思義，加密後的結果，跟明文一樣能有很多種型式，<a href="https://code.google.com/p/corkami/source/detail?r=1906">比方可以把圖片加密成另一張圖片</a>。因為單字是Cipher text，所以用<code>C</code>來表示它。</p>
+<h3 id="金鑰"><a href="#金鑰" class="headerlink" title="金鑰"></a>金鑰</h3><p>有些加密算法會有的另一個參數，當然它也不是真的鑰匙，可能為一組文字序列，演算法把它和明文做處理後產出密文。</p>
+<h3 id="絕對安全"><a href="#絕對安全" class="headerlink" title="絕對安全"></a>絕對安全</h3><p>若我們說一個演算法是絕對安全的，代表即便有無限的時間、無限的資源，也沒辦法靠蠻力破解該算法。</p>
+<h3 id="計算安全"><a href="#計算安全" class="headerlink" title="計算安全"></a>計算安全</h3><p>若我們說一個演算法是計算安全的，則是說靠蠻力攻擊，我們確實能破解這個算法，不過得付出極為大量的時間。</p>
+<h3 id="加密算法"><a href="#加密算法" class="headerlink" title="加密算法"></a>加密算法</h3><p>它會吃進明文吐出密文，接下來的重頭戲。</p>
+<p>一個好的加密算法應至少具備這兩項條件：</p>
+<ul>
+<li>混淆(confusion)</li>
+</ul>
+<p>讓密文與金鑰的關係盡可能複雜，排除掉一些不該存在的弱金鑰，以防攻擊者透過觀察密文就能破解算法。</p>
+<ul>
+<li>擴散(diffusion)</li>
+</ul>
+<p>擴散是指即便明文間只有一丁點的不同，產生出的密文也要大不相同。</p>
+<h2 id="加密工具"><a href="#加密工具" class="headerlink" title="加密工具"></a>加密工具</h2><h3 id="1-密碼棒-Scytale"><a href="#1-密碼棒-Scytale" class="headerlink" title="1.密碼棒 (Scytale)"></a>1.密碼棒 (Scytale)</h3><p><img src="https://3.bp.blogspot.com/-cIUNh6ALKzs/VGV1ikUgOKI/AAAAAAAAAL0/t2mG1J9F1qA/s320/scytale.gif" alt="skytale"></p>
+<p>取布條將其纏繞於木棒上，橫向寫下明文後取下布條。解密時，必須取得相同直徑的木棒。</p>
+<h3 id="2-卡爾達諾漏格板-CardanGrille"><a href="#2-卡爾達諾漏格板-CardanGrille" class="headerlink" title="2.卡爾達諾漏格板 (CardanGrille)"></a>2.卡爾達諾漏格板 (CardanGrille)</h3><p><img src="https://3.bp.blogspot.com/-awX-BGDZDMM/VGYhoh_nnsI/AAAAAAAAAMc/vq9awjlikUQ/s1600/CardanGrille.png" alt="CardanGrille"></p>
+<p>依照漏格書寫明文以及觀看明文。</p>
+<h3 id="3-一次性密碼本"><a href="#3-一次性密碼本" class="headerlink" title="3.一次性密碼本"></a>3.一次性密碼本</h3><p>使用亂數產生的一本加密用密碼本，可以把它想成一組金鑰，每當要產生明文時，將明文與密碼本的內容相加，如明文中的字母C (3)與密碼本的字母 X (25)，3+25&#x3D;28，因為28超過了26個英文字母，而對28取餘數得2，即得加密完成的密文字母B。<br>一次性密碼本有三個限制：</p>
+<ul>
+<li>確定密碼本是由隨機產生的</li>
+<li>密碼本必須只能使用一次</li>
+<li>因為要與明文相加，密碼本至少要與明文一樣長</li>
+</ul>
+<h2 id="加密算法-1"><a href="#加密算法-1" class="headerlink" title="加密算法"></a>加密算法</h2><h3 id="凱撒密碼"><a href="#凱撒密碼" class="headerlink" title="凱撒密碼"></a>凱撒密碼</h3><p>凱撒密碼出自羅馬軍事家<a href="https://zh.wikipedia.org/wiki/%E5%B0%A4%E5%88%A9%E7%83%8F%E6%96%AF%C2%B7%E5%87%B1%E6%92%92">尤利烏斯·凱撒</a>，遽聞其當年曾用此與將領們進行秘密通訊。</p>
+<p>凱撒密碼的流程並不難，因為當時的敵人多是目不識丁的。</p>
+<blockquote>
+<p>已知明文字母P，引入一個參數K，得出密文 C &#x3D; (P + K)mod 26</p>
+</blockquote>
+<p>例如 ABCDEFGHIJK，在K&#x3D;3時，得出密文DEFGHIJKLMN。(K&#x3D;3是最初的凱撒密碼)<br>解密時 P &#x3D; (C - K)mod 26。</p>
+<p>由於凱撒密碼只是對英文字母進行簡單的代換，我們可以透過分析各個字母出現的頻率推斷明文，比方說英文書寫上最常出現的字為 E ，我們便可以猜測密文中出現最多次數的英文字母是 E 的代換，藉此得出 P 與 C 的關係。</p>
+<p>由於這個方法主要是觀察英文字母使用的頻率，故又稱為頻率分析法，對於簡單的字母代換，頻率分析往往是有效的手段。</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/English-slf.png" alt="&quot;English-slf&quot;。使用來自维基共享资源-的創用CC姓名標示-相同方式分享 3.0 條款授權"></p>
+<p>也因其架構簡單，現今電腦已能用暴力法輕易破解，故鮮少在資安領域出現了，不過仍常在字謎遊戲見到它的蹤影，比如ROT-13。</p>
+<h3 id="希爾密碼"><a href="#希爾密碼" class="headerlink" title="希爾密碼"></a>希爾密碼</h3><p>使用矩陣進行加密，由密文構成的密文矩陣C &#x3D; KP，其中P為明文構成的明文矩陣，K為密鑰矩陣，密鑰矩陣須為可逆才可供解密</p>
+<p><img src="https://1.bp.blogspot.com/-CLC48A92h_w/VJFiTQvAhCI/AAAAAAAAAQk/XOSwXGlgeho/s1600/hILL%2BCIPHER.png" alt="HillCipher"></p>
+<p>希爾加密避開了頻率分析攻擊，然而在已知明文的情況下，可透過逆運算求得金鑰，無法保證安全性。</p>
+<h3 id="路由加密"><a href="#路由加密" class="headerlink" title="路由加密"></a>路由加密</h3><p>近似於密碼棒，採用直書橫寫的方式進行加密。</p>
+<h3 id="單字母替換密碼"><a href="#單字母替換密碼" class="headerlink" title="單字母替換密碼"></a>單字母替換密碼</h3><p>與凱撒密碼同為單字母取代的概念。將26個英文字母分別做對應，比如A對應C，B對應F，替換不受限於特定規則，也不要求有跡可循，純粹是做出26個字母的明文密文對應表，以供加密與解密時使用。</p>
+<p>我們能運用洗牌演算法很輕易的產生出單字母密碼替換表。儘管其複雜度(26!)遠遠高於凱撒密碼，但明文字母與密文字母仍屬一對一對應，同樣易受頻率分析攻擊破解，當然也擋不住電腦暴力搜尋。一個可行的解決方案是：在明文中添加一些無關緊要的擾亂字母，或是一份明文使用多個表進行對應。</p>
+<h3 id="維吉尼雅密碼"><a href="#維吉尼雅密碼" class="headerlink" title="維吉尼雅密碼"></a>維吉尼雅密碼</h3><p>維吉尼亞密碼主要是透過查表進行字母的轉換</p>
+<p><img src="https://3.bp.blogspot.com/-DwYbQG7U6u0/VGWGDLIZM-I/AAAAAAAAAMM/tXsTlLvCw14/s400/300px-Vigene%CC%80re_square.svg.png" alt="維吉尼亞加密"></p>
+<p>上圖其實是由26個凱撒密碼構成的。</p>
+<ul>
+<li>第一行為字母位移 0 位的凱撒密碼 ABCDEFG…(即原順序)</li>
+<li>第二行為字母位移 1 位的凱撒密碼 BCDEFGH…</li>
+<li>第三行為字母位移 2 位的凱撒密碼 CDEFGHI…</li>
+<li>……以此類推</li>
+</ul>
+<p>維吉尼雅密碼首先引入了<strong>金鑰</strong>的概念，假設要加密ABCDEFG，使用密鑰CIP。首先，先將密鑰長度補至和明文一樣長，例如：</p>
+<center>ＡＢＣＤＥＦＧ
+ＣＩＰＣＩＰＣ</center>
+
+<p>接下來，取第Ａ行第Ｃ列得Ａ(實際上就是雙重的凱撒密碼)，取第Ｂ行第Ｉ列得Ｊ…取第Ｇ行第Ｃ列得I，如此完成加密。</p>
+<p>由於引入了金鑰這個變換要素，我們在明文上做了兩次變換，普通的頻率分析不適用在維吉尼亞密碼，只要確保金鑰不過度重複(如配合一次性密碼本)，維吉尼亞密碼是足夠安全的。</p>
+<h2 id="攻擊類型"><a href="#攻擊類型" class="headerlink" title="攻擊類型"></a>攻擊類型</h2><h3 id="1-僅知密文攻擊"><a href="#1-僅知密文攻擊" class="headerlink" title="1.僅知密文攻擊"></a>1.僅知密文攻擊</h3><p>攻擊者在只知道密文的情況下試圖求得明文或金鑰。</p>
+<h3 id="2-已知明文攻擊"><a href="#2-已知明文攻擊" class="headerlink" title="2.已知明文攻擊"></a>2.已知明文攻擊</h3><p>攻擊者在知道部分明文與密文配對的情況下試圖破解。</p>
+<h3 id="3-選擇明文攻擊"><a href="#3-選擇明文攻擊" class="headerlink" title="3.選擇明文攻擊"></a>3.選擇明文攻擊</h3><p>公開加密器，攻擊者可以自由輸入明文及得到該明文的密文，藉此試圖破解算法。</p>
+<p>儘管選擇明文攻擊攻防上看似不合理，<strong>但在近代密碼學中，十分強調在公開演算法的情況下，還能保證安全的才是優秀的演算法。</strong></p>
+<p>用最最直觀的角度來看，要做一個加密流程很容易，我們可以有很多把金鑰，再搭配各式各樣的函式打造自己的流程，反覆做個幾十次，甚至幾百次，雖然它的效率不怎麼樣<span style="color:#666">(其實這是個大問題)</span>，但只要流程與金鑰不外洩，這個演算法理論上牢不可破。</p>
+<p>但是換個立場，如果我們是使用者，今天開發者送來了一個自行開發的加密算法，就像上述的流程一樣繁瑣，明文與密文間根本找不著對應。乍看之下，這個加密器可說是有效的，但是，如果它擁有一把尚未發現的萬用鑰匙呢？或是說這幾百道的換算其實能被規約成兩三條式子，是不是藏著一些未發現的漏洞或暗門？。</p>
+<p>對這些疑問，身為使用者的我們無法斷言，至於開發者？如果知道，那他便是最危險的攻擊者。若連開發者也不能肯定，這個算法隨時都有可能會爆炸，更糟糕的是，爆炸按鈕還是我們自己觸發的。</p>
+<p>確實，加密流程較少人知道會較安全，但暗門也較難找出。對這種保護機密資料的演算法，應該公開給全世界敲敲打打，把流程都公開，如果還是牢不可破，這個算法的安全性便有全球資安好手掛保證，像是近代算法中的AES、A5&#x2F;1，便透過各方人才的審核，不但確保了使用上了安全性，也建立出自己的好口碑。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%AF%86%E7%A2%BC%E5%AD%B8/" rel="tag">#密碼學</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/13/Cpreprocessor/" rel="next" title="前置處理器">
+                <i class="fa fa-chevron-left"></i> 前置處理器
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/07/minimalEvaluation/" rel="prev" title="短路求值">
+                短路求值 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.webp"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zake7749" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%8E%E6%96%87-Plain-text"><span class="nav-number">1.1.</span> <span class="nav-text">明文 (Plain text)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E6%96%87-Cipher-text"><span class="nav-number">1.2.</span> <span class="nav-text">密文 (Cipher text)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%91%E9%91%B0"><span class="nav-number">1.3.</span> <span class="nav-text">金鑰</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%95%E5%B0%8D%E5%AE%89%E5%85%A8"><span class="nav-number">1.4.</span> <span class="nav-text">絕對安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%88%E7%AE%97%E5%AE%89%E5%85%A8"><span class="nav-number">1.5.</span> <span class="nav-text">計算安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">1.6.</span> <span class="nav-text">加密算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E5%B7%A5%E5%85%B7"><span class="nav-number">2.</span> <span class="nav-text">加密工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AF%86%E7%A2%BC%E6%A3%92-Scytale"><span class="nav-number">2.1.</span> <span class="nav-text">1.密碼棒 (Scytale)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%8D%A1%E7%88%BE%E9%81%94%E8%AB%BE%E6%BC%8F%E6%A0%BC%E6%9D%BF-CardanGrille"><span class="nav-number">2.2.</span> <span class="nav-text">2.卡爾達諾漏格板 (CardanGrille)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%B8%80%E6%AC%A1%E6%80%A7%E5%AF%86%E7%A2%BC%E6%9C%AC"><span class="nav-number">2.3.</span> <span class="nav-text">3.一次性密碼本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95-1"><span class="nav-number">3.</span> <span class="nav-text">加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%B1%E6%92%92%E5%AF%86%E7%A2%BC"><span class="nav-number">3.1.</span> <span class="nav-text">凱撒密碼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%8C%E7%88%BE%E5%AF%86%E7%A2%BC"><span class="nav-number">3.2.</span> <span class="nav-text">希爾密碼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E5%8A%A0%E5%AF%86"><span class="nav-number">3.3.</span> <span class="nav-text">路由加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%96%AE%E5%AD%97%E6%AF%8D%E6%9B%BF%E6%8F%9B%E5%AF%86%E7%A2%BC"><span class="nav-number">3.4.</span> <span class="nav-text">單字母替換密碼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B6%AD%E5%90%89%E5%B0%BC%E9%9B%85%E5%AF%86%E7%A2%BC"><span class="nav-number">3.5.</span> <span class="nav-text">維吉尼雅密碼</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E6%93%8A%E9%A1%9E%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">攻擊類型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%83%85%E7%9F%A5%E5%AF%86%E6%96%87%E6%94%BB%E6%93%8A"><span class="nav-number">4.1.</span> <span class="nav-text">1.僅知密文攻擊</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%B7%B2%E7%9F%A5%E6%98%8E%E6%96%87%E6%94%BB%E6%93%8A"><span class="nav-number">4.2.</span> <span class="nav-text">2.已知明文攻擊</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%81%B8%E6%93%87%E6%98%8E%E6%96%87%E6%94%BB%E6%93%8A"><span class="nav-number">4.3.</span> <span class="nav-text">3.選擇明文攻擊</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+          <div class="copyright" style="text-algin:center;">
+    
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart" style="color:rgb(255,160,180);"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Justin Yang</span>
+  </div>
+
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme modified from NexT
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+     .Mist
+    </a>
+  </div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div id="open-sidebar" class="open-sidebar close-this-one">
+      <i class="fa fa-map"></i>
+    </div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'zake7749';
+      var disqus_identifier = '2015/08/15/classical_cipher/';
+      var disqus_title = "古典密碼學";
+      var disqus_url = 'https://zake7749.github.io/2015/08/15/classical_cipher/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  <script type="text/javascript" src="/js/src/jquery.tipsy.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+  
+
+  
+
+</body>
+</html>

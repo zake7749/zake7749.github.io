@@ -1,0 +1,701 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next mist">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+  <meta name="google-site-verification" content="hgJ2TZ2JCDOeoLUxOIYJsYe2aeExlKUNmkVS5S41BLY" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="作業系統,演講摘記,Linux," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雷德麥的藏書閣" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+。 #}
+<meta name="description" content="![](https:&#x2F;&#x2F;lh3.googleusercontent.com&#x2F;P_9SNHPFYK3jj1kU3jTOovKiESAaPBWFdDk23WdCNBWcPiwSV6Kys6LIAh-LfRvEzWpv0l0U5rFecjKiAPOE13Wjklg7IekDPS9SO90CrdXE85ShgZtQyICFgM8TDd8zwnWyER0tcNmNns5nlAOp2t4HPN0BG8qMqj">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C4Labs Linux講座">
+<meta property="og:url" content="https://zake7749.github.io/2014/10/30/C4labsLinux/index.html">
+<meta property="og:site_name" content="雷德麥的藏書閣">
+<meta property="og:description" content="![](https:&#x2F;&#x2F;lh3.googleusercontent.com&#x2F;P_9SNHPFYK3jj1kU3jTOovKiESAaPBWFdDk23WdCNBWcPiwSV6Kys6LIAh-LfRvEzWpv0l0U5rFecjKiAPOE13Wjklg7IekDPS9SO90CrdXE85ShgZtQyICFgM8TDd8zwnWyER0tcNmNns5nlAOp2t4HPN0BG8qMqj">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2014-10-30T14:39:03.000Z">
+<meta property="article:modified_time" content="2014-10-30T14:39:03.000Z">
+<meta property="article:author" content="Justin Yang">
+<meta property="article:tag" content="作業系統">
+<meta property="article:tag" content="演講摘記">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://zake7749.github.io/2014/10/30/C4labsLinux/"/>
+
+  <title> C4Labs Linux講座 | 雷德麥的藏書閣 </title>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      <a class="menu-item website-text-logo" href="/">
+        <b class="text-logo-eg">R</b><span class="text-logo-ch"><h1 class="site-title">雷德麥的藏書閣</h1></span>
+      </a>
+      
+        
+        <a class="menu-item menu-item-categories red-tooltip" href="/categories" data-toggle="tooltip" title="文章目錄">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i>
+              <span class="sidebar-title">文章目錄</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-archives red-tooltip" href="/archives" data-toggle="tooltip" title="文章歸檔">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i>
+              <span class="sidebar-title">文章歸檔</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-tags red-tooltip" href="/tags" data-toggle="tooltip" title="特色標籤">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i>
+              <span class="sidebar-title">特色標籤</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-about red-tooltip" href="https://zake7749.github.io/AboutMe/index.html" data-toggle="tooltip" title="關於作者">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i>
+              <span class="sidebar-title">關於作者</span>
+            
+          </a>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+ </div>
+      <ul id="btm-menu" class="menu cus-menu">
+        <a id="cus-object-group" href="https://csienckugrade3.hackpad.com/" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="CS Notes">
+          <i class="menu-item-icon fa fa fa-object-group"></i>
+          <span class="sidebar-title">CS Note pads</span>
+        </a>
+        <a id="cus-map" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="關閉側邊欄">
+          <i class="menu-item-icon fa fa-map"></i>
+          <span class="sidebar-title">關閉側邊欄</span>
+        </a>
+        <a id="cus-lightbulb" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="施工中 ─=≡Σ(((っﾟДﾟ)っ">
+          <i class="menu-item-icon fa fa-lightbulb-o"></i>
+          <span class="sidebar-title">顯示模式</span>
+        </a>
+      </ul>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal  post-index-border" itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                C4Labs Linux講座
+              
+            
+          </h1>
+        
+
+        
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-10-30T22:39:03+08:00" content="2014-10-30">
+              2014-10-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1/" itemprop="url" rel="index">
+                    <span itemprop="name">作業系統</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/10/30/C4labsLinux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/10/30/C4labsLinux/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div align="center">![](https://lh3.googleusercontent.com/P_9SNHPFYK3jj1kU3jTOovKiESAaPBWFdDk23WdCNBWcPiwSV6Kys6LIAh-LfRvEzWpv0l0U5rFecjKiAPOE13Wjklg7IekDPS9SO90CrdXE85ShgZtQyICFgM8TDd8zwnWyER0tcNmNns5nlAOp2t4HPN0BG8qMqjBCPrrFyLiYhELclbde15iMeizjKVHbA3oQ4DY-vZzCOfVvh3NewopXESbp3f-nn_ncreSPdEdA_e3xodUyokmZ3JbzXQzGoTRM_DEAHWf8Tkzi91KVRjrFGi4ZyMZ62KkBdqyrP5JuNedcttx3cTvPbQz_kOdiOo9aPg7CSlAadztfbMAlTTmWB0GQGIrD2bywo8pQ954IdHbv_5F1eH4SDqLO9utYL2LCgRzEQF5oJzSbIv3RFl5rJ-ClvWfAeGuz7l_5Rfdf2DgA97oPSruYQdOfKvqbgXY0w-Aw93HSfS8UOt5YvHbOv4dmEhHHFkPI46nbpFS1D9hdybYv-kkcVWpa1qv5Iha7mzhuQN4pOUcQSnrvKp7G6J2EtPmKyVQLa3v1hHY=w272-h319-no)</div>
+由於主持人是jserv，所以是C4Labs開學以來第一次爆滿(?)。比起分享，這次的meeting更像是推坑用讀書會，書目為[linux kernel development 3rd](http://it-ebooks.info/book/819/) 。這本書不像OS恐龍書，它假定你對基本觀念有一部分的認知了，而多著墨在怎麼去用那些觀念，所以可能不適合新手入門，而且它的圖真的很少。
+
+<p>今天是第一次開講，所以只就幾個章節做了簡單的流覽。jserv分享還蠻有趣的，對於這次的會議內容，將談談作業系統的基本觀念與排程</p>
+<h2 id="程式-x-程序-x-執行緒"><a href="#程式-x-程序-x-執行緒" class="headerlink" title="程式 x 程序 x 執行緒"></a>程式 x 程序 x 執行緒</h2><p>進入排程之前，先讓我們釐清一件事：</p>
+<pre><code>Program：沒有反應，就只是個程式碼的集合。
+Process：執行中程式的實體。
+Thread：Process的紀錄器，告訴你這個Process幹了什麼。
+</code></pre>
+<p>一個Program能產生多的Process，每點一次程式，就會產生一個行程，多開就是這麼回事。而每一個行程，都有一個獨立自主的小空間(記憶體區塊)，除了自己以外，沒有人能把它幹掉，同樣的，當這個行程掛掉時，別的行程也不會受到影響。</p>
+<p>執行緒既為紀錄器，也是CPU分時的最小單位。一個行程通常有很多執行緒，這其實近似多工的概念。想像一個情形，如果只有一個執行緒，行程內所有的事就得都由他一手包辦，他可能要讀入檔案，又可能又呈現畫面給使用者，但是CPU一次只能分配給一個執行緒使用，這意味著我們必須等這個執行緒讀完檔案，才會有時間來回應使用者，如果前者曠日廢時，我們通常會認為是當機了。多執行緒則把工作分攤開，我們可以有一個執行緒專職回報，告訴使用者這個行程做了什麼，而其他執行緒繼續埋頭苦幹。</p>
+<p>但有一點要注意，多執行緒是近似分工，只是讓工作能同時啟動，真正在做事的還是處理器，如果只有一個執行緒，一個處理器，那你把它分成4個執行緒也不會比較快。事實上，在多執行緒中處理器只是快速的切換執行緒，以達到工作差不多快的效果。</p>
+<h2 id="排程入門"><a href="#排程入門" class="headerlink" title="排程入門"></a>排程入門</h2><p>排程，其實就是切換行程的學問。Linux的排程是基於分時，也就是把CPU時間切成許多片段，每一個片段可供一個行程來使用，當程式的時間配額額滿時，就會進行行程切換的操作。而判斷執行順序是來自優先權，它可能是透過一個演算法得出的，每個行程都會有個優先權，排程器(Scheduler)會透過它得知什麼時候該執行什麼程式。</p>
+<p>我們先考慮三種行程：</p>
+<ul>
+<li>Interactive process ：會不斷跟使用者互動，需要偵測按鍵立即回覆使用者</li>
+<li>Batch process：不需要和使用者互動，常在背景執行</li>
+<li>Real-time process：即時性的，像是影音軟體</li>
+</ul>
+<p>Linux的排程器實做了一個啟發式演算法，可以依據過去行程的行為，來決定各個行程的優先順序 。</p>
+<p>此外，Linux 採取<a href="https://zh.wikipedia.org/wiki/%E6%8A%A2%E5%8D%A0%E5%BC%8F%E5%A4%9A%E4%BB%BB%E5%8A%A1%E5%A4%84%E7%90%86">搶佔式多任務處理</a>，也就是說當一個行程處於可執行狀態時，核心會將他的優先權和當前執行行程的優先權進行比對，若前者較大，中斷目前的行程，讓排程器挑出應當執行的行程。此外先佔也會發生在當前行程的時間配額額滿的時候，此時，一個鑑別旗標TIF_NEED_RESCHED 會被設立，讓計時器中止及調用排程器。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1/" rel="tag">#作業系統</a>
+          
+            <a href="/tags/%E6%BC%94%E8%AC%9B%E6%91%98%E8%A8%98/" rel="tag">#演講摘記</a>
+          
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/10/18/gamedesignConferenceC/" rel="next" title="我的紫微星哪有這麼萌!?">
+                <i class="fa fa-chevron-left"></i> 我的紫微星哪有這麼萌!?
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/17/SocketProgramming/" rel="prev" title="TCP Socket Programming 學習筆記">
+                TCP Socket Programming 學習筆記 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.webp"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zake7749" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F-x-%E7%A8%8B%E5%BA%8F-x-%E5%9F%B7%E8%A1%8C%E7%B7%92"><span class="nav-number">1.</span> <span class="nav-text">程式 x 程序 x 執行緒</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E7%A8%8B%E5%85%A5%E9%96%80"><span class="nav-number">2.</span> <span class="nav-text">排程入門</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+          <div class="copyright" style="text-algin:center;">
+    
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart" style="color:rgb(255,160,180);"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Justin Yang</span>
+  </div>
+
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme modified from NexT
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+     .Mist
+    </a>
+  </div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div id="open-sidebar" class="open-sidebar close-this-one">
+      <i class="fa fa-map"></i>
+    </div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'zake7749';
+      var disqus_identifier = '2014/10/30/C4labsLinux/';
+      var disqus_title = "C4Labs Linux講座";
+      var disqus_url = 'https://zake7749.github.io/2014/10/30/C4labsLinux/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  <script type="text/javascript" src="/js/src/jquery.tipsy.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,746 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next mist">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+  <meta name="google-site-verification" content="hgJ2TZ2JCDOeoLUxOIYJsYe2aeExlKUNmkVS5S41BLY" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="C,C++," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雷德麥的藏書閣" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+。 #}
+<meta name="description" content="前置處理器 &#x3D; 進行「前置處理」的文字編輯器。 或許我們得先解決什麼是「前置處理」。從說文解字的角度出發，它做的是某件工作的事前處理，在C和C++中，我們指的是進行編譯前的處理工作，大致上可分為：  引入標頭檔(Header file) 進行文字的取代 巨集、常數的定義…… 條件式編譯    具體而言，在程式中前有 # 的部分就涉及了前置處理，比如#define、#Pragma與#inc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前置處理器">
+<meta property="og:url" content="https://zake7749.github.io/2015/08/13/Cpreprocessor/index.html">
+<meta property="og:site_name" content="雷德麥的藏書閣">
+<meta property="og:description" content="前置處理器 &#x3D; 進行「前置處理」的文字編輯器。 或許我們得先解決什麼是「前置處理」。從說文解字的角度出發，它做的是某件工作的事前處理，在C和C++中，我們指的是進行編譯前的處理工作，大致上可分為：  引入標頭檔(Header file) 進行文字的取代 巨集、常數的定義…… 條件式編譯    具體而言，在程式中前有 # 的部分就涉及了前置處理，比如#define、#Pragma與#inc">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2015-08-13T08:44:09.000Z">
+<meta property="article:modified_time" content="2015-08-13T08:44:09.000Z">
+<meta property="article:author" content="Justin Yang">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://zake7749.github.io/2015/08/13/Cpreprocessor/"/>
+
+  <title> 前置處理器 | 雷德麥的藏書閣 </title>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      <a class="menu-item website-text-logo" href="/">
+        <b class="text-logo-eg">R</b><span class="text-logo-ch"><h1 class="site-title">雷德麥的藏書閣</h1></span>
+      </a>
+      
+        
+        <a class="menu-item menu-item-categories red-tooltip" href="/categories" data-toggle="tooltip" title="文章目錄">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i>
+              <span class="sidebar-title">文章目錄</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-archives red-tooltip" href="/archives" data-toggle="tooltip" title="文章歸檔">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i>
+              <span class="sidebar-title">文章歸檔</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-tags red-tooltip" href="/tags" data-toggle="tooltip" title="特色標籤">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i>
+              <span class="sidebar-title">特色標籤</span>
+            
+          </a>
+      
+        
+        <a class="menu-item menu-item-about red-tooltip" href="https://zake7749.github.io/AboutMe/index.html" data-toggle="tooltip" title="關於作者">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i>
+              <span class="sidebar-title">關於作者</span>
+            
+          </a>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+ </div>
+      <ul id="btm-menu" class="menu cus-menu">
+        <a id="cus-object-group" href="https://csienckugrade3.hackpad.com/" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="CS Notes">
+          <i class="menu-item-icon fa fa fa-object-group"></i>
+          <span class="sidebar-title">CS Note pads</span>
+        </a>
+        <a id="cus-map" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="關閉側邊欄">
+          <i class="menu-item-icon fa fa-map"></i>
+          <span class="sidebar-title">關閉側邊欄</span>
+        </a>
+        <a id="cus-lightbulb" href="#" class="menu-item cus-menu-fontbtn" data-toggle="tooltip" title="施工中 ─=≡Σ(((っﾟДﾟ)っ">
+          <i class="menu-item-icon fa fa-lightbulb-o"></i>
+          <span class="sidebar-title">顯示模式</span>
+        </a>
+      </ul>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal  post-index-border" itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                前置處理器
+              
+            
+          </h1>
+        
+
+        
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2015-08-13T16:44:09+08:00" content="2015-08-13">
+              2015-08-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">程式語言</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/08/13/Cpreprocessor/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/08/13/Cpreprocessor/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前置處理器 &#x3D; 進行「前置處理」的文字編輯器。</p>
+<p>或許我們得先解決什麼是「前置處理」。<br>從說文解字的角度出發，它做的是某件工作的事前處理，在C和C++中，我們指的是進行<strong>編譯前</strong>的處理工作，大致上可分為：</p>
+<ul>
+<li>引入標頭檔(Header file)</li>
+<li>進行文字的取代<ul>
+<li>巨集、常數的定義……</li>
+<li>條件式編譯</li>
+</ul>
+</li>
+</ul>
+<p>具體而言，在程式中前有 <code>#</code> 的部分就涉及了前置處理，比如<code>#define</code>、<code>#Pragma</code>與<code>#include</code>等等。</p>
+<p>要注意，前置處理器並不屬於C編譯器的一部分，它也不了解C家族的語法，如果你用C的觀點來審視它可能會碰上大麻煩。</p>
+<span id="more"></span>
+<h2 id="一些常見的用法"><a href="#一些常見的用法" class="headerlink" title="一些常見的用法"></a>一些常見的用法</h2><h3 id="include"><a href="#include" class="headerlink" title="include"></a>include</h3><p><code>#include</code>用於引入外部的標頭檔，比如以下程式碼：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Hello World!&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>便引入stdio.h，明確的宣告(explicit declaration)了printf，並放入目前的程式中，所以我們能使用標準輸出的printf函式，而不必自己實作它的細節。</p>
+<p>順代一提，若你使用的是C編譯器而非C++編譯器，就算沒有引入對應的標頭檔，編譯器仍會為函式建立一個隱性宣告(implicit declaration)，當聯結至標準函式庫時，若「湊巧」在庫中發現了一個同名的函式，便會把它們聯結在一塊兒，編譯時跳出的就不會是 Error 而是報 Warning，比如：</p>
+<blockquote>
+<p>waring: incompatible implicit declaration of built-in function ‘printf’</p>
+</blockquote>
+<p>而在c++的編譯器上則是：</p>
+<blockquote>
+<p>error: ‘printf’ was not declared in this scope</p>
+</blockquote>
+<p>關於C標準上更詳細的資訊，可以看看<a href="https://www.ptt.cc/bbs/C_and_CPP/M.1416824909.A.E7F.html">這篇文章</a></p>
+<p>在使用include上有兩種格式：</p>
+<ul>
+<li><code>#include &lt;file_name&gt;</code></li>
+</ul>
+<p>file_name為系統內建的標頭檔，如stdio、stdlib等等，通常放於預設目錄底下。</p>
+<ul>
+<li><code>#include &quot;file_name&quot;</code></li>
+</ul>
+<p>當用雙引號包覆時，file_name 是我們自定義的標頭檔。引用方式可採相對路徑或絕對路徑，此外，我們也可以在追加 gcc flag <a href="https://gcc.gnu.org/onlinedocs/cpp/Invocation.html#Invocation">-i</a> 來告知標頭檔所在目錄，編譯時 gcc 會先查找系統目錄，再從 -i 的引數中由左至右尋找檔案。</p>
+<h3 id="define"><a href="#define" class="headerlink" title="define"></a>define</h3><p><code>define</code>的功能是進行文字上的取代：</p>
+<p><code>define NAME Substitute-text</code></p>
+<p>便會將NAME替代為Substitute-text，我們稱NAME為巨集，常會全以字母大寫呈現巨集，當作和普通變數的辨別標準：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> TEN 10</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,TEN);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我們可以用gcc -E 來觀察前置處理器的輸出。完成前置處理後，<code>TEN</code>便被定義(define)為<code>&quot;10&quot;</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> TEN 10</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,<span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>透過適當地調用巨集，能讓起來程式碼看起來更加友善，即便不使用<code>string</code>，我們也能很形象化的描述各種情形：</p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MEDICINE 1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SCIENCE 2</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ENGLISH 3</span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="keyword">switch</span>(<span class="built_in">type</span>)&#123;</span><br><span class="line">	<span class="keyword">case</span> MEDICINE:</span><br><span class="line">    	...</span><br><span class="line">    	<span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> SCIENCE:</span><br><span class="line">    	...</span><br><span class="line">    	<span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>define</code>也能夠引入參數：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> swap(x,y) &#123;int t; t=x; x=y; y=t; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> a = <span class="number">5</span>;</span><br><span class="line">	<span class="type">int</span> b = <span class="number">7</span>;</span><br><span class="line">	<span class="built_in">swap</span>(a,b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中swap後請記得「緊接」<code>(</code>，否則會跳脫出取代範圍，還記得嗎？我們是用空白來做區分的。上述程式碼在完成前置處理後會變成這樣：</p>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#define swap(x,y) &#123;<span class="built_in">int</span> <span class="built_in">t</span>; <span class="built_in">t</span>=x; x=y; y=<span class="built_in">t</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">int</span> main()&#123;</span><br><span class="line">	<span class="built_in">int</span> a = <span class="number">5</span>;</span><br><span class="line">	<span class="built_in">int</span> b = <span class="number">7</span>;</span><br><span class="line">	&#123;<span class="built_in">int</span> <span class="built_in">t</span>; <span class="built_in">t</span>=a; a=b; b=<span class="built_in">t</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你可能覺得這麼做跟使用行內涵式(<code>inline</code>)沒什麼兩樣，不過早期的C編譯器並沒有常數與行內涵式的功能，才衍生出這樣的解決方案。</p>
+<p>此外，正如前文所提到的，前置處理器並不了解 C 家族的語法，所以他所做的僅僅是取代而已，諸如要去取代的變數型別、運算元的優先順序上等涉及 C 語法的細節都不會加以檢查，所以使用上須格外小心，否則會在除錯上造成很大的盲點。比方說，變數的組合建議以括弧包覆，不然可能發生這種情形：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FIRST_PART 7</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LAST_PART 5</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ALL_PARTS FIRST_PART + LAST_PART</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;The square of all the parts is &quot;</span> &lt;&lt;</span><br><span class="line">	ALL_PARTS * ALL_PARTS &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	<span class="keyword">return</span> (<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>預期的輸出為 12 * 12 &#x3D; 144 ，但是真正的輸出是 7+5*7+5 &#x3D;47，這便是沒考慮到運算順序導置的缺失，應該修正為：<br><code>#define ALL_PARTS ((FIRST_PART) + (LAST_PART))</code></p>
+<h3 id="條件式編譯"><a href="#條件式編譯" class="headerlink" title="條件式編譯"></a>條件式編譯</h3><p>前置處理器提供了一些if判斷指令，我們能透過它來控制某些功能是否實現，最常見的莫過於<a href="https://zh.wikipedia.org/wiki/Include%E9%98%B2%E7%AF%84">include guard</a>了，這避免了引入了某些程式碼導至的錯誤，我們能用<code>#ifndef</code>與<code>endif</code>來達成，引用wiki的例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> H_GRANDFATHER ← <span class="keyword">if</span> not <span class="keyword">define</span> H_GRANDFATHER.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> H_GRANDFATHER ← then <span class="keyword">define</span> H_GRANDFATHER.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">foo</span> &#123;</span><br><span class="line">    <span class="type">int</span> member;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> ← close this <span class="keyword">if</span> statement.</span></span><br></pre></td></tr></table></figure>
+<p>既然有<code>#ifndef</code>，當然也有<code>#ifdef</code>、<code>#if</code>、<code>#else</code>囉，像上述的功能也可以用<code>#ifdef</code>配合<code>#else</code>或使用<code>#if defined(H_GRANDFATHER)</code>達成。</p>
+<p>除了include guard，條件式編譯也有不少用途，比方說程式碼的除錯，我們可以透過定義一個巨集DEBUG，藉由<code>#define</code>及判斷式來開關除錯模式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> DEBUG</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Debug version.\n&quot;</span>);</span><br><span class="line">	<span class="comment">//insert your debug code or function.</span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Production version.\n&quot;</span>)</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag">#C</a>
+          
+            <a href="/tags/C/" rel="tag">#C++</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/06/message_auth/" rel="next" title="訊息鑑別技術">
+                <i class="fa fa-chevron-left"></i> 訊息鑑別技術
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/15/classical_cipher/" rel="prev" title="古典密碼學">
+                古典密碼學 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.webp"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分類</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zake7749" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%B8%B8%E8%A6%8B%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">一些常見的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#include"><span class="nav-number">1.1.</span> <span class="nav-text">include</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#define"><span class="nav-number">1.2.</span> <span class="nav-text">define</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%9D%E4%BB%B6%E5%BC%8F%E7%B7%A8%E8%AD%AF"><span class="nav-number">1.3.</span> <span class="nav-text">條件式編譯</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+          <div class="copyright" style="text-algin:center;">
+    
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart" style="color:rgb(255,160,180);"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Justin Yang</span>
+  </div>
+
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+  </div>
+
+  <div class="theme-info">
+    Theme modified from NexT
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+     .Mist
+    </a>
+  </div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div id="open-sidebar" class="open-sidebar close-this-one">
+      <i class="fa fa-map"></i>
+    </div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'zake7749';
+      var disqus_identifier = '2015/08/13/Cpreprocessor/';
+      var disqus_title = "前置處理器";
+      var disqus_url = 'https://zake7749.github.io/2015/08/13/Cpreprocessor/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  <script type="text/javascript" src="/js/src/jquery.tipsy.js"></script>
+  <script type="text/javascript" src="/js/src/custom.js"></script>
+  
+
+  
+
+</body>
+</html>
