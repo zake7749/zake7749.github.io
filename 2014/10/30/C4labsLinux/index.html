@@ -86,12 +86,12 @@
 
 
 
-<meta name="description" content="![](https:&#x2F;&#x2F;lh3.googleusercontent.com&#x2F;P_9SNHPFYK3jj1kU3jTOovKiESAaPBWFdDk23WdCNBWcPiwSV6Kys6LIAh-LfRvEzWpv0l0U5rFecjKiAPOE13Wjklg7IekDPS9SO90CrdXE85ShgZtQyICFgM8TDd8zwnWyER0tcNmNns5nlAOp2t4HPN0BG8qMqj">
+<meta name="description" content="由於主持人是jserv，所以是C4Labs開學以來第一次爆滿(?)。比起分享，這次的meeting更像是推坑用讀書會，書目為linux kernel development 3rd 。這本書不像OS恐龍書，它假定你對基本觀念有一部分的認知了，而多著墨在怎麼去用那些觀念，所以可能不適合新手入門，而且它的圖真的很少。 今天是第一次開講，所以只就幾個章節做了簡單的流覽。jserv分享還蠻有趣的，對於這次">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C4Labs Linux講座">
 <meta property="og:url" content="https://zake7749.github.io/2014/10/30/C4labsLinux/">
 <meta property="og:site_name" content="雷德麥的藏書閣">
-<meta property="og:description" content="![](https:&#x2F;&#x2F;lh3.googleusercontent.com&#x2F;P_9SNHPFYK3jj1kU3jTOovKiESAaPBWFdDk23WdCNBWcPiwSV6Kys6LIAh-LfRvEzWpv0l0U5rFecjKiAPOE13Wjklg7IekDPS9SO90CrdXE85ShgZtQyICFgM8TDd8zwnWyER0tcNmNns5nlAOp2t4HPN0BG8qMqj">
+<meta property="og:description" content="由於主持人是jserv，所以是C4Labs開學以來第一次爆滿(?)。比起分享，這次的meeting更像是推坑用讀書會，書目為linux kernel development 3rd 。這本書不像OS恐龍書，它假定你對基本觀念有一部分的認知了，而多著墨在怎麼去用那些觀念，所以可能不適合新手入門，而且它的圖真的很少。 今天是第一次開講，所以只就幾個章節做了簡單的流覽。jserv分享還蠻有趣的，對於這次">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2014-10-30T14:39:03.000Z">
 <meta property="article:modified_time" content="2014-10-30T14:39:03.000Z">
@@ -315,9 +315,7 @@
       
 
       
-        <div align="center">![](https://lh3.googleusercontent.com/P_9SNHPFYK3jj1kU3jTOovKiESAaPBWFdDk23WdCNBWcPiwSV6Kys6LIAh-LfRvEzWpv0l0U5rFecjKiAPOE13Wjklg7IekDPS9SO90CrdXE85ShgZtQyICFgM8TDd8zwnWyER0tcNmNns5nlAOp2t4HPN0BG8qMqjBCPrrFyLiYhELclbde15iMeizjKVHbA3oQ4DY-vZzCOfVvh3NewopXESbp3f-nn_ncreSPdEdA_e3xodUyokmZ3JbzXQzGoTRM_DEAHWf8Tkzi91KVRjrFGi4ZyMZ62KkBdqyrP5JuNedcttx3cTvPbQz_kOdiOo9aPg7CSlAadztfbMAlTTmWB0GQGIrD2bywo8pQ954IdHbv_5F1eH4SDqLO9utYL2LCgRzEQF5oJzSbIv3RFl5rJ-ClvWfAeGuz7l_5Rfdf2DgA97oPSruYQdOfKvqbgXY0w-Aw93HSfS8UOt5YvHbOv4dmEhHHFkPI46nbpFS1D9hdybYv-kkcVWpa1qv5Iha7mzhuQN4pOUcQSnrvKp7G6J2EtPmKyVQLa3v1hHY=w272-h319-no)</div>
-由於主持人是jserv，所以是C4Labs開學以來第一次爆滿(?)。比起分享，這次的meeting更像是推坑用讀書會，書目為[linux kernel development 3rd](http://it-ebooks.info/book/819/) 。這本書不像OS恐龍書，它假定你對基本觀念有一部分的認知了，而多著墨在怎麼去用那些觀念，所以可能不適合新手入門，而且它的圖真的很少。
-
+        <p>由於主持人是jserv，所以是C4Labs開學以來第一次爆滿(?)。比起分享，這次的meeting更像是推坑用讀書會，書目為<a href="http://it-ebooks.info/book/819/">linux kernel development 3rd</a> 。這本書不像OS恐龍書，它假定你對基本觀念有一部分的認知了，而多著墨在怎麼去用那些觀念，所以可能不適合新手入門，而且它的圖真的很少。</p>
 <p>今天是第一次開講，所以只就幾個章節做了簡單的流覽。jserv分享還蠻有趣的，對於這次的會議內容，將談談作業系統的基本觀念與排程</p>
 <h2 id="程式-x-程序-x-執行緒"><a href="#程式-x-程序-x-執行緒" class="headerlink" title="程式 x 程序 x 執行緒"></a>程式 x 程序 x 執行緒</h2><p>進入排程之前，先讓我們釐清一件事：</p>
 <pre><code>Program：沒有反應，就只是個程式碼的集合。

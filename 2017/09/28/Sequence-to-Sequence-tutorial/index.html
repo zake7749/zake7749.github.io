@@ -442,7 +442,7 @@
 </ul>
 <p>甚至，我們能把眼光放得更遠些，Encoder 與 Decoder 不一定都只有 RNN，可以讓 CNN 與 RNN 一起當 Encoder，負責將影像編碼成向量，而 Decoder 根據這個向量來生成描述，這樣就能讓機器描述圖片中發生了什麼：</p>
 <p><img src="https://i.imgur.com/Do4EMaQ.png" alt="Image Caption"></p>
-<p class="img-meta">Reference: [Sequence to Sequence – Video to Text](https://arxiv.org/pdf/1505.00487.pdf)</p>
+<p class="img-meta">Reference: <a href="https://arxiv.org/pdf/1505.00487.pdf">Sequence to Sequence – Video to Text</a></p>
 
 <p>雖然內容已經有點跑題了，但對於 Encoder 與 Decoder 這一搭一唱的行為，我們都將其視為 Encoder Decoder Framework 。隨著輸入與輸出的類型不同，就能組合出不同風貌的應用，我想這便是 Sequence to Sequence 的迷人之處。</p>
 <h1 id="Show-me-the-code"><a href="#Show-me-the-code" class="headerlink" title="Show me the code"></a>Show me the code</h1><p>就算談了再多的理論，工程師最後還是要靠實作來分出勝負，接下來的教學將以 <a href="http://pytorch.org/">PyTorch</a> 為主，所有程式碼都已經放在<a href="https://github.com/zake7749/Sequence-to-Sequence-101">Github</a>上了。</p>
