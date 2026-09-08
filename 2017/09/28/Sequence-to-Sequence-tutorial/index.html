@@ -342,7 +342,7 @@
 <span id="more"></span>
 
 <p>Sequence to Sequence 是近幾年蓬勃發展的生成式模型 ，它精彩地解決了 RNN 無法處理不定長配對的困境，並於機器寫作、人機對話等主題上嶄露頭角，可以說 Sequence to Sequence 是個相當具啟發性的模型。現在，就讓我們從零開始，與 Sequence to Sequence 進行一場深度邂逅吧。</p>
-<h1 id="快速回顧-RNN"><a href="#快速回顧-RNN" class="headerlink" title="快速回顧 RNN"></a>快速回顧 RNN</h1><p>在深入 Sequence to Sequence 的細節之前，我想先和各位介紹一位老朋友 ── RNN (Recurrent neural network)，就是它一手搭建起了最初的 Sequence to Sequence 模型。是故要走入 Sequence to Sequence 的前生今世，我們必須先從 RNN　出發。如果你與這位老友已相當熟識了，不妨直接跳到 <a href="https://zake7749.github.io/2017/09/28/Sequence-to-Sequence-tutorial/#Sequence_to_Sequence">Sequence to Sequence</a> ，這對後續的教學並不會構成太大的影響。</p>
+<h1 id="快速回顧-RNN"><a href="#快速回顧-RNN" class="headerlink" title="快速回顧 RNN"></a>快速回顧 RNN</h1><p>在深入 Sequence to Sequence 的細節之前，我想先和各位介紹一位老朋友 ── RNN (Recurrent neural network)，就是它一手搭建起了最初的 Sequence to Sequence 模型。是故要走入 Sequence to Sequence 的前生今世，我們必須先從 RNN　出發。如果你與這位老友已相當熟識了，不妨直接跳到 <a href="https://zake7749.github.io/2017/09/28/Sequence-to-Sequence-tutorial/#Sequence-to-Sequence">Sequence to Sequence</a> ，這對後續的教學並不會構成太大的影響。</p>
 <p>言歸正傳，RNN 到底是個什麼玩意兒? 就讓我先從傳統的類神經網路切入吧。</p>
 <p>傳統上，我們假設神經網路的每個輸入是相互獨立的，意即對於輸入 $I_i, I_j$ 而言，$I_i$ 取什麼值，並不會影響 $I_j$ 取什麼值，因為 $I_i$ 與 $I_j$ 一點關係也沒有。但這個假設有個很大的缺點，就是在處理序列 (Sequence) 時不太管用，因為序列內的元素長幼有序、先後有別，這種順序性導致了輸入間彼此相依，打個比方吧，股票走勢就是種典型的數值序列：</p>
 <table>
