@@ -33,6 +33,8 @@
     <category term="自然語言處理" scheme="https://zake7749.github.io/categories/%E8%87%AA%E7%84%B6%E8%AA%9E%E8%A8%80%E8%99%95%E7%90%86/"/>
     
     
+    <category term="深度學習" scheme="https://zake7749.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%B8%E7%BF%92/"/>
+    
     <category term="LLM" scheme="https://zake7749.github.io/tags/LLM/"/>
     
     <category term="中文寫作" scheme="https://zake7749.github.io/tags/%E4%B8%AD%E6%96%87%E5%AF%AB%E4%BD%9C/"/>
@@ -44,8 +46,6 @@
     <category term="RLVR" scheme="https://zake7749.github.io/tags/RLVR/"/>
     
     <category term="LLM-as-a-Judge" scheme="https://zake7749.github.io/tags/LLM-as-a-Judge/"/>
-    
-    <category term="深度學習" scheme="https://zake7749.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%B8%E7%BF%92/"/>
     
   </entry>
   
@@ -68,13 +68,13 @@
     <category term="深度學習" scheme="https://zake7749.github.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%B8%E7%BF%92/"/>
     
     
-    <category term="深度學習" scheme="https://zake7749.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%B8%E7%BF%92/"/>
-    
     <category term="Sequence to Sequence" scheme="https://zake7749.github.io/tags/Sequence-to-Sequence/"/>
     
     <category term="Autoencoder" scheme="https://zake7749.github.io/tags/Autoencoder/"/>
     
     <category term="RNN" scheme="https://zake7749.github.io/tags/RNN/"/>
+    
+    <category term="深度學習" scheme="https://zake7749.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%B8%E7%BF%92/"/>
     
     <category term="機器學習" scheme="https://zake7749.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92/"/>
     
@@ -105,11 +105,11 @@
     <category term="自然語言處理" scheme="https://zake7749.github.io/categories/%E8%87%AA%E7%84%B6%E8%AA%9E%E8%A8%80%E8%99%95%E7%90%86/"/>
     
     
-    <category term="專題紀錄" scheme="https://zake7749.github.io/tags/%E5%B0%88%E9%A1%8C%E7%B4%80%E9%8C%84/"/>
-    
     <category term="深度學習" scheme="https://zake7749.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%B8%E7%BF%92/"/>
     
     <category term="機器學習" scheme="https://zake7749.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92/"/>
+    
+    <category term="專題紀錄" scheme="https://zake7749.github.io/tags/%E5%B0%88%E9%A1%8C%E7%B4%80%E9%8C%84/"/>
     
     <category term="聊天機器人" scheme="https://zake7749.github.io/tags/%E8%81%8A%E5%A4%A9%E6%A9%9F%E5%99%A8%E4%BA%BA/"/>
     
